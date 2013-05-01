@@ -56,10 +56,8 @@ echo $this->url( array( 'action' => 'edit', 'id' => tour( 'id' ) ) )
    <div class="element-text">
       <ul>
          <?php foreach( $tour->Items as $tourItem ): ?>
-         <li><a href="<?php echo uri( array(
-            'controller' => 'items',
-            'action' => 'show',
-            'id' => $tourItem->id ) ); ?>"><?php
+         <li><a href="<?php
+         echo uri('items/show/'.$tourItem->id); ?>"><?php
          echo $this->itemMetadata( $tourItem, 'Dublin Core', 'Title' ); ?></a>
          </li>
          <?php endforeach; ?>
