@@ -110,25 +110,17 @@ SQL
       $router->addRoute( 'tours_collection', $collectionRoute );
    }
 
-   public function hookAdminDashboard( $args )
+   public function hookAdminDashboard( $stats )
    {
-      if( has_permission( 'TourBuilder_Tours', 'show' ) )
+      if( is_allowed( 'TourBuilder_Tours', 'browse' ) )
       {
-         echo '<dt class="tours"><a href="'
-            . html_escape( uri('tours') )
-            . '">Tours</a></dt>'
-            . '<dd class="tours">'
-            . '<ul>'
-            . '<li><a class="add-tour use-icon" href="'
-            . html_escape( uri('tour-builder/tours/add/') )
-            . '">Create a Tour</a></li>'
-            . '<li><a class="browse browse-tour" href="'
-            . html_escape( uri('tour-builder/tours') )
-            . '">Browse Tours</a></li>'
-            . '</ul>'
-            . '<p>Add and manage mobile tours that display items from the archive.</p>'
-            . '</dd>';
+         $stats[] = array( link_to( 'tours',
+                                    array(),
+                                    total_records( 'Tours' ),
+                                    __('tours') ) );
       }
+
+      return $stats;
    }
 
    public function hookAdminHead()
