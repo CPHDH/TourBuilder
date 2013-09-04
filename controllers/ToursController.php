@@ -8,7 +8,7 @@ class TourBuilder_ToursController extends Omeka_Controller_Action
 {
    public function init()
    {
-      $this->_modelClass = 'Tour';
+      $this->_helper->db->setDefaultModelName( 'Tour' );
    }
 
    public function removeitemAction()
