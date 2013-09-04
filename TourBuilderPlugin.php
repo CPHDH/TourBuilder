@@ -76,10 +76,10 @@ SQL
 
       $singleRoute = new Zend_Controller_Router_Route(
          'tours/:action/:id',
-         array( 'module' => 'TourBuilder',
-                'controller' => 'tours',
+         array( 'controller' => 'tours',
+                'module' => 'TourBuilder',
                 'id' => '1' ),
-         array() );
+         array( 'id' => '\d+' ) );
       $router->addRoute( 'tours', $singleRoute );
 
       $singleIdRoute = new Zend_Controller_Router_Route(
@@ -87,7 +87,7 @@ SQL
          array( 'module' => 'TourBuilder',
                 'controller' => 'tours',
                 'id' => '1' ),
-         array() );
+         array( 'id' => '\d+' ) );
       $router->addRoute( 'tours_single_id', $singleRoute );
 
       $collectionRoute = new Zend_Controller_Router_Route(
