@@ -137,7 +137,15 @@ SQL
 
    public function filterAdminNavigationMain( $nav )
    {
-      $nav['Tours'] = uri('tour-builder/tours');
+      $nav['Tours'] = array( 'label' => __('Tours'),
+                             'uri' => url( 'tours' ) );
+      return $nav;
+   }
+
+   public function filterPublicNavigationMain( $nav )
+   {
+      $nav['Tours'] = array( 'label' => __('Tours'),
+                             'uri' => url( 'tours' ) );
       return $nav;
    }
 }
