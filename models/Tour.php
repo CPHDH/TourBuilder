@@ -6,7 +6,7 @@ require_once 'TourTable.php';
  * Tour
  * @package: Omeka
  */
-class Tour extends Omeka_Record
+class Tour extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
 {
    public $title;
    public $description;

@@ -27,7 +27,7 @@ class TourBuilder_ToursController extends Omeka_Controller_Action
    public function browseforitemAction()
    {
       $db = get_db();
-      $tour_id = $this->getRequest()->getParam( 'id' );
+      $tour_id = $this->getParam( 'id' );
       $tour = $this->findById();
 
       # Get all items which are not already in this tour.

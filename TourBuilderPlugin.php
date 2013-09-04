@@ -1,5 +1,10 @@
 <?php
 
+if( !defined( 'TOUR_PLUGIN_DIR' ) )
+{
+   define( 'TOUR_PLUGIN_DIR', dirname( __FILE__ ) );
+}
+
 class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 {
    protected $_hooks = array(
@@ -74,6 +79,12 @@ SQL
    {
       $router = $args['router'];
 
+      $router->addConfig( new Zend_Config_Ini(
+                             TOUR_PLUGIN_DIR
+                             . DIRECTORY_SEPARATOR
+                             . 'routes.ini',
+                             'routes' ) );
+
       $singleRoute = new Zend_Controller_Router_Route(
          'tours/:action/:id',
          array( 'controller' => 'tours',
@@ -129,9 +140,7 @@ SQL
               $request->getControllerName() == 'index' &&
               $request->getActionName() == 'index') )
       {
-         echo '<link rel="stylesheet" media="screen" href="'
-            . html_escape( css('tour') )
-            . '" /> ';
+         queue_css_file( 'tour' );
       }
    }
 
