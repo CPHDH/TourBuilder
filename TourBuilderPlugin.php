@@ -157,6 +157,7 @@ define( 'TOURS_PLUGIN_DIR', dirname( __FILE__ ) );
  * Helper functions for use in all themes
  */
 
+/*
 function has_tours()
 {
    return( total_tours() > 0 );
@@ -222,12 +223,12 @@ function tour( $fieldName, $options=array(), $tour=null )
 
 function set_current_tour( $tour )
 {
-   __v()->tour = $tour;
+   get_view()->tour = $tour;
 }
 
 function get_current_tour()
 {
-   return __v()->tour;
+   return get_view()->tour;
 }
 
 function link_to_tour(
@@ -256,3 +257,5 @@ function total_tours()
 {
    return get_db()->getTable( 'Tours' )->count();
 }
+
+*/
