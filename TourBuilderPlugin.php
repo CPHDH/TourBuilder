@@ -2,43 +2,20 @@
 
 define( 'TOURS_PLUGIN_DIR', dirname( __FILE__ ) );
 
-require_once 'Tour.php';
-require_once 'TourItem.php';
-
-add_plugin_hook( 'install', 'TourBuilder::install' );
-add_plugin_hook( 'uninstall', 'TourBuilder::uninstall' );
-add_plugin_hook( 'define_acl', 'TourBuilder::defineAcl' );
-add_plugin_hook( 'define_routes', 'tours_define_routes' );
-add_plugin_hook( 'admin_append_to_dashboard_primary', 'tours_dashboard' );
-add_plugin_hook( 'admin_theme_header', 'tours_admin_header' );
-add_filter('admin_navigation_main', 'TourBuilder::adminNavigationMain');
-
-class TourBuilder
+class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 {
-   public function __construct()
-   {
-      $this->_db = get_db();
-   }
+   protected $_filters = array(
+      'admin_navigation_main' );
 
-   public static function install()
-   {
-      $tours = new TourBuilder;
-      $tours->_createTables();
-   }
+   protected $_hooks = array(
+      'install',
+      'uninstall',
+      'define_acl',
+      'define_routes',
+      'admin_append_to_dashboard_primary',
+      'admin_theme_header' );
 
-   public static function uninstall()
-   {
-      $tours = new TourBuilder;
-      $tours->_dropTables();
-   }
-
-   public static function defineAcl( $acl )
-   {
-      $tours = new TourBuilder;
-      $tours->_defineAcl( $acl );
-   }
-
-   private function _createTables()
+   public function hookInstall()
    {
       $db = $this->_db;
       $db->exec( <<<SQL
@@ -68,76 +45,88 @@ SQL
       );
    }
 
-   private function _dropTables()
+   public function hookUninstall()
    {
       $db = $this->_db;
       $db->exec( "DROP TABLE IF EXISTS $db->Tour" );
       $db->exec( "DROP TABLE IF EXISTS $db->TourItem" );
    }
 
-   private function _defineAcl( $acl )
+   public function hookDefineAcl( $args )
    {
-      $resource = new Omeka_Acl_Resource( 'TourBuilder_Tours' );
-      $resource->add( array( 'add','editSelf', 'editAll', 'deleteSelf', 'deleteAll',
-         'add-item', 'delete-item', 'showNotPublic' ) );
-      $acl->add($resource);
+      $acl = $args['acl'];
 
-      // Deny contributor users editAll, deleteAll
-      $acl->deny('contributor', 'TourBuilder_Tours', array('editAll','deleteAll'));
+      // Create the ACL context
+      $resourceAcl = new Zend_Acl_Resource( 'TourBuilder_Tours' );
+      $acl->add( $resourceAcl );
 
-      // Allow contributors everything else
-      $acl->allow('contributor', 'TourBuilder_Tours');
+      // Allow administrative (and better) to do anything with tours
+      $acl->allow( array( 'super', 'admin' ),
+                   'TourBuilder_Tours' );
+
+      // Allow everyone to view tours
+      $acl->allow( null, 'TourBuilder_Tours', 'show' );
+      $acl->deny(  null, 'TourBuilder_Tours', 'show-unpublished' );
    }
-    public static function adminNavigationMain($nav)
-    {
-        $nav['Tours'] = uri('tour-builder/tours');
-        return $nav;
-    }   
-}
 
-function tours_define_routes( $router )
-{
-   $singleRoute = new Zend_Controller_Router_Route( 'tours/:action/:id',
-      array( 'module' => 'TourBuilder', 'controller' => 'tours', 'id' => '1' ),
-      array() );
-   $router->addRoute( 'tours', $singleRoute );
-
-   $singleIdRoute = new Zend_Controller_Router_Route( 'tours/:action/id/:id',
-      array( 'module' => 'TourBuilder', 'controller' => 'tours', 'id' => '1' ),
-      array() );
-   $router->addRoute( 'tours_single_id', $singleRoute );
-
-   $collectionRoute = new Zend_Controller_Router_Route( 'tours/:action',
-      array( 'module' => 'TourBuilder', 'controller' => 'tours', 'action' => 'browse' ),
-      array() );
-   $router->addRoute( 'tours_collection', $collectionRoute );
-}
-
-function tours_dashboard()
-{
-   if( has_permission( 'TourBuilder_Tours', 'browse' ) ): ?>
-	<dt class="tours"><a href="<?php echo html_escape(uri('tours')); ?>">Tours</a></dt>
-	<dd class="tours">
-		<ul>
-			<li><a class="add-tour use-icon" href="<?php echo html_escape(uri('tour-builder/tours/add/')); ?>">Create a Tour</a></li>
-			<li><a class="browse browse-tour" href="<?php echo html_escape(uri('tour-builder/tours')); ?>">Browse Tours</a></li>
-		</ul>
-		<p>Add and manage mobile tours that display items from the archive.</p>
-	</dd>
-   <?php endif;
-}
-
-function tours_admin_header( $request )
-{
-   # Add our stylesheet to admin pages in which we take part
-   if( $request->getControllerName() == 'tours' ||
-      ($request->getModuleName() == 'default' &&
-      $request->getControllerName() == 'index' &&
-      $request->getActionName() == 'index') )
+   public function hookDefineRoutes( $args )
    {
-      echo '<link rel="stylesheet" media="screen" href="' . html_escape(css('tour')) . '" /> ';
+      $router = $args['router'];
+
+      $singleRoute = new Zend_Controller_Router_Route(
+         'tours/:action/:id',
+         array( 'module' => 'TourBuilder', 'controller' => 'tours', 'id' => '1' ),
+         array() );
+      $router->addRoute( 'tours', $singleRoute );
+
+      $singleIdRoute = new Zend_Controller_Router_Route(
+         'tours/:action/id/:id',
+         array( 'module' => 'TourBuilder', 'controller' => 'tours', 'id' => '1' ),
+         array() );
+      $router->addRoute( 'tours_single_id', $singleRoute );
+
+      $collectionRoute = new Zend_Controller_Router_Route(
+         'tours/:action',
+         array( 'module' => 'TourBuilder', 'controller' => 'tours', 'action' => 'browse' ),
+         array() );
+      $router->addRoute( 'tours_collection', $collectionRoute );
+   }
+
+   public function hookAdminAppendToDashboardPrimary()
+   {
+      if( has_permission( 'TourBuilder_Tours', 'browse' ) )
+      { ?>
+   	<dt class="tours"><a href="<?php echo html_escape(uri('tours')); ?>">Tours</a></dt>
+   	<dd class="tours">
+   		<ul>
+   			<li><a class="add-tour use-icon" href="<?php echo html_escape(uri('tour-builder/tours/add/')); ?>">Create a Tour</a></li>
+   			<li><a class="browse browse-tour" href="<?php echo html_escape(uri('tour-builder/tours')); ?>">Browse Tours</a></li>
+   		</ul>
+   		<p>Add and manage mobile tours that display items from the archive.</p>
+   	</dd> <?php
+      }
+   }
+
+   public function hookAdminThemeHeader( $request )
+   {
+      # Add our stylesheet to admin pages in which we take part
+         if( $request->getControllerName() == 'tours' ||
+             ($request->getModuleName() == 'default' &&
+              $request->getControllerName() == 'index' &&
+              $request->getActionName() == 'index') )
+         {
+            echo '<link rel="stylesheet" media="screen" href="' . html_escape(css('tour')) . '" /> ';
+         }
+   }
+
+   public function filterAdminNavigationMain( $nav )
+   {
+      $nav['Tours'] = array( 'label' => __('Tours'),
+                             'uri' => url( 'tours' ) );
+      return $nav;
    }
 }
+
 
 /*
  * Helper functions for use in all themes
