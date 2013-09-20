@@ -122,7 +122,8 @@ SQL
    public function filterAdminNavigationMain( $nav )
    {
       $nav['Tours'] = array( 'label' => __('Tours'),
-                             'uri' => url( 'tours' ) );
+                             'action' => 'browse',
+                             'controller' => 'tours' );
       return $nav;
    }
 }
