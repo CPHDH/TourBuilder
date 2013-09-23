@@ -1,6 +1,9 @@
 <?php
 
-define( 'TOURS_PLUGIN_DIR', dirname( __FILE__ ) );
+if( !defined( 'TOURBUILDER_PLUGIN_DIR' ) )
+{
+   define( 'TOURBUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
+}
 
 class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 {
@@ -72,24 +75,10 @@ SQL
    public function hookDefineRoutes( $args )
    {
       $router = $args['router'];
-
-      $singleRoute = new Zend_Controller_Router_Route(
-         'tours/:action/:id',
-         array( 'module' => 'TourBuilder', 'controller' => 'tours', 'id' => '1' ),
-         array() );
-      $router->addRoute( 'tours', $singleRoute );
-
-      $singleIdRoute = new Zend_Controller_Router_Route(
-         'tours/:action/id/:id',
-         array( 'module' => 'TourBuilder', 'controller' => 'tours', 'id' => '1' ),
-         array() );
-      $router->addRoute( 'tours_single_id', $singleRoute );
-
-      $collectionRoute = new Zend_Controller_Router_Route(
-         'tours/:action',
-         array( 'module' => 'TourBuilder', 'controller' => 'tours', 'action' => 'browse' ),
-         array() );
-      $router->addRoute( 'tours_collection', $collectionRoute );
+      $router->addConfig( new Zend_Config_Ini(
+                             TOURBUILDER_PLUGIN_DIR .
+                             DIRECTORY_SEPARATOR .
+                             'routes.ini', 'routes' ) );
    }
 
    public function hookAdminAppendToDashboardPrimary()
