@@ -2,9 +2,9 @@
 head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
    'bodyclass' => 'tours primary browse-tours' ) );
 ?>
-<h1>Browse Tours (<?php echo $total_records; ?> total)</h1>
+<h1>Browse Tours (<?php echo $total_results; ?> total)</h1>
 
-<?php if( has_permission( 'TourBuilder_Tours', 'add' ) ): ?>
+<?php if( is_allowed( 'TourBuilder_Tours', 'add' ) ): ?>
 <p id="add-tour" class="add-button">
    <a class="add"
       href="<?php echo $this->url( array( 'action' => 'add' ) ); ?>">Add a Tour</a>
@@ -23,7 +23,7 @@ head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
                <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Title</th>
-                  <?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
+                  <?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
                   <th scope="col">Edit?</th>
                   <?php endif; ?>
                </tr>
@@ -37,7 +37,7 @@ head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
                      echo $this->url( array(
                         'action' => 'show', 'id' => tour( 'id' ) ) );
                      ?>"><?php echo tour( 'title' ); ?></a></td>
-                  <?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
+                  <?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
                   <td><a class="edit" href="<?php echo $this->url(
                      array( 'action' => 'edit', 'id' => tour( 'id' ) ) ); ?>"
                      >Edit</a>
