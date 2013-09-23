@@ -1,6 +1,6 @@
 <?php
-head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
-   'bodyclass' => 'tours primary browse-tours' ) );
+echo head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
+                  'bodyclass' => 'tours primary browse-tours' ) );
 ?>
 <h1>Browse Tours (<?php echo $total_results; ?> total)</h1>
 
@@ -30,24 +30,24 @@ head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
             </thead>
             <tbody>
                <?php $key = 0; ?>
-               <?php while( loop_tours() ): ?>
+               <?php foreach( $tours as $tour ): ?>
                <tr class="tours <?php if( ++$key%2==1) echo 'odd'; else echo 'even'; ?>">
-                  <td scope="row"><?php echo tour( 'id' ); ?></td>
+                  <td scope="row"><?php echo $tour->id; ?></td>
                   <td scope="row"><a href="<?php
                      echo $this->url( array(
-                        'action' => 'show', 'id' => tour( 'id' ) ) );
-                     ?>"><?php echo tour( 'title' ); ?></a></td>
+                        'action' => 'show', 'id' => $tour->id ) );
+                     ?>"><?php echo $tour->title; ?></a></td>
                   <?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
-                  <td><a class="edit" href="<?php echo $this->url(
-                     array( 'action' => 'edit', 'id' => tour( 'id' ) ) ); ?>"
+                  <td><a class="edit" href="<?php echo url(
+                     array( 'action' => 'edit', 'id' => $tour->id ) ); ?>"
                      >Edit</a>
                   <?php endif; ?>
                </tr>
-               <?php endwhile; ?>
+               <?php endforeach; ?>
             </tbody>
          </table>
       <?php endif; ?>
    <?php endif; ?>
 </div>
 
-<?php foot();
+<?php echo foot(); ?>

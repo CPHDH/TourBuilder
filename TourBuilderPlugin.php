@@ -129,7 +129,7 @@ function has_tours()
 
 function has_tours_for_loop()
 {
-   $view = __v();
+   $view = get_view();
    return $view->tours && count( $view->tours );
 }
 
@@ -187,12 +187,12 @@ function tour( $fieldName, $options=array(), $tour=null )
 
 function set_current_tour( $tour )
 {
-   __v()->tour = $tour;
+   get_view()->tour = $tour;
 }
 
 function get_current_tour()
 {
-   return __v()->tour;
+   return get_view()->tour;
 }
 
 function link_to_tour(
