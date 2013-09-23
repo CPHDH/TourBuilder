@@ -2,13 +2,11 @@
 require_once 'Tour.php';
 require_once 'TourItem.php';
 
-require_once 'Omeka/Controller/Action.php';
-
-class TourBuilder_ToursController extends Omeka_Controller_Action
+class TourBuilder_ToursController extends Omeka_Controller_AbstractActionController
 {
    public function init()
    {
-      $this->_modelClass = 'Tour';
+      $this->_helper->db->setDefaultModelName( 'Tour' );
    }
 
    public function removeitemAction()
