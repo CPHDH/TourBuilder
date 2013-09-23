@@ -7,16 +7,11 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 }
 $tourTitle = 'Tour #' . tour( 'id' ) . $tourTitle;
 
-head( array( 'title' => $tourTitle, 'content_class' => 'horizontal-nav',
-   'bodyclass' => 'show' ) );
+echo head( array( 'title' => $tourTitle, 'content_class' => 'horizontal-nav',
+                  'bodyclass' => 'show' ) );
 ?>
 
-<h1><?php echo $tourTitle; ?>
-<span class="view-public-page">[ <a href="<?php
-echo html_escape( public_uri( 'tours/show/' . tour( 'id' ) ) );
-?>">View Public Page</a> ]</span></h1>
-
-<?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
+<?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
 <p id="edit-tour" class="edit-button"><a class="edit" href="<?php
 echo $this->url( array( 'action' => 'edit', 'id' => tour( 'id' ) ) )
 ?>">Edit this Tour</a></p>
@@ -61,4 +56,4 @@ echo $this->url( array( 'action' => 'edit', 'id' => tour( 'id' ) ) )
 </div>
 </div>
 
-<?php foot();
+<?php echo foot(); ?>
