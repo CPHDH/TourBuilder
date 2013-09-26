@@ -1,6 +1,6 @@
 <?php
 $tabs = array();
-$theTabs=(!tour( 'id' )) ? array( 'Tour Info' ) : array( 'Tour Info','Items' );
+$theTabs= (!$tour->id) ? array( 'Tour Info' ) : array( 'Tour Info','Items' );
 foreach( $theTabs as $tabName ) {
    ob_start();
    switch( $tabName ) {
@@ -8,7 +8,8 @@ foreach( $theTabs as $tabName ) {
       require 'metadata-form.php';
       break;
    case 'Items':
-      require 'items-form.php';
+      echo "Item Form Stuff";
+      //require 'items-form.php';
       break;
    }
    $tabs[$tabName] = ob_get_contents();

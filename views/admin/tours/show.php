@@ -17,6 +17,8 @@ echo $this->url( array( 'action' => 'edit', 'id' => tour( 'id' ) ) )
 ?>">Edit this Tour</a></p>
 <?php endif; ?>
 
+<?php echo all_element_texts( 'tour' ); ?>
+
 <div id="primary">
    <div id="tour-slug" class="element">
       <h2>Slug</h2>
