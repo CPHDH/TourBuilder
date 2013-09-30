@@ -8,8 +8,7 @@ foreach( $theTabs as $tabName ) {
       require 'metadata-form.php';
       break;
    case 'Items':
-      echo "Item Form Stuff";
-      //require 'items-form.php';
+      require 'items-form.php';
       break;
    }
    $tabs[$tabName] = ob_get_contents();
