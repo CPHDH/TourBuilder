@@ -61,19 +61,27 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
 
    public function hoistitemAction()
    {
-      $tour = $this->findById();
+      $tour = $this->_helper->db->findById();
       $item_id = $this->getRequest()->getParam( 'item' );
 
-      $tour->hoistItem( $item_id );
-      $this->redirect->goto( 'edit', null, null, array( 'id' => $tour->id ) );
+      $tour->hoistItem( $tour->id, intval( $item_id ) );
+      $this->_redirectToEdit();
    }
 
    public function loweritemAction()
    {
-      $tour = $this->findById();
+      $tour = $this->_helper->db->findById();
       $item_id = $this->getRequest()->getParam( 'item' );
 
-      $tour->lowerItem( $item_id );
-      $this->redirect->goto( 'edit', null, null, array( 'id' => $tour->id ) );
+      $tour->lowerItem( $tour->id, intval( $item_id ) );
+      $this->_redirectToEdit();
+   }
+
+   private function _redirectToEdit()
+   {
+      $tour_id = $this->getRequest()->getParam( 'id' );
+      $this->_helper->redirector->gotoRoute(
+         array( 'action' => 'edit',
+                'id' => $tour_id ) );
    }
 }

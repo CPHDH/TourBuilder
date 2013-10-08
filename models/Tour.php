@@ -76,56 +76,42 @@ class Tour extends Omeka_Record_AbstractRecord
       $tourItem->save();
    }
 
-   public function hoistItem( $item_id )
+   public function hoistItem( $tour_id, $item_id )
    {
-      $db = get_db();
-      $tiTable = $db->getTable( 'TourItem' );
-
-      # Get the item we should hoist
-      $select = $tiTable->getSelect()
-         ->where( 'tour_id = ?', array( $this->id ) )
-         ->where( 'item_id = ?', array( $item_id ) );
-      $tourItem_up = $tiTable->fetchObject( $select );
-
-      # Get the item we displace
-      $select = $tiTable->getSelect()
-         ->where( 'tour_id = ?', array( $this->id ) )
-         ->where( 'ordinal = ?', array( $tourItem_up->ordinal - 1 ) );
-      $tourItem_down = $tiTable->fetchObject( $select );
-
-      # Do the ordinal shuffle
-      $tourItem_up->ordinal = $tourItem_up->ordinal - 1;
-      $tourItem_down->ordinal = $tourItem_down->ordinal + 1;
-
-      # Save both items
-      $tourItem_up->save();
-      $tourItem_down->save();
+      $this->swapItem( $tour_id, $item_id, true );
    }
 
-   public function lowerItem( $item_id )
+   public function lowerItem( $tour_id, $item_id )
+   {
+      $this->swapItem( $tour_id, $item_id, false );
+   }
+
+   public function swapItem( $tour_id, $item_id, $up )
    {
       $db = get_db();
       $tiTable = $db->getTable( 'TourItem' );
 
-      # Get the item we should lower
+      // Get the target item
       $select = $tiTable->getSelect()
-         ->where( 'tour_id = ?', array( $this->id ) )
-         ->where( 'item_id = ?', array( $item_id ) );
-      $tourItem_down = $tiTable->fetchObject( $select );
+         ->where( 'tour_id = ?', $tour_id )
+         ->where( 'item_id = ?', $item_id );
+      $left = $tiTable->fetchObject( $select );
+      $ordinal = intval( $left->ordinal );
 
-      # Get the item we displace
+      // Get the next item with which we are swapping
       $select = $tiTable->getSelect()
-         ->where( 'tour_id = ?', array( $this->id ) )
-         ->where( 'ordinal = ?', array( $tourItem_down->ordinal + 1 ) );
-      $tourItem_up = $tiTable->fetchObject( $select );
+         ->where( 'tour_id = ?', $tour_id )
+         ->where( $up ? 'ordinal < ?' : 'ordinal > ?', $ordinal )
+         ->limit( 1 );
+      $right = $tiTable->fetchObject( $select );
 
-      # Do the ordinal shuffle
-      $tourItem_up->ordinal = $tourItem_up->ordinal - 1;
-      $tourItem_down->ordinal = $tourItem_down->ordinal + 1;
+      // Do the ordinal shuffle
+      $left->ordinal = intval( $right->ordinal );
+      $right->ordinal = $ordinal;
 
-      # Save both items
-      $tourItem_up->save();
-      $tourItem_down->save();
+      // Save both items
+      $left->save();
+      $right->save();
    }
 
    protected function _validate()
