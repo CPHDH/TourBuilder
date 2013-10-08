@@ -48,7 +48,8 @@ class Tour extends Omeka_Record_AbstractRecord
 
       # Reorder the remaining linkages
       $renumbers = $tiTable->fetchObjects( $select );
-      foreach( $renumbers as $ti ) {
+      foreach( $renumbers as $ti )
+      {
          $ti->ordinal = $ti->ordinal - 1;
          $ti->save();
       }
