@@ -11,15 +11,15 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
 
    public function removeitemAction()
    {
-      # Get the tour and item id from the request
-      $tour = $this->findById();
+      // Get the tour and item id from the request
+      $tour = $this->_helper->db->findById();
       $item_id = $this->getRequest()->getParam( 'item' );
 
-      # Remove the item (id) from the tour
+      // Remove the item (id) from the tour
       $tour->removeItem( $item_id );
 
-      # Go back to editing the tour.
-      $this->redirect->goto( 'edit', null, null, array( 'id' => $tour->id ) );
+      // Go back to editing the tour.
+      $this->_redirectToEdit();
    }
 
    public function browseforitemAction()
