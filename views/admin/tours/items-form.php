@@ -1,8 +1,9 @@
 <?php
    $tourItemCount = count( $tour->Items );
    $addItemUrl = $this->url(
-      array( 'tour'   => $tour->id,
-             'action' => 'browseForItem' ) );
+      array( 'id'   => $tour->id,
+             'action' => 'browseForItem' ),
+      'tourAction' );
 ?>
 <ul id="tourbuilder-item-list">
   <?php if( $tourItemCount ): ?>
@@ -26,13 +27,16 @@
             $itemUri = record_url( $tourItem, 'show', true );
             $itemHoist = $this->url( array( 'action' => 'hoistItem',
                                             'id'     => $tour->id,
-                                            'item'   => $tourItem->id ) );
+                                            'item'   => $tourItem->id ),
+                                     'tourItemAction' );
             $itemLower = $this->url( array( 'action' => 'lowerItem',
                                             'id'     => $tour->id,
-                                            'item'   => $tourItem->id ) );
+                                            'item'   => $tourItem->id ),
+                                     'tourItemAction' );
             $itemDelete = $this->url( array( 'action' => 'removeItem',
                                              'id'     => $tour->id,
-                                             'item'   => $tourItem->id ) );
+                                             'item'   => $tourItem->id ),
+                                      'tourItemAction' );
       ?>
       <tr class="orderable items <?php echo $alternator; ?>">
         <td scope="row">

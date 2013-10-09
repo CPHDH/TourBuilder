@@ -1,8 +1,11 @@
 <?php
-$tourTitle = strip_formatting( tour( 'title' ) );
-if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
+$tourTitle = strip_formatting( $tour->title );
+if( $tourTitle != '' && $tourTitle != '[Untitled]' )
+{
    $tourTitle = ': &quot;' . $tourTitle . '&quot; ';
-} else {
+}
+else
+{
    $tourTitle = '';
 }
 $tourTitle = 'Add Item To Tour #' . tour( 'id' ) . $tourTitle;
