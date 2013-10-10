@@ -221,3 +221,12 @@ function total_tours()
 {
    return get_db()->getTable( 'Tours' )->count();
 }
+
+function nls2p($str) {
+	$str = str_replace('<p></p>', '', '<p>'
+        . preg_replace('#([
+]\s*?[
+]){2,}#', '</p><p>', $str)
+        . '</p>');
+	return $str;
+}
