@@ -44,7 +44,10 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
          ON i.id = ti.item_id AND ti.tour_id = ?
          WHERE ti.id IS NULL",
          array( $tour->id ) );
-      $this->view->assign( compact( 'items' ) );
+
+      $itemsName = $this->view->pluralize( 'item' );
+      $tourName = $this->view->singularize( $this->_helper->db->getDefaultModelName() );
+      $this->view->assign( compact( 'items', 'tour' ) );
    }
 
    public function additemAction()
@@ -55,7 +58,7 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
 
       $tour->addItem( $item_id );
 
-      $this->redirect->goto( 'edit', null, null, array( 'id' => $tour->id ) );
+      $this->_redirectToEdit();
    }
 
    public function hoistitemAction()
