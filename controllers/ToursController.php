@@ -53,7 +53,7 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
    public function additemAction()
    {
       # Get the tour and item ids
-      $tour = $this->findById();
+      $tour = $this->_helper->db->findById();
       $item_id = $this->getRequest()->getParam( 'item' );
 
       $tour->addItem( $item_id );
