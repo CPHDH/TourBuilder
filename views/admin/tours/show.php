@@ -66,10 +66,39 @@ echo flash();
   <div id="edit" class="panel">
     <?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
     <a href="<?php echo url( array( 'action' => 'edit', 'id' => $tour->id ) ); ?>"
-       class="edit big green button" target="_blank">
+       class="edit big green button">
       <?php echo __('Edit'); ?>
     </a>
     <?php endif; ?>
+
+    <a href="<?php echo html_escape( public_url( 'tours/show/' . $tour->id ) ); ?>"
+       class="big blue button" target="_blank">
+      <?php echo __('View Public Page'); ?>
+    </a>
+
+    <?php
+      if( is_allowed( 'TourBuilder_Tours', 'delete' ) )
+      {
+         echo link_to_tour( __('Delete'),
+                            array( 'class' => 'big red button' ),
+                            'delete-confirm' );
+      }
+    ?>
+  </div>
+
+  <div class="public-featured panel">
+    <p>
+      <span class="label">
+        <?php echo __('Public'); ?>:
+      </span>
+      <?php echo ($tour->public) ? __('Yes') : __('No'); ?>
+    </p>
+    <p>
+      <span class="label">
+        <?php echo __('Featured'); ?>:
+      </span>
+      <?php echo ($tour->featured) ? __('Yes') : __('No'); ?>
+    </p>
   </div>
 </section>
 
