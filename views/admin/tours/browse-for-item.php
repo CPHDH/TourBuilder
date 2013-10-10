@@ -26,7 +26,7 @@ echo head( array( 'title' => $tourTitle,
    <tbody>
       <?php $key = 0;
             foreach( $this->items as $item ):
-               $oddness = ((++ $key % 2) == 1 );
+               $oddness = ((++ $key % 2) == 1 ) ? 'odd' : 'even';
                $itemName = metadata( $item, array( 'Dublin Core', 'Title' ) );
                $itemUrl = url( array( 'controller' => 'items',
                                       'action' => 'show',
@@ -36,7 +36,7 @@ echo head( array( 'title' => $tourTitle,
                                      'id' => $tour->id ), 'tourItemAction' );
       ?>
 
-      <tr class="items <?php echo (++$key%2 == 1) ? 'odd' : 'even'; ?>">
+      <tr class="items <?php echo $oddness; ?>">
          <td scope="row"><?php echo $item->id ?></td>
          <td scope="row">
             <a href="<?php echo $itemUrl; ?>">
