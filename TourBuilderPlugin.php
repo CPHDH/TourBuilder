@@ -230,3 +230,22 @@ function nls2p($str) {
         . '</p>');
 	return $str;
 }
+
+function public_nav_tours( array $navArray = null, $maxDepth = 0 )
+{
+   if( !$navArray )
+   {
+      $navArray = array();
+
+      $navArray[] = array(
+            'label' => __('Browse All'),
+            'uri' => url('tours/browse') );
+      /* TODO: Searches not implemented * /
+      $navArray[] = array(
+         'label' => __('Search Tours'),
+         'uri' => url('tours/search') );
+      // */
+   }
+
+   return nav( $navArray, 'public_navigation_items' );
+}
