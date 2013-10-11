@@ -19,8 +19,8 @@ echo flash();
   <section class="three columns omega">
 	<div id="save" class="panel">
 	  <?php echo $this->formSubmit( 'submit', __('Save Changes'),
-		                            array( 'id' => 'save-changes',
-                                           'class' => 'submit big green button' ) ); ?>
+                                   array( 'id' => 'save-changes',
+                                          'class' => 'submit big green button' ) ); ?>
       <a href="<?php echo html_escape( public_url( 'tours/show/' . $tour->id ) ); ?>"
          class="big blue button" target="_blank">
         <?php echo __('View Public Page'); ?>
