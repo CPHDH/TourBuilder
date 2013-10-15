@@ -69,6 +69,7 @@ SQL
 
       // Allow everyone to view tours
       $acl->allow( null, 'TourBuilder_Tours', 'show' );
+      $acl->allow( null, 'TourBuilder_Tours', 'browse' );
       $acl->deny(  null, 'TourBuilder_Tours', 'show-unpublished' );
    }
 
