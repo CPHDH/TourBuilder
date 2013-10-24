@@ -7,58 +7,99 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 }
 $tourTitle = 'Tour #' . tour( 'id' ) . $tourTitle;
 
-head( array( 'title' => $tourTitle, 'content_class' => 'horizontal-nav',
-   'bodyclass' => 'show' ) );
+echo head( array( 'title' => $tourTitle,
+                  'bodyclass' => 'tour show' ) );
+echo flash();
 ?>
 
-<h1><?php echo $tourTitle; ?>
-<span class="view-public-page">[ <a href="<?php
-echo html_escape( public_uri( 'tours/show/' . tour( 'id' ) ) );
-?>">View Public Page</a> ]</span></h1>
-
-<?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
-<p id="edit-tour" class="edit-button"><a class="edit" href="<?php
-echo $this->url( array( 'action' => 'edit', 'id' => tour( 'id' ) ) )
-?>">Edit this Tour</a></p>
-<?php endif; ?>
-
+<section class="seven columns alpha">
 <div id="primary">
+   <?php if( $tour->slug ): ?>
    <div id="tour-slug" class="element">
       <h2>Slug</h2>
       <div class="element-text">
          <?php echo tour( 'Slug' ); ?>
       </div>
    </div>
+   <?php endif; ?>
 
+   <?php if( metadata( 'tour', 'Description' ) ): ?>
    <div id="tour-description" class="element">
       <h2>Description</h2>
       <div class="element-text">
-         <?php echo nls2p( tour( 'Description' ) ); ?>
+         <?php echo nls2p( metadata( 'tour', 'Description' ) ); ?>
       </div>
    </div>
+   <?php endif; ?>
 
+   <?php if( metadata( 'tour', 'Credits' ) ): ?>
    <div id="tour-credits" class="element">
       <h2>Credits</h2>
       <div class="element-text">
-         <?php echo tour( 'Credits' ); ?>
+         <?php echo metadata( 'tour', 'Credits' ); ?>
       </div>
    </div>
+   <?php endif; ?>
 
-<div id="tour-items" class="element">
-   <h2>Items</h2>
-   <div class="element-text">
-      <ul>
-         <?php foreach( $tour->Items as $tourItem ): ?>
-         <li><a href="<?php echo uri( array(
-            'controller' => 'items',
-            'action' => 'show',
-            'id' => $tourItem->id ) ); ?>"><?php
-         echo $this->itemMetadata( $tourItem, 'Dublin Core', 'Title' ); ?></a>
+   <?php
+     $items = $tour->getItems();
+     if( $tour->getItems() ): ?>
+   <div id="tour-items" class="element">
+     <h2>Items</h2>
+     <div class="element-text">
+       <ul>
+         <?php foreach( $items as $item ):
+           set_current_record( 'item', $item, true );
+         ?>
+         <li>
+           <?php echo link_to_item(); ?>
          </li>
          <?php endforeach; ?>
       </ul>
    </div>
+   <?php endif; ?>
 </div>
 </div>
+</section>
 
-<?php foot();
+<section class="three columns omega">
+  <div id="edit" class="panel">
+    <?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
+    <a href="<?php echo url( array( 'action' => 'edit', 'id' => $tour->id ) ); ?>"
+       class="edit big green button">
+      <?php echo __('Edit'); ?>
+    </a>
+    <?php endif; ?>
+
+    <a href="<?php echo html_escape( public_url( 'tours/show/' . $tour->id ) ); ?>"
+       class="big blue button" target="_blank">
+      <?php echo __('View Public Page'); ?>
+    </a>
+
+    <?php
+      if( is_allowed( 'TourBuilder_Tours', 'delete' ) )
+      {
+         echo link_to_tour( __('Delete'),
+                            array( 'class' => 'big red button' ),
+                            'delete-confirm' );
+      }
+    ?>
+  </div>
+
+  <div class="public-featured panel">
+    <p>
+      <span class="label">
+        <?php echo __('Public'); ?>:
+      </span>
+      <?php echo ($tour->public) ? __('Yes') : __('No'); ?>
+    </p>
+    <p>
+      <span class="label">
+        <?php echo __('Featured'); ?>:
+      </span>
+      <?php echo ($tour->featured) ? __('Yes') : __('No'); ?>
+    </p>
+  </div>
+</section>
+
+<?php echo foot(); ?>

@@ -7,31 +7,63 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 }
 $tourTitle = 'Edit Tour #' . tour( 'id' ) . $tourTitle;
 
-head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
-   'bodyclass' => 'tours primary' ) );
+echo head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
+                  'bodyclass' => 'tours primary' ) );
+include 'form-tabs.php';
+echo flash();
 ?>
 
-<script type="text/javascript" charset="utf-8">
-   document.observe( 'dom:loaded', function() {
-      new Control.Tabs( 'section-nav' );
-   });
-</script>
+<form method="post" enctype="multipart/form-data" id="tour-form" action="">
+  <?php include "form.php" ?>
 
-<h1>Edit Tour</h1>
-<?php include( 'form-tabs.php' ); ?>
-<div id="primary">
-   <form method="post" enctype="multipart/form-data" id="tour-form" action="">
-      <?php include( 'form.php' ); ?>
-      <div>
-         <input type="submit" name="submit" class="submit submit-medium"
-            id="save-changes" value="Save Changes" />
+  <section class="three columns omega">
+	<div id="save" class="panel">
+	  <?php echo $this->formSubmit( 'submit', __('Save Changes'),
+                                   array( 'id' => 'save-changes',
+                                          'class' => 'submit big green button' ) ); ?>
+      <a href="<?php echo html_escape( public_url( 'tours/show/' . $tour->id ) ); ?>"
+         class="big blue button" target="_blank">
+        <?php echo __('View Public Page'); ?>
+      </a>
+      <?php echo link_to_tour( __('Delete'),
+                               array( 'class' => 'delete-confirm big red button' ),
+                               'delete-confirm' ); ?>
+    </div>
+
+
+
+
+    <div id="public-featured">
+      <?php if ( is_allowed('TourBuilder_Tours', 'makePublic') ): ?>
+      <div class="checkbox">
+        <label for="public">
+          <?php echo __('Public'); ?>:
+        </label>
+        <div class="checkbox">
+          <?php echo $this->formCheckbox(
+                        'public', $tour->public,
+                        array(), array( '1', '0' ) ); ?>
+        </div>
       </div>
+      <?php endif; ?>
 
-   </form>
-  
-    <p id="delete_tour_link">
-	<?php echo delete_button(null, 'delete-tour', 'Delete this Tour'); ?>
-	</p>
-	 
-</div>
-<?php foot();
+      <?php if( is_allowed( 'TourBuilder_Tours', 'makeFeatured' ) ): ?>
+      <div class="checkbox">
+        <label for="featured">
+          <?php echo __('Featured'); ?>:
+        </label>
+        <div class="checkbox">
+          <?php echo $this->formCheckbox(
+            'featured', $tour->featured,
+            array(), array( '1', '0' ) ); ?>
+        </div>
+      </div>
+      <?php endif; ?>
+
+    </div>
+
+  </section>
+
+</form>
+
+<?php echo foot(); ?>
