@@ -25,7 +25,7 @@ class TourTable extends Omeka_Db_Table
       $permissions = new Omeka_Db_Select_PublicPermissions( 'TourBuilder_Tours' );
       $permissions->apply( $select, 'tours', null );
 
-      if( is_allowed( 'TourBuilder_Tours', 'show-unpublished' ) )
+      if( ! is_allowed( 'TourBuilder_Tours', 'show-unpublished' ) )
       {
          // Determine public level TODO: May be outdated
          $select->where( $this->getTableAlias() . '.public = 1' );
