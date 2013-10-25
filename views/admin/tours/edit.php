@@ -41,8 +41,8 @@ echo flash();
         </label>
         <div class="checkbox">
           <?php echo $this->formCheckbox(
-                        'public', $tour->public,
-                        array(), array( '1', '0' ) ); ?>
+             'public', $tour->public,
+             array(), array( '1', '0' ) ); ?>
         </div>
       </div>
       <?php endif; ?>
@@ -54,8 +54,8 @@ echo flash();
         </label>
         <div class="checkbox">
           <?php echo $this->formCheckbox(
-            'featured', $tour->featured,
-            array(), array( '1', '0' ) ); ?>
+             'featured', $tour->featured,
+             array(), array( '1', '0' ) ); ?>
         </div>
       </div>
       <?php endif; ?>
