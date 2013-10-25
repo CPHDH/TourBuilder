@@ -8,6 +8,7 @@ if( !defined( 'TOURBUILDER_PLUGIN_DIR' ) )
 class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 {
    protected $_filters = array(
+      'admin_dashboard_stats',
       'admin_navigation_main' );
 
    protected $_hooks = array(
@@ -15,7 +16,6 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
       'uninstall',
       'define_acl',
       'define_routes',
-      'admin_append_to_dashboard_primary',
       'admin_theme_header' );
 
    public function hookInstall()
@@ -83,6 +83,17 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
                              'routes.ini', 'routes' ) );
    }
 
+   public function filterAdminDashboardStats( $stats )
+   {
+      if( is_allowed( 'TourBuilder_Tours', 'browse' ) )
+      {
+         $stats[] = array( link_to( 'tours', array(),
+                                    total_records( 'Tours' ) ),
+                           __('tours') );
+      }
+      return $stats;
+   }
+
    public function hookAdminAppendToDashboardPrimary()
    {
       if( has_permission( 'TourBuilder_Tours', 'browse' ) )
@@ -100,14 +111,14 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 
    public function hookAdminThemeHeader( $request )
    {
-      # Add our stylesheet to admin pages in which we take part
-         if( $request->getControllerName() == 'tours' ||
-             ($request->getModuleName() == 'default' &&
-              $request->getControllerName() == 'index' &&
-              $request->getActionName() == 'index') )
-         {
-            echo '<link rel="stylesheet" media="screen" href="' . html_escape(css('tour')) . '" /> ';
-         }
+      // Add our stylesheet to admin pages in which we take part
+      if( $request->getControllerName() == 'tours' ||
+          ($request->getModuleName() == 'default' &&
+           $request->getControllerName() == 'index' &&
+           $request->getActionName() == 'index') )
+      {
+         echo '<link rel="stylesheet" media="screen" href="' . html_escape(css('tour')) . '" /> ';
+      }
    }
 
    public function filterAdminNavigationMain( $nav )
