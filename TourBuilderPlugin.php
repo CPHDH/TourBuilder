@@ -21,7 +21,8 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
    public function hookInstall()
    {
       $db = $this->_db;
-      $db->exec( <<<SQL
+
+      $tourQuery = "
          CREATE TABLE IF NOT EXISTS `$db->Tour` (
             `id` int( 10 ) unsigned NOT NULL auto_increment,
             `title` varchar( 255 ) collate utf8_unicode_ci default NULL,
@@ -32,10 +33,9 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             `slug` varchar( 30 ) collate utf8_unicode_ci default NULL,
             PRiMARY KEY( `id` ),
             UNIQUE KEY `slug` ( `slug` )
-         ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-SQL
-      );
-      $db->exec( <<<SQL
+         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ";
+
+      $tourItemQuery = "
          CREATE TABLE IF NOT EXISTS `$db->TourItem` (
             `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT,
             `tour_id` INT( 10 ) UNSIGNED NOT NULL,
@@ -43,16 +43,17 @@ SQL
             `item_id` INT( 10 ) UNSIGNED NOT NULL,
             PRIMARY KEY( `id` ),
             KEY `tour` ( `tour_id` )
-         ) ENGINE=MyISAM
-SQL
-      );
+         ) ENGINE=InnoDB ";
+
+      $db->query( $tourQuery );
+      $db->query( $tourItemQuery );
    }
 
    public function hookUninstall()
    {
       $db = $this->_db;
-      $db->exec( "DROP TABLE IF EXISTS $db->Tour" );
-      $db->exec( "DROP TABLE IF EXISTS $db->TourItem" );
+      $db->query( "DROP TABLE IF EXISTS `$db->TourItem`" );
+      $db->query( "DROP TABLE IF EXISTS `$db->Tour`" );
    }
 
    public function hookDefineAcl( $args )
