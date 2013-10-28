@@ -8,6 +8,7 @@ if( !defined( 'TOURBUILDER_PLUGIN_DIR' ) )
 class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 {
    protected $_filters = array(
+      'public_navigation_main',
       'admin_dashboard_stats',
       'admin_navigation_main' );
 
@@ -92,6 +93,16 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
                            __('tours') );
       }
       return $stats;
+   }
+
+   public function filterPublicNavigationMain( $navs )
+   {
+      $navs[] = array(
+         'label' => __('Browse Tours'),
+         'uri' => url( 'tours' ),
+         'visible' => true
+                      );
+      return $navs;
    }
 
    public function hookAdminAppendToDashboardPrimary()
