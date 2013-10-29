@@ -56,8 +56,9 @@ echo flash();
         <?php endforeach; ?>
       </ul>
     </div>
-    <?php endif; ?>
   </div>
+  <?php endif; ?>
+
 </section>
 
 <section class="three columns omega">
