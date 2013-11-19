@@ -5,6 +5,10 @@
              'action' => 'browseForItem' ),
       'tourAction' );
 ?>
+<p>
+  <em><?php echo ('Note'); ?>:</em>
+  <?php echo __('Save your changes before modifying the list of items'); ?>
+</p>
 <ul id="tourbuilder-item-list">
   <?php if( $tourItemCount ): ?>
   <table id="tour-items" class="simple" cellspacing="0" cellpadding="0">
