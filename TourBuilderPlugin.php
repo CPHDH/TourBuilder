@@ -98,7 +98,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
    public function filterPublicNavigationMain( $navs )
    {
       $navs[] = array(
-         'label' => __('Browse Tours'),
+         'label' => __('Tours'),
          'uri' => url( 'tours' ),
          'visible' => true
                       );
@@ -155,12 +155,6 @@ function has_tours_for_loop()
 {
    $view = get_view();
    return $view->tours && count( $view->tours );
-}
-
-
-function loop_tours()
-{
-    return loop_records('tours', get_tours_for_loop(), 'set_current_tour');
 }
 
 
@@ -236,10 +230,6 @@ function link_to_tour(
    return link_to($tourObj, $action, $text, $props);
 }
 
-function get_tours_for_loop()
-{
-   return __v()->tours;
-}
 
 function total_tours()
 {
@@ -262,14 +252,135 @@ function public_nav_tours( array $navArray = null, $maxDepth = 0 )
       $navArray = array();
 
       $navArray[] = array(
-            'label' => __('Browse All'),
+            'label' => __('All'),
             'uri' => url('tours/browse') );
-      /* TODO: Searches not implemented * /
-      $navArray[] = array(
-         'label' => __('Search Tours'),
-         'uri' => url('tours/search') );
-      // */
+
+      /* TODO: Tour Tags */
+
    }
 
-   return nav( $navArray, 'public_navigation_items' );
+   return nav( $navArray );
+}
+
+/*
+** Display the thumb for the tour.
+** Used to generate slideshow, etc.
+** TODO: expand $userDefined option to encompass either a user-set globally-defined img URL or a user-set tour-specific img URL
+** USAGE: display_tour_thumb($this->tour,0)
+*/
+function display_tour_thumb($tour,$i,$userDefined=null){
+
+        $firstTourItem=tour_item_id($tour,$i);
+
+        $html='<div class="item-thumb hidden">';
+        $html .= '<a href="'.html_escape(public_url('tours/show/'.tour('id'))).'">';
+
+        if($userDefined){
+                $html .= '<img src="'.$userDefined.'"/>';
+
+        }elseif($firstTourItem){
+                // use the thumb for the first item in the tour
+                $item = get_record_by_id('item', $firstTourItem);
+                $html .= item_image('square_thumbnail',array(),0,$item);
+
+        }else{
+                // use the fallback if their are no items in the tour
+                $html .= '<img src="'.public_url('plugins/TourBuilder/views/public/images/default_thumbnail.png').'"/>';
+        }
+
+        $html .= '</a></div>';
+
+        return $html;
+}
+/*
+** Get an ID of an item in a tour
+** $tour sets the tour object
+** $i is used to choose the position in the item array
+** USAGE: tour_item_id($this->tour,0)
+*/
+function tour_item_id($tour,$i){
+        $tourItems =array();
+        foreach( $tour->Items as $items ){
+                array_push($tourItems,$items->id);
+        }
+        return $tourItems[$i];
+}
+
+/*
+** Uses the query parameters posted from the tour location links on tours/show
+** Adds a prev/info/next link to items/show for navigating tour locations
+*/
+
+function tour_nav( $html=null, $label='Tour' )
+{
+   $intlLabel = __($label);
+
+   if ( (isset($_GET['tour'])) && (isset($_GET['index'])) )
+   {
+      $index = $_GET[ 'index' ];
+      $tour_id = $_GET['tour'];
+      $tour = get_record_by_id( 'tour', $tour_id );
+
+      $prevIndex = $index -1;
+      $nextIndex = $index +1;
+
+      $tourTitle = metadata( $tour, 'title' );
+      $tourURL = html_escape( public_url( 'tours/show/'.$tour_id ) );
+
+      // Items
+      $current = tour_item_id( $tour, $index );
+      $next = tour_item_id( $tour, $nextIndex );
+
+      // Begin building the tour navigation
+      $html = ''
+         . '<div class="tour-nav">'
+         . "$intlLabel " . __('navigation') . ':&nbsp;&nbsp;'
+         . '<span id="tour-nav-links">';
+
+      // Add the previous item to the navigation if present.
+      $prev = tour_item_id( $tour, $prevIndex );
+      if( $prev )
+      {
+         $prevUrl = public_url( "items/show/$prev", null,
+                                array( 'tour' => $tour_id,
+                                       'index' => $prevIndex ),
+                                true, true );
+         $html .= ''
+            . '<a title="' . __('Previous stop on') . " $intlLabel\" "
+            . "href=\"$prevUrl\">" . __('Previous') . '</a>'
+            . ' | ';
+      }
+
+      if( $tourURL )
+      {
+         $html .= '<a title="' . __('View ') . " $intlLabel: $tourTitle\">"
+            . "href=\"$tourURL\">" . __('Tour Info') . "</a>";
+      }
+
+      // Add the next item to the navigation if present
+      if( $next )
+      {
+         $nextUrl = public_url( "items/show/$next", null,
+                                array( 'tour' => $tour_id,
+                                       'index' => $nextIndex ),
+                                true, true );
+         $html .= ' | '
+            . '<a title="' . __('Next stop on') . " $intlTour\" "
+            . "href=\"$nextUrl\">" . __('Next') . '</a>';
+      }
+
+      $html .= '</span>'
+         . '<span id="close"><a>X</a></span>'
+         . '</div>'
+
+         // Add our necessary script element
+         . '<script>'
+         . 'jQuery( "span#close" ).click( function()'
+         . '{'
+         . '  jQuery( ".tour-nav" ).fadeOut( "fast", "linear" );'
+         . '});'
+         . '</script>';
+
+      return $html;
+   }
 }
