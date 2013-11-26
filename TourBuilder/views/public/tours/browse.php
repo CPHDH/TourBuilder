@@ -1,65 +1,75 @@
 <?php
-head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
-   'bodyclass' => 'tours primary browse-tours' ) );
+$label=(function_exists('mh_tour_label')) ? mh_tour_label('plural') : __('Tours');
+echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
+   'bodyclass' => 'browse' ) );
 ?>
-
-
 <div id="content">
-			
-		    <div id="header">
-			<div id="primary-nav">
-    			<ul class="navigation">
-    			    <?php echo public_nav_main(array('Home' => uri('/'), 'Tours' => uri('/tour-builder/tours/browse/'), 'Browse Locations' => uri('items'))); ?>
-    			</ul>
-    		</div>
-    		<div id="search-wrap">
-				    <?php echo simple_search(); ?>
-    			</div>
-    			<div style="clear:both;"></div>
-   		</div>
-	
+<section class="browse tour">			
+<h2>All <?php echo $label;?>: <?php echo total_tours(); ?></h2>
 
-
-
-
-<!-- -->
-<div id="page-col-left">
-
-	<div id="lv-logo"><a href="<?php echo WEB_ROOT;?>/"><img src="<?php echo img('lv-logo.png'); ?>" border="0" alt="<?php echo settings('site_title');?>" title="<?php echo settings('site_title');?>" /></a>
+	<div id="page-col-left">
+		<aside>
+		<!-- add left sidebar content here -->
+		</aside>
 	</div>
 
-</div>
+
+	<div id="primary" class="browse">
+	
+	<section id="results">
+	<nav class="tours-nav navigation secondary-nav">
+	  <?php echo public_nav_tours(); ?>
+	</nav>	
+	<div class="pagination bottom"><?php echo pagination_links(); ?></div>
+
+    <?php 
+    
+    if( has_tours() ){
+    if( has_tours_for_loop() ){
+    	$i=1;
+    	$tourimg=0;
+		foreach( $tours as $tour ){ 
+		set_current_record( 'tour', $tour );
+		
+			$tourdesc = nls2p( tour( 'description' ) );
+		
+			echo '<article id="item-result-'.$i.'" class="item-result">';
+			echo '<h3>'.link_to_tour().'</h3>';
+					
+			if($i<=10){
+			    echo display_tour_thumb(get_tour_by_id(tour('id')),0,$userDefined=null);
+			    $tourimg++;
+			}
+			
+			echo '<div class="item-description"><p>'.snippet($tourdesc,0,300).'</p></div>'; 
+			echo '</article>';
+			$i++;
+		
+			}
+			
+		}
+	}
+	?>
+	
+    
+	</section>
+    </div>
+
+	<div id="page-col-right">
+	<?php 
+	if(function_exists('mh_display_recent_item') && ($tourimg<10)){
+		// if there aren't 10 tour images to fill out the collage, grab some item images to fill it out
+		$num=10-$tourimg; 
+		mh_display_recent_item($num);
+	}?>
+	</div>	
+	
+	<div class="pagination bottom"><?php echo pagination_links(); ?></div>
+
+</section>
+</div> <!-- end content -->
 
 
-<div id="primary-browse" class="browse">
-<h1>Browse Tours (<?php echo $total_records; ?> total)</h1>
+<?php echo (function_exists('mh_share_this')) ? '<div id="share-this" class="browse">'.mh_share_this().'</div>' : null; ?>
 
-
-   <?php
-   if( has_tours() ):
-      ?>
-      <div class="pagination"><?php echo pagination_links(); ?></div>
-      <?php if( has_tours_for_loop() ): ?>
-         <table id="tours" class="simple" cellspacing="0" cellpadding="0">
-            
-            <tbody>
-               <?php $key = 0; ?>
-               <?php while( loop_tours() ): ?>
-               <tr class="tours <?php if( ++$key%2==1) echo 'odd'; else echo 'even'; ?>" >
-                  <td scope="row"><h3><?php echo tour( 'id' ); ?></h3></td>
-                  <td scope="row"><h3><a href="<?php
-                     echo $this->url( array(
-                        'action' => 'show', 'id' => tour( 'id' ) ) );
-                     ?>"><?php echo tour( 'title' ); ?></a></h3>
-                     <p><?php echo nls2p( tour( 'Description' ) ); ?></p>
-                     </td></tr>
-
-               
-               <?php endwhile; ?>
-            </tbody>
-         </table>
-      <?php endif; ?>
-   <?php endif; ?>
-</div>
-
-<?php foot();
+<?php echo foot();?>

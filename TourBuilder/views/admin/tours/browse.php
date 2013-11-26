@@ -1,15 +1,21 @@
 <?php
-head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
-   'bodyclass' => 'tours primary browse-tours' ) );
-?>
-<h1>Browse Tours (<?php echo $total_records; ?> total)</h1>
+  $pageTitle = __('Browse Tours') . ' ' . __('(%s total)', $total_results );
+  $editable = is_allowed( 'TourBuilder_Tours', 'edit' );
+  $addUrl = url( array( 'action' => 'add' ) );
 
-<?php if( has_permission( 'TourBuilder_Tours', 'add' ) ): ?>
-<p id="add-tour" class="add-button">
-   <a class="add"
-      href="<?php echo $this->url( array( 'action' => 'add' ) ); ?>">Add a Tour</a>
-</p>
-<?php endif; ?>
+  echo head( array( 'title' => $pageTitle, 'bodyclass' => 'tours browse' ) );
+  echo flash();
+?>
+
+<?php if( $total_results ): ?>
+
+<div class="table-actions">
+  <?php if( is_allowed( 'TourBuilder_Tours', 'add' ) ): ?>
+  <a class="add button small green" href="<?php echo $addUrl; ?>">
+    <?php echo __('Add a Tour'); ?>
+  </a>
+  <?php endif; ?>
+</div>
 
 <div id="primary">
    <?php
@@ -23,31 +29,59 @@ head( array( 'title' => 'Browse Tours', 'content_class' => 'horizontal-nav',
                <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Title</th>
-                  <?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
+                  <?php if( $editable ): ?>
                   <th scope="col">Edit?</th>
                   <?php endif; ?>
                </tr>
             </thead>
             <tbody>
-               <?php $key = 0; ?>
-               <?php while( loop_tours() ): ?>
-               <tr class="tours <?php if( ++$key%2==1) echo 'odd'; else echo 'even'; ?>">
-                  <td scope="row"><?php echo tour( 'id' ); ?></td>
-                  <td scope="row"><a href="<?php
-                     echo $this->url( array(
-                        'action' => 'show', 'id' => tour( 'id' ) ) );
-                     ?>"><?php echo tour( 'title' ); ?></a></td>
-                  <?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
-                  <td><a class="edit" href="<?php echo $this->url(
-                     array( 'action' => 'edit', 'id' => tour( 'id' ) ) ); ?>"
-                     >Edit</a>
+               <?php $key = 0;
+                     foreach( $tours as $tour ):
+                        $oddness = ((++$key % 2) == 1) ? 'odd' : 'even';
+                        $showUrl = url( array( 'action' => 'show',
+                                               'id' => $tour->id ), 'tourAction' );
+                        $editUrl = url( array( 'action' => 'edit',
+                                               'id' => $tour->id ), 'tourAction' );
+               ?>
+               <tr class="tours <?php echo $oddness; ?>">
+                  <td scope="row"><?php echo $tour->id; ?></td>
+                  <td scope="row">
+                    <a href="<?php echo $showUrl; ?>">
+                      <?php echo $tour->title; ?>
+                    </a>
+                  </td>
+                  <?php if( $editable ): ?>
+                  <td>
+                    <a class="edit" href="<?php echo $editUrl; ?>">
+                      <?php echo __('Edit'); ?>
+                    </a>
+                  </td>
                   <?php endif; ?>
                </tr>
-               <?php endwhile; ?>
+               <?php endforeach; ?>
             </tbody>
          </table>
       <?php endif; ?>
    <?php endif; ?>
 </div>
 
-<?php foot();
+<?php else: ?>
+
+  <?php if( total_records( 'Tour' ) === 0 ): ?>
+    <h2><?php echo __('You have no tours.'); ?></h2>
+    <?php if( is_allowed( 'TourBuilder_Tours', 'add' ) ): ?>
+    <p><?php echo __('Get started by adding your first tour.'); ?></p>
+    <a class="add big green button" href="<?php echo $addUrl; ?>">
+      <?php echo __('Add a Tour'); ?>
+    </a>
+    <?php endif; ?>
+  <?php else: ?>
+    <p><?php echo __('The query searched %s tours and returned no results.',
+                     total_records( 'Tour' ));
+             echo __('Would you like to %s?',
+                     link_to_tour_search( __('refine your search') ) ); ?></p>
+  <?php endif; ?>
+
+<?php endif; ?>
+
+<?php echo foot(); ?>

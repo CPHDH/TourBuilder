@@ -22,16 +22,13 @@ class TourTable extends Omeka_Db_Table
    {
       $select = parent::getSelect();
 
-      // Determine public level
-      $acl = Omeka_Context::getInstance()->acl;
-      if( $acl && $acl->has( 'TourBuilder_Tours' ) )
+      $permissions = new Omeka_Db_Select_PublicPermissions( 'TourBuilder_Tours' );
+      $permissions->apply( $select, 'tours', null );
+
+      if( ! is_allowed( 'TourBuilder_Tours', 'show-unpublished' ) )
       {
-         $has_permission = $acl->isAllowed( current_user(), 'TourBuilder_Tours',
-                                            'showNotPublic' );
-         if( ! $has_permission )
-         {
-            $select->where( 't.public = 1' );
-         }
+         // Determine public level TODO: May be outdated
+         $select->where( $this->getTableAlias() . '.public = 1' );
       }
 
       return $select;

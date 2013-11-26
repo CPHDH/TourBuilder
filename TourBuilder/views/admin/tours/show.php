@@ -7,63 +7,95 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 }
 $tourTitle = 'Tour #' . tour( 'id' ) . $tourTitle;
 
-head( array( 'title' => $tourTitle, 'content_class' => 'horizontal-nav',
-   'bodyclass' => 'show' ) );
+echo head( array( 'title' => $tourTitle,
+                  'bodyclass' => 'tour show' ) );
+echo flash();
 ?>
 
-<h1><?php echo $tourTitle; ?>
-<span class="view-public-page">[ <a href="<?php
-echo html_escape( public_uri( 'tour-builder/tours/show/id/' . tour( 'id' ) ) );
-?>">View Public Page</a> ]</span></h1>
+<section class="seven columns alpha">
+  <?php if( $tour->slug ): ?>
+  <div id="tour-slug" class="element">
+    <h2>Slug</h2>
+    <div class="element-text">
+      <?php echo tour( 'Slug' ); ?>
+    </div>
+  </div>
+  <?php endif; ?>
 
-<?php if( has_permission( 'TourBuilder_Tours', 'edit' ) ): ?>
-<p id="edit-tour" class="edit-button"><a class="edit" href="<?php
-echo $this->url( array( 'action' => 'edit', 'id' => tour( 'id' ) ) )
-?>">Edit this Tour</a></p>
-<?php endif; ?>
+  <?php if( metadata( 'tour', 'Description' ) ): ?>
+  <div id="tour-description" class="element">
+    <h2>Description</h2>
+    <div class="element-text">
+      <?php echo nls2p( metadata( 'tour', 'Description' ) ); ?>
+    </div>
+  </div>
+  <?php endif; ?>
 
-<div id="primary">
-   <div id="tour-slug" class="element">
-      <h2>Slug</h2>
-      <div class="element-text">
-         <?php echo tour( 'Slug' ); ?>
-      </div>
-   </div>
+  <?php if( metadata( 'tour', 'Credits' ) ): ?>
+  <div id="tour-credits" class="element">
+    <h2>Credits</h2>
+    <div class="element-text">
+      <?php echo metadata( 'tour', 'Credits' ); ?>
+    </div>
+  </div>
+  <?php endif; ?>
 
-   <div id="tour-description" class="element">
-      <h2>Description</h2>
-      <div class="element-text">
-         <?php echo nls2p( tour( 'Description' ) ); ?>
-      </div>
-   </div>
-
-   <div id="tour-credits" class="element">
-      <h2>Credits</h2>
-      <div class="element-text">
-         <?php echo (tour( 'Credits' )) ? tour( 'Credits' ) : 'Credit field is not set'; ?>
-      </div>
-   </div>
-   
-   <!--div id="tour-credits" class="element">
-      <h2>Thumbnail</h2>
-      <div class="element-text">
-         <?php// echo ( tour( 'Thumbnail' ) ) ? '<div id="thumb-preview" style="width:200px; height:auto;background:#ccc;"><img style="max-width:100%; height:auto;" src="'.tour( 'Thumbnail' ).'"/></div>' : 'Thumbnail field is not set'; ?>
-      </div>
-   </div-->   
-
-<div id="tour-items" class="element">
-   <h2>Items</h2>
-   <div class="element-text">
+  <?php
+    $items = $tour->getItems();
+    if( $tour->getItems() ): ?>
+  <div id="tour-items" class="element">
+    <h2>Items</h2>
+    <div class="element-text">
       <ul>
-         <?php foreach( $tour->Items as $tourItem ): ?>
-         <li><a href="<?php
-         echo uri('items/show/'.$tourItem->id); ?>"><?php
-         echo $this->itemMetadata( $tourItem, 'Dublin Core', 'Title' ); ?></a>
-         </li>
-         <?php endforeach; ?>
+        <?php foreach( $items as $item ):
+          set_current_record( 'item', $item, true );
+        ?>
+        <li>
+          <?php echo link_to_item(); ?>
+        </li>
+        <?php endforeach; ?>
       </ul>
-   </div>
-</div>
-</div>
+    </div>
+  </div>
+  <?php endif; ?>
 
-<?php foot();
+</section>
+
+<section class="three columns omega">
+  <div id="edit" class="panel">
+    <?php if( is_allowed( 'TourBuilder_Tours', 'edit' ) ): ?>
+    <a href="<?php echo url( array( 'action' => 'edit', 'id' => $tour->id ) ); ?>"
+       class="edit big green button">
+      <?php echo __('Edit'); ?>
+    </a>
+    <?php endif; ?>
+
+    <a href="<?php echo html_escape( public_url( 'tours/show/' . $tour->id ) ); ?>"
+       class="big blue button" target="_blank">
+      <?php echo __('View Public Page'); ?>
+    </a>
+
+    <?php if( is_allowed( 'TourBuilder_Tours', 'delete' ) ): ?>
+    <?php echo link_to_tour( __('Delete'),
+                            array( 'class' => 'big red button' ),
+                            'delete-confirm' ); ?>
+    <?php endif; ?>
+  </div>
+
+  <div class="public-featured panel">
+    <p>
+      <span class="label">
+        <?php echo __('Public'); ?>:
+      </span>
+      <?php echo ($tour->public) ? __('Yes') : __('No'); ?>
+    </p>
+    <p>
+      <span class="label">
+        <?php echo __('Featured'); ?>:
+      </span>
+      <?php echo ($tour->featured) ? __('Yes') : __('No'); ?>
+    </p>
+  </div>
+</section>
+
+<?php echo foot(); ?>

@@ -4,7 +4,7 @@
  * Tour Item.
  * @package: Omeka
  */
-class TourItem extends Omeka_Record
+class TourItem extends Omeka_Record_AbstractRecord
 {
    public $tour_id;
    public $item_id;
