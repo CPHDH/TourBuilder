@@ -303,7 +303,7 @@ function tour_item_id($tour,$i){
         foreach( $tour->Items as $items ){
                 array_push($tourItems,$items->id);
         }
-        return $tourItems[$i];
+        return isset($tourItems[$i]) ? $tourItems[$i] : null;
 }
 
 /*
