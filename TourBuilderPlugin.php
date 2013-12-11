@@ -341,10 +341,7 @@ function tour_nav( $html=null, $label='Tour' )
       $prev = tour_item_id( $tour, $prevIndex );
       if( $prev )
       {
-         $prevUrl = public_url( "items/show/$prev", null,
-                                array( 'tour' => $tour_id,
-                                       'index' => $prevIndex ),
-                                true, true );
+         $prevUrl = public_url( "items/show/$prev?tour=$tour_id&index=$prevIndex");
          $html .= ''
             . '<a title="' . __('Previous stop on') . " $intlLabel\" "
             . "href=\"$prevUrl\">" . __('Previous') . '</a>'
@@ -360,10 +357,7 @@ function tour_nav( $html=null, $label='Tour' )
       // Add the next item to the navigation if present
       if( $next )
       {
-         $nextUrl = public_url( "items/show/$next", null,
-                                array( 'tour' => $tour_id,
-                                       'index' => $nextIndex ),
-                                true, true );
+         $nextUrl = public_url( "items/show/$next?tour=$tour_id&index=$nextIndex");
          $html .= ' | '
             . '<a title="' . __('Next stop on') . " $intlTour\" "
             . "href=\"$nextUrl\">" . __('Next') . '</a>';
