@@ -330,6 +330,7 @@ function tour_nav( $html=null, $label='Tour' )
       // Items
       $current = tour_item_id( $tour, $index );
       $next = tour_item_id( $tour, $nextIndex );
+      $prev = tour_item_id( $tour, $prevIndex );
 
       // Begin building the tour navigation
       $html = ''
@@ -338,7 +339,6 @@ function tour_nav( $html=null, $label='Tour' )
          . '<span id="tour-nav-links">';
 
       // Add the previous item to the navigation if present.
-      $prev = tour_item_id( $tour, $prevIndex );
       if( $prev )
       {
          $prevUrl = public_url( "items/show/$prev?tour=$tour_id&index=$prevIndex");
