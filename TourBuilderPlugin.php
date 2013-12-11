@@ -343,15 +343,15 @@ function tour_nav( $html=null, $label='Tour' )
       {
          $prevUrl = public_url( "items/show/$prev?tour=$tour_id&index=$prevIndex");
          $html .= ''
-            . '<a title="' . __('Previous stop on') . " $intlLabel\" "
+            . '<a title="' . __('Previous stop on %s', $intlLabel) .'"'
             . "href=\"$prevUrl\">" . __('Previous') . '</a>'
             . ' | ';
       }
 
       if( $tourURL )
       {
-         $html .= '<a title="' . __('View ') . " $intlLabel: $tourTitle\">"
-            . "href=\"$tourURL\">" . __('Tour Info') . "</a>";
+         $html .= '<a title= "'.__('View %1$s: %2$s', $intlLabel, $tourTitle).'" 
+         href="'.$tourURL.'">'.__('%s Info', $intlLabel).'</a>';
       }
 
       // Add the next item to the navigation if present
@@ -359,8 +359,7 @@ function tour_nav( $html=null, $label='Tour' )
       {
          $nextUrl = public_url( "items/show/$next?tour=$tour_id&index=$nextIndex");
          $html .= ' | '
-            . '<a title="' . __('Next stop on') . " $intlTour\" "
-            . "href=\"$nextUrl\">" . __('Next') . '</a>';
+            . '<a title="' . __('Next stop on %s', $intlLabel).'" href="'.$nextUrl.'">' . __('Next') . '</a>';
       }
 
       $html .= '</span>'
