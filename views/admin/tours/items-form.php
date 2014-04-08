@@ -111,7 +111,7 @@
             update: function(evnt, ui) {
                 $("#tour-items tbody tr:even").css("background-color","#f3f3e7");
                 $("#tour-items tbody tr:odd").css("background-color","#fff");
-                alert("ID: " + ui.item.attr("item-id") + " moved from " + startIndex + " to " + ui.item.index());
+                //alert("ID: " + ui.item.attr("item-id") + " moved from " + startIndex + " to " + ui.item.index());
                 var newIndex = ui.item.index();
                 if(newIndex > startIndex) {     // Lower
                     for(i = 0; i < newIndex - startIndex; i++) {
