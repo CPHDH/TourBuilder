@@ -1,4 +1,5 @@
 <?php
+/*
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' )
 {
@@ -13,6 +14,7 @@ $tourTitle = 'Add Item To Tour #' . tour( 'id' ) . $tourTitle;
 echo head( array( 'title' => $tourTitle,
                   'content_class' => 'vertical-nav',
                   'bodyclass' => 'tours primary' ) );
+                  */
 ?>
 <div id="primary">
 <table id="items" class="simple" cellspacing="0" cellpadding="0">
@@ -53,4 +55,4 @@ echo head( array( 'title' => $tourTitle,
    </tbody>
 </table>
 </div>
-<?php echo foot(); ?>
+<?php //echo foot(); ?>
