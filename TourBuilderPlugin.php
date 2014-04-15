@@ -233,7 +233,8 @@ function link_to_tour(
 
 function total_tours()
 {
-   return get_db()->getTable( 'Tours' )->count();
+   $view = get_view();
+   return count( $view->tours );
 }
 
 function nls2p($str) {
