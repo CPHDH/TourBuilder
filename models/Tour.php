@@ -56,7 +56,7 @@ class Tour extends Omeka_Record_AbstractRecord
 
    }
 
-   public function addItem( $item_id )
+   public function addItem( $item_id, $ordinal = null )
    {
       if( !is_numeric( $item_id ) ) {
          $item_id = $item_id->id;
@@ -67,7 +67,9 @@ class Tour extends Omeka_Record_AbstractRecord
       $tiTable = $db->getTable( 'TourItem' );
       $select = $tiTable->getSelectForCount();
       $select->where( 'tour_id = ?', array( $this->id ) );
-      $ordinal = $tiTable->fetchOne( $select );
+       if($ordinal === null) {
+           $ordinal = $tiTable->fetchOne( $select );
+       }
 
       # Create, assign, and save the new tour item connection
       $tourItem = new TourItem;

@@ -92,8 +92,11 @@
     var startIndex = 0;
     jQuery(document).ready(function ($) {
         
-        $("#tour-items tbody tr:even").css("background-color","#f3f3e7");
-        $("#tour-items tbody tr:odd").css("background-color","#fff");
+        $.styleTRs = function() {
+            $("#tour-items tbody tr:even").css("background-color","#f3f3e7");
+            $("#tour-items tbody tr:odd").css("background-color","#fff");
+        };
+        $.styleTRs();
         
         var fixHelper = function(e, ui) {
             ui.children().each(function() {
@@ -102,29 +105,33 @@
             return ui;
         };
 
-        $("#tour-items tbody").sortable({
-            helper: fixHelper, 
-            containment: "parent",
-            start: function(evnt, ui) {
-                startIndex = ui.item.index();
-            },
-            update: function(evnt, ui) {
-                $("#tour-items tbody tr:even").css("background-color","#f3f3e7");
-                $("#tour-items tbody tr:odd").css("background-color","#fff");
-                //alert("ID: " + ui.item.attr("item-id") + " moved from " + startIndex + " to " + ui.item.index());
-                var newIndex = ui.item.index();
-                if(newIndex > startIndex) {     // Lower
-                    for(i = 0; i < newIndex - startIndex; i++) {
-                        $.ajax({url: ui.item.attr("lower")});//.done(function() { alert("done"); });   
-                    }
-                } else
-                if(newIndex < startIndex) {     //Hoist        
-                    for(i = 0; i < startIndex - newIndex; i++) {
-                        $.ajax({url: ui.item.attr("hoist")});//.done(function() { alert("done"); });   
+        $.bindSortable = function() {
+
+            $("#tour-items tbody").sortable({
+                helper: fixHelper,
+                containment: "parent",
+                start: function(evnt, ui) {
+                    startIndex = ui.item.index();
+                },
+                update: function(evnt, ui) {
+                    $("#tour-items tbody tr:even").css("background-color","#f3f3e7");
+                    $("#tour-items tbody tr:odd").css("background-color","#fff");
+                    var newIndex = ui.item.index();
+                    if(newIndex > startIndex) {     // Lower
+                        for(i = 0; i < newIndex - startIndex; i++) {
+                            $.ajax({url: ui.item.attr("lower")});//.done(function() { alert("done"); });
+                        }
+                    } else
+                    if(newIndex < startIndex) {     //Hoist
+                        for(i = 0; i < startIndex - newIndex; i++) {
+                            $.ajax({url: ui.item.attr("hoist")});//.done(function() { alert("done"); });
+                        }
                     }
                 }
-            }
-        }).disableSelection();
+            }).disableSelection();
+        };
+
+        $.bindSortable();
         
         // Hide the cancel button by default
         $("#tourbuilder-cancelitem").hide();
@@ -147,12 +154,7 @@
         }
         
         $.setStatus = function(statusText) {
-            
-            //if($("input[name='statusText']").lengh == 0)
-            //    $("body").append('');
-            
             $("input[name='statusText']").val(statusText);
-            
             $("#tourbuilder-cancelitem").hide();
             $("#tourbuilder-additem").hide();
             $("#tour-items").hide();
@@ -187,7 +189,6 @@
             $.ajax({
                 url: '<?php echo $addItemUrl; ?>'
             }).done(function ( serverResponse ) {
-                //$("#add-item-link").html("Add Item").hide();
                 $("#tourbuilder-item-list").append(serverResponse);
                 $.hideStatus();
                 $("#tourbuilder-cancelitem").show();
@@ -200,18 +201,9 @@
                     
                     var submitUrl = $(this).attr("href");
                     var obj = $(this).parent();
-                    
-                    /*
-                    $(obj).html("Adding item...");
-                    $("#tourbuilder-cancelitem").hide();
-                    */
-                    
+
                     $.ajax({url: submitUrl}).done(function ( sResponse ) {
-                        //$("#add-item-link").hide();
                         $.refreshItems();
-                        //$("#tour-items-table-container").html("Retrieving tour items...").load($(location).attr('pathname') + " #tour-items");
-                        //$('#cancel-item-link').trigger("click");
-                        //$("#tourbuilder-additem").show();
                     });
                 });
             });
@@ -239,7 +231,7 @@
         $.removeItem = function(removeUrl, itemId) {
             if(confirm('<?php echo __('Are you sure you want to remove this item from this tour?'); ?>')) {
                 $("#td-" + itemId + "-cell").html("<?php echo __('Removing'); ?>");
-            $("#tourbuilder-additem").hide();
+                $("#tourbuilder-additem").hide();
                 $.setStatus("Removing item from tour");
                 $.ajax({
                     url: removeUrl
@@ -249,28 +241,14 @@
                     if($("#tour-items tr").length == 1) {
                        $("#tour-items").hide();
                     } else {
-                        //$("#add-item-link").hide();
-                        //$.refreshItems();
-                        //$.setStatus("Retrieving tour items...");
-                        //$("#tour-items-table-container").load($(location).attr('pathname') + " #tour-items");
                         $.refreshItems();
-                    }
-
-                    try {
-                        console.log("we hit removeItem() with the url: " + removeUrl);
-                        console.log("rows left: " + $("#tour-items tr").length);
-                    } catch(ex) {
-                        //alert(ex.message);   
                     }
                 });
             }
         };
         
         $.refreshItems = function() {
-            //var wasVisible = $("#tourbuilder-additem").is(":visible");
-            //$("#tourbuilder-additem").hide();
             $("h2#action-title").html("Items");
-            //$("#tour-items").remove();
             $.setStatus("Refreshing tour items");
             $("#tour-items-table-container").load($(location).attr('pathname') + " #tour-items", function () { 
                 $.hideStatus(); 
@@ -278,10 +256,9 @@
                 $("#disable-placeholder").remove();
                 $.bindDownClicks();
                 $.bindHoistClicks();
-                
+                $.bindSortable();
+                $.styleTRs();
             });
-            //if(wasVisible === true)
-            
         };
         
         $.bindHoistClicks = function() {
