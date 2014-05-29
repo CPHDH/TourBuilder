@@ -22,6 +22,22 @@ class Tour extends Omeka_Record_AbstractRecord
       return $this->getTable()->findItemsByTourId( $this->id );
    }
 
+    public function removeAllItems( ) {
+        $db = get_db();
+        $tiTable = $db->getTable( 'TourItem' );
+        $select = $tiTable->getSelect();
+        $select->where( 'tour_id = ?', array( $this->id ) );
+
+        # Get the tour item
+        $tourItems = $tiTable->fetchObjects( $select );
+
+        # Iterate through all the tour items
+        # and remove them
+        for($i = 0; $i < count($tourItems); $i++) {
+            $tourItems[$i]->delete();
+        }
+    }
+
    public function removeItem( $item_id )
    {
       if( !is_numeric( $item_id ) ) {
@@ -79,6 +95,10 @@ class Tour extends Omeka_Record_AbstractRecord
       $tourItem->save();
    }
 
+    public function saveItemOrder( $tour_id ) {
+
+    }
+
    public function hoistItem( $tour_id, $item_id )
    {
       $this->swapItem( $tour_id, $item_id, true );
@@ -88,6 +108,19 @@ class Tour extends Omeka_Record_AbstractRecord
    {
       $this->swapItem( $tour_id, $item_id, false );
    }
+
+    public function setItemOrdinal( $tour_id, $item_id, $ordinal ) {
+        $db = get_db();
+        $tiTable = $db->getTable( 'TourItem' );
+
+        // Get the target item
+        $select = $tiTable->getSelect()
+         ->where( 'tour_id = ?', $tour_id )
+         ->where( 'item_id = ?', $item_id );
+        $item = $tiTable->fetchObject( $select );
+        $item->ordinal = $ordinal;
+        $item->save();
+    }
 
    public function swapItem( $tour_id, $item_id, $up )
    {

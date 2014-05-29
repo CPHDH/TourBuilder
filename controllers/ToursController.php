@@ -22,6 +22,25 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
       $this->_redirectToEdit();
    }
 
+    public function getitemsAction() {
+        $db = get_db();
+        $tour = $this->_helper->db->findById();
+      $itemTable = $db->getTable( 'Item' );
+        $items = $itemTable->fetchObjects(
+        "SELECT i.*, (SELECT count(*) FROM omeka_tour_items ti WHERE ti.item_id = i.id AND ti.tour_id = ?) AS `in_tour`
+         FROM omeka_items i",
+         array( $tour->id ) );
+
+        foreach($items as $key => $arr) {
+            $items[$key]['name'] = metadata( $arr, array( 'Dublin Core', 'Title' ) );
+            $items[$key]['uri'] = record_url( $arr, 'show', true );
+        }
+
+      $itemsName = $this->view->pluralize( 'item' );
+      $tourName = $this->view->singularize( $this->_helper->db->getDefaultModelName() );
+      $this->view->assign( compact( 'items', 'tour' ) );
+    }
+
    public function browseforitemAction()
    {
       $db = get_db();
@@ -78,6 +97,27 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
       $tour->lowerItem( $tour->id, intval( $item_id ) );
       $this->_redirectToEdit();
    }
+
+    # Called only by AJAX at this point in time
+    # so I don't do any setting of anything for the
+    # view.
+    public function savetouritemsAction() {
+        $tour = $this->_helper->db->findById();
+
+        # Remove all of the items in the tour
+        $tour->removeAllItems();
+
+        # Get our POST of the saveOrder
+        $post = $this->getRequest()->getPost();
+        $aOrder = json_decode($post['saveOrder'],true);
+
+        # Iterate through all of the tour items
+        # passed in an add them to the tour
+        for($i = 0; $i < count($aOrder); $i++) {
+            $item_id = intval( $aOrder[$i] );
+            $tour->addItem( $item_id, $i );
+        }
+    }
 
    private function _redirectToEdit()
    {

@@ -15,6 +15,8 @@ echo head( array( 'title' => $tourTitle,
                   'content_class' => 'vertical-nav',
                   'bodyclass' => 'tours primary' ) );
                   */
+
+/*
 ?>
 <div id="primary">
 <table id="items" class="simple" cellspacing="0" cellpadding="0">
@@ -55,4 +57,8 @@ echo head( array( 'title' => $tourTitle,
    </tbody>
 </table>
 </div>
-<?php //echo foot(); ?>
+<?php
+*/
+//echo foot();
+echo json_encode($this->items);
+?>
