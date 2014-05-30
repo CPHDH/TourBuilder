@@ -1,4 +1,4 @@
-<div class="seven columns alpha">
+<div class="seven columns alpha" id="form-data">
 
  <fieldset>
    <div class="field">
@@ -27,6 +27,17 @@
  	  <?php echo $this->formText( 'credits', $tour->credits ); ?>
  	</div>
    </div>
+     
+     <!--
+     <div class="field">
+         <div class="two columns alpha">
+             <?php echo $this->formLabel('image',__('Image'));?>
+         </div>
+        <div class="five columns omega inputs">
+            <?php echo $this->formFile('image',$tour->image); ?>
+        </div>
+    </div>
+-->
 
    <div class="field">
  	<div class="two columns alpha">

@@ -5,16 +5,13 @@
              'action' => 'browseForItem' ),
       'tourAction' );
 ?>
-<!--
 <p id="save-notice">
   <em><?php echo ('Note'); ?>:</em>
-  <?php echo __('Save your changes before modifying the list of items'); ?>
+  <?php echo __('No changes will be applied unless you save them.'); ?>
 </p>
--->
 
 <ul id="tourbuilder-item-list">
     <div id="tour-items-table-container">
-  <?php if( $tourItemCount ): ?>
   <table id="tour-items" class="simple" cellspacing="0" cellpadding="0">
     <thead>
       <tr>
@@ -27,6 +24,7 @@
       </tr>
     </thead>
     <tbody>
+  <?php if( $tourItemCount ): ?>
       <?php $key = 0; ?>
       <?php foreach( $tour->Items as $tourItem ):
             $alternator = (++ $key % 2 == 1) ? 'odd' : 'even';
@@ -65,9 +63,9 @@
 
       <?php endforeach; ?>
 
+  <?php endif; ?>
     </tbody>
   </table>
-  <?php endif; ?>
     </div>
 </ul>
 
@@ -122,6 +120,7 @@
             });
             var _json = JSON.stringify(objsArray);
             //alert(_json);
+            $("#form-data").hide();
             $.setH2("Saving Tour");
             $.setStatus("Please wait while the tour is being saved");
             $.ajax({

@@ -15,13 +15,32 @@ class Tour extends Omeka_Record_AbstractRecord
    public $public = 0;
    public $slug;
 
-   protected $_related = array( 'Items' => 'getItems' );
+   protected $_related = array( 'Items' => 'getItems', 
+                               'Image' => 'getImage' );
 
    public function getItems()
    {
       return $this->getTable()->findItemsByTourId( $this->id );
    }
+    
+    public function getImage() {
+        
+    }
 
+    public function afterSave($args) {
+        if ($args['post']) {
+            // Do something with the POST data. Equivalent to afterSaveForm.
+        }
+        error_log("we hit in the afterSave();");
+    }
+    
+    public function after_save_Tour( $tour_item, $post_array, $was_insert) {
+        $tour_id = $tour_item->id;
+        if($post_array !== false) {
+            error_log("we hit in after_save_Tour");  
+        }
+    }
+    
     public function removeAllItems( ) {
         $db = get_db();
         $tiTable = $db->getTable( 'TourItem' );
