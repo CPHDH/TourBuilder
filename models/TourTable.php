@@ -14,9 +14,37 @@ class TourTable extends Omeka_Db_Table
       $select->where( 'ti.tour_id = ?', array( $tour_id ) );
       $select->order( 'ti.ordinal ASC' );
 
-      $items = $itemTable->fetchObjects( $select );
+       $items = $itemTable->fetchObjects( "SELECT i.*, ti.ordinal
+         FROM omeka_items i LEFT JOIN omeka_tour_items ti
+         ON i.id = ti.item_id
+         WHERE ti.tour_id = ?
+         ORDER BY ti.ordinal ASC",
+         array( $tour_id ) );
+
+      //$items = $itemTable->fetchObjects( $select );
       return $items;
    }
+    
+    public function findImageByTourId( $tour_id ) {
+        $db = get_db();   
+        $itemTable = $this->getTable( 'File' );
+        $select = $itemTable->getSelect();
+        $iAlias = $itemTable->getTableAlias();
+        $select->joinInner( array( 'ti' => $db->TourItem ),
+         "ti.item_id = $iAlias.id", array() );
+        $select->where( 'ti.tour_id = ?', array( $tour_id ) );
+        $select->order( 'ti.ordinal ASC' );
+
+        $items = $itemTable->fetchObjects( "SELECT f.*, ti.ordinal
+         FROM omeka_files f LEFT JOIN omeka_tour_items ti
+         ON i.id = ti.item_id
+         WHERE ti.tour_id = ?
+         ORDER BY ti.ordinal ASC",
+         array( $tour_id ) );
+
+        //$items = $itemTable->fetchObjects( $select );
+        return $items;
+    }
 
    public function getSelect()
    {
