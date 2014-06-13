@@ -65,7 +65,7 @@ class Tour extends Omeka_Record_AbstractRecord
     }
     
     public function hasImage($path = 'original') {
-        return file_exists($_SERVER['DOCUMENT_ROOT'] . '/files/'.$path.'/tour_'.$this->id.'.jpg');
+        return file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . 'tour_'.$this->id.'.jpg');
     }
     
     public function image($tag_wrap = true) {
