@@ -70,17 +70,17 @@ class Tour extends Omeka_Record_AbstractRecord
     
     public function image($tag_wrap = true) {
         $dir = 'original';
-        return $this->build_image_path($dir);
+        return $this->build_image_path($dir, $tag_wrap);
     }
     
     public function thumbnail($tag_wrap = true) {
         $dir = 'thumbnails';
-        return $this->build_image_path($dir);
+        return $this->build_image_path($dir, $tag_wrap);
     }
     
     public function square_thumbnail($tag_wrap = true) {
         $dir = 'square_thumbnails';
-        return $this->build_image_path($dir);
+        return $this->build_image_path($dir, $tag_wrap);
     }
     
     public function build_image_path($dir, $tag_wrap = true) {
