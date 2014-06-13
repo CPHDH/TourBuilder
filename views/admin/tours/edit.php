@@ -65,8 +65,6 @@ echo flash();
         <?php 
         if($tour->hasImage('square_thumbnails')) {
             echo $tour->square_thumbnail(); 
-        } else {
-            echo "No thumbnail";   
         }
       
       ?>
