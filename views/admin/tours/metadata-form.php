@@ -28,16 +28,19 @@
  	</div>
    </div>
      
-     <!--
      <div class="field">
          <div class="two columns alpha">
              <?php echo $this->formLabel('image',__('Image'));?>
          </div>
         <div class="five columns omega inputs">
-            <?php echo $this->formFile('image',$tour->image); ?>
+            <?php echo $this->formFile('image'); ?>
+            <?php
+            if($tour->hasImage()) {
+                echo '<br><i>'.__('The tour image will only be overwritten if you select a new file.').'</i>';
+            }
+            ?>
         </div>
     </div>
--->
 
    <div class="field">
  	<div class="two columns alpha">

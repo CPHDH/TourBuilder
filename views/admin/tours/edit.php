@@ -60,7 +60,16 @@ echo flash();
       </div>
       <?php endif; ?>
 
+        
     </div>
+        <?php 
+        if($tour->hasImage('square_thumbnails')) {
+            echo $tour->square_thumbnail(); 
+        } else {
+            echo "No thumbnail";   
+        }
+      
+      ?>
 
   </section>
 
