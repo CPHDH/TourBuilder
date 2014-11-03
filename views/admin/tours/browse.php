@@ -3,7 +3,7 @@
   $editable = is_allowed( 'TourBuilder_Tours', 'edit' );
   $addUrl = url( array( 'action' => 'add' ) );
 
-  echo head( array( 'title' => $pageTitle, 'bodyclass' => 'tours browse' ) );
+  echo head( array( 'title' => $pageTitle, 'bodyid'=>'tour','bodyclass' => 'tours browse' ) );
   echo flash();
 ?>
 
