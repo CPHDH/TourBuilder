@@ -40,6 +40,23 @@ echo flash();
   </div>
   <?php endif; ?>
 
+
+  <?php if($tour->hasImage()) {
+	    
+	    echo '<div id="tour-title" class="element"><h2>Image</h2><div id="admin-tour-image">'.$tour->image().'</div></div>';
+	
+	} ?>
+
+  <?php if( metadata( 'tour', 'Description' ) ): ?>
+  <div id="tour-description" class="element">
+    <h2>Description</h2>
+    <div class="element-text">
+      <?php echo nls2p( metadata( 'tour', 'Description' ) ); ?>
+    </div>
+  </div>
+  <?php endif; ?>
+
+
   <?php
     $items = $tour->getItems();
     if( $tour->getItems() ): ?>
