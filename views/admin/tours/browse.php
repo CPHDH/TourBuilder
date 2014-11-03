@@ -49,6 +49,11 @@
                     <a href="<?php echo $showUrl; ?>">
                       <?php echo $tour->title; ?>
                     </a>
+                    
+                    <?php if( $tour->hasImage() ){
+						echo '<i class="fa fa-camera"></i>';
+	                } ?>
+                    
                   </td>
                   <?php if( $editable ): ?>
                   <td>
