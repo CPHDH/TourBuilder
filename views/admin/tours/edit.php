@@ -8,7 +8,7 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 $tourTitle = 'Edit Tour #' . tour( 'id' ) . $tourTitle;
 
 echo head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
-                  'bodyclass' => 'tours primary' ) );
+                  'bodyclass' => 'edit','bodyid'=>'tour' ) );
 include 'form-tabs.php';
 echo flash();
 ?>

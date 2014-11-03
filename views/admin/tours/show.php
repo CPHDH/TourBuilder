@@ -8,7 +8,7 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 $tourTitle = 'Tour #' . tour( 'id' ) . $tourTitle;
 
 echo head( array( 'title' => $tourTitle,
-                  'bodyclass' => 'tour show' ) );
+                  'bodyclass' => 'show','bodyid'=>'tour' ) );
 echo flash();
 ?>
 
