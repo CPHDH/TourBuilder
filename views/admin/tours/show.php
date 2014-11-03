@@ -13,20 +13,21 @@ echo flash();
 ?>
 
 <section class="seven columns alpha">
+	
+  <?php if( metadata( 'tour', 'Title' ) ): ?>
+  <div id="tour-title" class="element">
+    <h2>Title</h2>
+    <div class="element-text">
+      <?php echo nls2p( metadata( 'tour', 'Title' ) ); ?>
+    </div>
+  </div>
+  <?php endif; ?>
+
   <?php if( $tour->slug ): ?>
   <div id="tour-slug" class="element">
     <h2>Slug</h2>
     <div class="element-text">
       <?php echo tour( 'Slug' ); ?>
-    </div>
-  </div>
-  <?php endif; ?>
-
-  <?php if( metadata( 'tour', 'Description' ) ): ?>
-  <div id="tour-description" class="element">
-    <h2>Description</h2>
-    <div class="element-text">
-      <?php echo nls2p( metadata( 'tour', 'Description' ) ); ?>
     </div>
   </div>
   <?php endif; ?>
