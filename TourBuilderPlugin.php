@@ -18,6 +18,8 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
       'define_acl',
       'define_routes',
       'admin_head',
+      'admin_dashboard',
+      );
 
    public function hookInstall()
    {
@@ -105,19 +107,38 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
       return $navs;
    }
 
-   public function hookAdminAppendToDashboardPrimary()
+   public function hookAdminDashboard()
    {
-      if( has_permission( 'TourBuilder_Tours', 'browse' ) )
-      { ?>
-   	<dt class="tours"><a href="<?php echo html_escape(uri('tours')); ?>">Tours</a></dt>
-   	<dd class="tours">
-   		<ul>
-   			<li><a class="add-tour use-icon" href="<?php echo html_escape(uri('tour-builder/tours/add/')); ?>">Create a Tour</a></li>
-   			<li><a class="browse browse-tour" href="<?php echo html_escape(uri('tour-builder/tours')); ?>">Browse Tours</a></li>
-   		</ul>
-   		<p>Add and manage mobile tours that display items from the archive.</p>
-   	</dd> <?php
-      }
+	// Get the database.
+	$db = get_db();
+
+	// Get the Tour table.
+	$table = $db->getTable('Tour');
+
+	// Build the select query.
+	$select = $table->getSelect();
+
+	// Fetch some items with our select.
+	$results = $table->fetchObjects($select);
+	
+	$tourItems = null;
+	$html  = null;
+	
+	for($i=0;$i<=5;$i++){
+		if(is_object($results[$i])){
+			$tourItems .='<div class="recent-row"><p class="recent"><a href="/admin/tours/show/'.$results[$i]->id.'">'
+			.$results[$i]->title.'</a></p><p class="dash-edit"><a href="/admin/tours/edit/'.$results[$i]->id.'">Edit</a></p></div>';
+			}
+		}
+	
+		$html .= '<section class="five columns alpha"><div class="panel">';
+		$html .= '<h2>'.__('Recent Tours').'</h2>';
+		$html .= ''.$tourItems.'';
+		$html .= '<p><a class="add-new-item" href="'.html_escape(url('tour-builder/tours/add/')).'">'.__('Add a new tour').'</a></p>';
+		$html .= '</div></section>';
+		
+		echo $html;
+
    }
 
    public function hookAdminHead()
