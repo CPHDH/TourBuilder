@@ -17,7 +17,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
       'uninstall',
       'define_acl',
       'define_routes',
-      'admin_theme_header' );
+      'admin_head',
 
    public function hookInstall()
    {
@@ -120,16 +120,9 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
       }
    }
 
-   public function hookAdminThemeHeader( $request )
+   public function hookAdminHead()
    {
-      // Add our stylesheet to admin pages in which we take part
-      if( $request->getControllerName() == 'tours' ||
-          ($request->getModuleName() == 'default' &&
-           $request->getControllerName() == 'index' &&
-           $request->getActionName() == 'index') )
-      {
-         echo '<link rel="stylesheet" media="screen" href="' . html_escape(css('tour')) . '" /> ';
-      }
+   		queue_css_file('tour');
    }
 
    public function filterAdminNavigationMain( $nav )
