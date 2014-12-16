@@ -378,7 +378,7 @@ function tour_nav( $html=null, $label='Tour' )
       }
 
       $html .= '</span>'
-         . '<span id="close"><a>X</a></span>'
+         . '<span id="close" style="cursor:pointer;"><span aria-hidden="true" class="icon-close"></span> <span style="display:none" class="text-close">Close</span></span>'
          . '</div>'
 
          // Add our necessary script element
