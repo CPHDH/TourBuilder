@@ -392,3 +392,34 @@ function tour_nav( $html=null, $label='Tour' )
       return $html;
    }
 }
+
+/* get a list of related tour links for a given item, for use on items/show template */
+function tours_for_item($item_id=null){
+	    
+	if(is_int($item_id)){
+		$db = get_db(); 
+		$select = $db->select()
+		             ->from(array('ti' => 'omeka_tour_items')) 	// SELECT * FROM omeka_tour_items as ti
+		             ->join(array('t' => 'omeka_tours'), 		// INNER JOIN omeka_tours as t
+		                    'ti.tour_id = t.id') 				// ON ti.tour_id = t.id 
+		             ->where("item_id=$item_id"); 				// WHERE item_id=$item_id
+		$q = $select->query();             
+		$results = $q->fetchAll();	
+		
+		$html=null;
+		if($results){
+			$h=(count($results)>1) ? __('Related Tours') : __('Related Tour');
+			$html.='<div id="tour-for-item"><h3>'.$h.'</h3><ul>';
+			foreach($results as $result){
+				$html.='<li><a class="tour-for-item" href="/tours/show/'.$result['id'].'">';
+				$html.=$result['title'];
+				$html.='</a></li>';
+			}
+			$html.='</ul></div>';	
+		}
+		return $html;
+	}	
+}
+
+
+    
