@@ -394,7 +394,7 @@ function tour_nav( $html=null, $label='Tour' )
 }
 
 /* get a list of related tour links for a given item, for use on items/show template */
-function tours_for_item($item_id=null){
+function tours_for_item($item_id=null,$heading=null){
 	    
 	if(is_int($item_id)){
 		$db = get_db(); 
@@ -409,6 +409,7 @@ function tours_for_item($item_id=null){
 		$html=null;
 		if($results){
 			$h=(count($results)>1) ? __('Related Tours') : __('Related Tour');
+			$h = ($heading) ? $heading : $h;
 			$html.='<div id="tour-for-item"><h3>'.$h.'</h3><ul>';
 			foreach($results as $result){
 				$html.='<li><a class="tour-for-item" href="/tours/show/'.$result['id'].'">';
