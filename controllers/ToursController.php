@@ -25,7 +25,7 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
     public function getitemsAction() {
         $db = get_db();
         $tour = $this->_helper->db->findById();
-      $itemTable = $db->getTable( 'Item' );
+		$itemTable = $db->getTable( 'Item' );
         $items = $itemTable->fetchObjects(
         "SELECT i.*, (SELECT count(*) FROM omeka_tour_items ti WHERE ti.item_id = i.id AND ti.tour_id = ?) AS `in_tour`
          FROM omeka_items i",
