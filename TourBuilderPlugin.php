@@ -125,7 +125,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 	$html  = null;
 	
 	for($i=0;$i<=5;$i++){
-		if(is_object($results[$i])){
+		if(array_key_exists($i,$results) && is_object($results[$i])){
 			$tourItems .='<div class="recent-row"><p class="recent"><a href="/admin/tours/show/'.$results[$i]->id.'">'
 			.$results[$i]->title.'</a></p><p class="dash-edit"><a href="/admin/tours/edit/'.$results[$i]->id.'">Edit</a></p></div>';
 			}
