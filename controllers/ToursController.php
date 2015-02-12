@@ -24,11 +24,12 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
 
     public function getitemsAction() {
         $db = get_db();
+        $prefix=$db->prefix;
         $tour = $this->_helper->db->findById();
 		$itemTable = $db->getTable( 'Item' );
         $items = $itemTable->fetchObjects(
-        "SELECT i.*, (SELECT count(*) FROM omeka_tour_items ti WHERE ti.item_id = i.id AND ti.tour_id = ?) AS `in_tour`
-         FROM omeka_items i",
+        "SELECT i.*, (SELECT count(*) FROM ".$prefix."tour_items ti WHERE ti.item_id = i.id AND ti.tour_id = ?) AS `in_tour`
+         FROM ".$prefix."items i",
          array( $tour->id ) );
 
         foreach($items as $key => $arr) {
@@ -44,6 +45,7 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
    public function browseforitemAction()
    {
       $db = get_db();
+      $prefix=$db->prefix;
       $tour = $this->_helper->db->findById();
 
       # Get all items which are not already in this tour.
@@ -59,7 +61,7 @@ class TourBuilder_ToursController extends Omeka_Controller_AbstractActionControl
       # Attach the items to the view
       #$items = $itemTable->fetchObjects( $select, array( $tour_id ) );
       $items = $itemTable->fetchObjects( "SELECT i.*
-         FROM omeka_items i LEFT OUTER JOIN omeka_tour_items ti
+         FROM ".$prefix."items i LEFT OUTER JOIN ".$prefix."tour_items ti
          ON i.id = ti.item_id AND ti.tour_id = ?
          WHERE ti.id IS NULL",
          array( $tour->id ) );

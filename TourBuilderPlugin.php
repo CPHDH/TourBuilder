@@ -398,13 +398,14 @@ function tours_for_item($item_id=null,$heading=null){
 	    
 	if(is_int($item_id)){
 		$db = get_db(); 
+		$prefix=$db->prefix;
 		$select = $db->select()
-		             ->from(array('ti' => 'omeka_tour_items')) 	// SELECT * FROM omeka_tour_items as ti
-		             ->join(array('t' => 'omeka_tours'), 		// INNER JOIN omeka_tours as t
-		                    'ti.tour_id = t.id') 				// ON ti.tour_id = t.id 
-		             ->where("item_id=$item_id"); 				// WHERE item_id=$item_id
-		$q = $select->query();             
-		$results = $q->fetchAll();	
+		             ->from(array('ti' => $prefix.'tour_items')) // SELECT * FROM omeka_tour_items as ti
+		             ->join(array('t' => $prefix.'tours'), 		 // INNER JOIN omeka_tours as t
+		                    'ti.tour_id = t.id') 				 // ON ti.tour_id = t.id 
+		             ->where("item_id=$item_id"); 				 // WHERE item_id=$item_id
+		$q = $select->query();       
+		$results = $q->fetchAll();
 		
 		$html=null;
 		if($results){
