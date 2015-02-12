@@ -1,4 +1,4 @@
 <?php
-header("Content-type: application/json");
+//header("Content-type: application/json");
 echo json_encode($this->items);
 ?>
