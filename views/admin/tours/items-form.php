@@ -290,6 +290,7 @@
                     $("table#items tbody").append(tr);
                 }
             }
+            $("#disable-placeholder").remove();
         });
         
         // Config the cancel item link
