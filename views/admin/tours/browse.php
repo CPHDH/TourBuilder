@@ -50,9 +50,7 @@ $editUrl = url( array( 'action' => 'edit',
                       <?php echo $tour->title; ?>
                     </a>
 
-                    <?php if( $tour->hasImage() ){
-	echo '<i class="fa fa-camera"></i>';
-} ?>
+                    <?php // if( $tour->hasImage() ){ echo '<i class="fa fa-camera"></i>';} ?>
 
                   </td>
                   <?php if( $editable ): ?>

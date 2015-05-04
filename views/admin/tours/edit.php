@@ -62,12 +62,8 @@ echo flash();
 
 
     </div>
-        <?php
-if($tour->hasImage('square_thumbnails')) {
-	echo $tour->square_thumbnail();
-}
-
-?>
+    
+    <?php //if($tour->hasImage('square_thumbnails')) {echo $tour->square_thumbnail();} ?>
 
   </section>
 
