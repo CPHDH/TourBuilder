@@ -22,76 +22,76 @@ class Tour extends Omeka_Record_AbstractRecord
 		return $this->getTable()->findItemsByTourId( $this->id );
 	}
 
-//	public function getImage() {
-//
-//	}
-//
-//	public function afterSave($args) {
-//		if ($args['post']) {
-//			// Do something with the POST data. Equivalent to afterSaveForm.
-//			if(is_uploaded_file($_FILES['image']['tmp_name'])) {
-//				$destination_file = $_SERVER['DOCUMENT_ROOT'] . '/files/original/tour_'.$this->id.'.jpg';
-//				if(move_uploaded_file($_FILES['image']['tmp_name'], $destination_file)) {
-//					if (($convertDir = get_option('path_to_convert'))) {
-//						error_log("we have our convertDir: {$convertDir}");
-//						$creator = new Omeka_File_Derivative_Image_Creator($convertDir);
-//						error_log("Adding derivative: fullsize");
-//						$creator->addDerivative('fullsize', get_option('fullsize_constraint'));
-//						error_log("Adding derivative: thumbnail");
-//						$creator->addDerivative('thumbnail', get_option('thumbnail_constraint'));
-//						error_log("Adding derivative: square_thumbnail");
-//						$creator->addDerivative('square_thumbnail', get_option('square_thumbnail_constraint'), true);
-//						if ($creator->create($destination_file,
-//								'tour_'.$this->id.'.jpg',
-//								'image/jpeg')) {
-//
-//							rename($_SERVER['DOCUMENT_ROOT'] . '/files/original/fullsize_tour_'.$this->id.'.jpg',
-//								$_SERVER['DOCUMENT_ROOT'] . '/files/fullsize/tour_'.$this->id.'.jpg');
-//							rename($_SERVER['DOCUMENT_ROOT'] . '/files/original/thumbnail_tour_'.$this->id.'.jpg',
-//								$_SERVER['DOCUMENT_ROOT'] . '/files/thumbnails/tour_'.$this->id.'.jpg');
-//							rename($_SERVER['DOCUMENT_ROOT'] . '/files/original/square_thumbnail_tour_'.$this->id.'.jpg',
-//								$_SERVER['DOCUMENT_ROOT'] . '/files/square_thumbnails/tour_'.$this->id.'.jpg');
-//
-//							error_log("done creating()");
-//							//$this->has_derivative_image = 1;
-//							//$this->save();
-//						}
-//					}
-//				}
-//			}
-//		}
-//		error_log("we hit in the afterSave();");
-//	}
-//
-//	public function hasImage($path = 'original') {
-//		return file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . 'tour_'.$this->id.'.jpg');
-//	}
-//
-//	public function image($tag_wrap = true) {
-//		$dir = 'original';
-//		return $this->build_image_path($dir, $tag_wrap);
-//	}
-//
-//	public function thumbnail($tag_wrap = true) {
-//		$dir = 'thumbnails';
-//		return $this->build_image_path($dir, $tag_wrap);
-//	}
-//
-//	public function square_thumbnail($tag_wrap = true) {
-//		$dir = 'square_thumbnails';
-//		return $this->build_image_path($dir, $tag_wrap);
-//	}
-//
-//	public function build_image_path($dir, $tag_wrap = true) {
-//		if($this->hasImage($dir)) {
-//			$return = '/files/'.$dir.'/tour_'.$this->id.'.jpg';
-//			if($tag_wrap) {
-//				$return = '<img src="'.$return.'">';
-//			}
-//			return $return;
-//		}
-//		return '';
-//	}
+	public function getImage() {
+
+	}
+
+	public function afterSave($args) {
+		if ($args['post']) {
+			// Do something with the POST data. Equivalent to afterSaveForm.
+			if(is_uploaded_file($_FILES['image']['tmp_name'])) {
+				$destination_file = $_SERVER['DOCUMENT_ROOT'] . '/files/original/tour_'.$this->id.'.jpg';
+				if(move_uploaded_file($_FILES['image']['tmp_name'], $destination_file)) {
+					if (($convertDir = get_option('path_to_convert'))) {
+						error_log("we have our convertDir: {$convertDir}");
+						$creator = new Omeka_File_Derivative_Image_Creator($convertDir);
+						error_log("Adding derivative: fullsize");
+						$creator->addDerivative('fullsize', get_option('fullsize_constraint'));
+						error_log("Adding derivative: thumbnail");
+						$creator->addDerivative('thumbnail', get_option('thumbnail_constraint'));
+						error_log("Adding derivative: square_thumbnail");
+						$creator->addDerivative('square_thumbnail', get_option('square_thumbnail_constraint'), true);
+						if ($creator->create($destination_file,
+								'tour_'.$this->id.'.jpg',
+								'image/jpeg')) {
+
+							rename($_SERVER['DOCUMENT_ROOT'] . '/files/original/fullsize_tour_'.$this->id.'.jpg',
+								$_SERVER['DOCUMENT_ROOT'] . '/files/fullsize/tour_'.$this->id.'.jpg');
+							rename($_SERVER['DOCUMENT_ROOT'] . '/files/original/thumbnail_tour_'.$this->id.'.jpg',
+								$_SERVER['DOCUMENT_ROOT'] . '/files/thumbnails/tour_'.$this->id.'.jpg');
+							rename($_SERVER['DOCUMENT_ROOT'] . '/files/original/square_thumbnail_tour_'.$this->id.'.jpg',
+								$_SERVER['DOCUMENT_ROOT'] . '/files/square_thumbnails/tour_'.$this->id.'.jpg');
+
+							error_log("done creating()");
+							//$this->has_derivative_image = 1;
+							//$this->save();
+						}
+					}
+				}
+			}
+		}
+		error_log("we hit in the afterSave();");
+	}
+
+	public function hasImage($path = 'original') {
+		return file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . 'tour_'.$this->id.'.jpg');
+	}
+
+	public function image($tag_wrap = true) {
+		$dir = 'original';
+		return $this->build_image_path($dir, $tag_wrap);
+	}
+
+	public function thumbnail($tag_wrap = true) {
+		$dir = 'thumbnails';
+		return $this->build_image_path($dir, $tag_wrap);
+	}
+
+	public function square_thumbnail($tag_wrap = true) {
+		$dir = 'square_thumbnails';
+		return $this->build_image_path($dir, $tag_wrap);
+	}
+
+	public function build_image_path($dir, $tag_wrap = true) {
+		if($this->hasImage($dir)) {
+			$return = '/files/'.$dir.'/tour_'.$this->id.'.jpg';
+			if($tag_wrap) {
+				$return = '<img src="'.$return.'">';
+			}
+			return $return;
+		}
+		return '';
+	}
 
 
 	public function removeAllItems( ) {
