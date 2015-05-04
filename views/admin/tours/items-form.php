@@ -6,8 +6,7 @@ $addItemUrl = $this->url(
 	'tourAction' );
 ?>
 <p id="save-notice">
-  <em><?php echo ('Note'); ?>:</em>
-  <?php echo __('No changes will be applied unless you save them.'); ?>
+  <?php echo __('Press save to submit changes to the item list.'); ?>
 </p>
 
 <ul id="tourbuilder-item-list">
@@ -44,7 +43,7 @@ $itemDelete = $this->url( array( 'action' => 'removeItem',
 ?>
       <tr class="orderable items" id="table-row-<?php echo $tourItem->id; ?>" item-id="<?php echo $tourItem->id; ?>" hoist="<?php echo $itemHoist; ?>" lower="<?php echo $itemLower; ?>">
           <td scope="row">
-              <img src="http://cdn.zendesk.com/images/documentation/agent_guide/views_icon.png">
+              <img src="<?php echo img('views_icon.png');?>">
           </td>
 
         <td scope="row">
@@ -70,12 +69,12 @@ $itemDelete = $this->url( array( 'action' => 'removeItem',
 </ul>
 
 <div id="tourbuilder-additem">
-  <a class="submit" href="<?php echo $addItemUrl; ?>" onclick="" id="add-item-link">
+  <a class="submit button blue" href="<?php echo $addItemUrl; ?>" onclick="" id="add-item-link">
     <?php echo __('Add Item'); ?>
   </a>
 </div>
 <div id="tourbuilder-cancelitem">
-    <a class="submit" href="#" id="cancel-item-link">
+    <a class="submit blue button" href="#" id="cancel-item-link">
         <?php echo __('Cancel'); ?>
     </a>
 </div>
