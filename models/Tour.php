@@ -15,8 +15,7 @@ class Tour extends Omeka_Record_AbstractRecord
 	public $public = 0;
 	public $slug;
 
-	protected $_related = array( 'Items' => 'getItems',
-		'Image' => 'getImage' );
+	protected $_related = array( 'Items' => 'getItems','Image' => 'getImage' );
 
 	public function getItems()
 	{
