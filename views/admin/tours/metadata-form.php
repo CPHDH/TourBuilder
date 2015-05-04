@@ -11,7 +11,7 @@
  	</div>
    </div>
 
-   <div class="field">
+   <div class="field hidden">
  	<div class="two columns alpha">
  	  <?php echo $this->formLabel( 'slug', __('Slug') ); ?>
  	</div>

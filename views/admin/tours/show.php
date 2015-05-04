@@ -24,7 +24,7 @@ echo flash();
   <?php endif; ?>
 
   <?php if( $tour->slug ): ?>
-  <div id="tour-slug" class="element">
+  <div id="tour-slug" class="element hidden">
     <h2>Slug</h2>
     <div class="element-text">
       <?php echo tour( 'Slug' ); ?>

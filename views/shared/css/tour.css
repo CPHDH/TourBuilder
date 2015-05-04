@@ -22,3 +22,7 @@
 	float: right;
 	display: inline-block;
 }
+.hidden{
+	display:none;
+	visibility: hidden;
+}
