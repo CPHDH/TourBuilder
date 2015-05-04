@@ -1,6 +1,6 @@
 <?php
 echo head( array( 'title' => 'Add Tour', 'content_class' => 'vertical-nav',
-                  'bodyclass' => 'tours primary add-tour-form' ) );
+		'bodyclass' => 'tours primary add-tour-form' ) );
 include 'form-tabs.php';
 echo flash();
 ?>
@@ -10,8 +10,8 @@ echo flash();
   <section class="three columns omega">
     <div id="save" class="panel">
       <?php echo $this->formSubmit( 'submit', __('Add Tour'),
-                                    array( 'id' => 'save-changes',
-                                           'class' => 'submit big green button' ) ); ?>
+	array( 'id' => 'save-changes',
+		'class' => 'submit big green button' ) ); ?>
     </div>
 
     <div id="public-featured">
@@ -22,7 +22,7 @@ echo flash();
         </label>
         <div class="checkbox">
           <?php echo $this->formCheckbox( 'public', $tour->public,
-                                          array(), array( '1', '0' ) ); ?>
+	array(), array( '1', '0' ) ); ?>
         </div>
       </div>
       <?php endif; ?>
@@ -34,7 +34,7 @@ echo flash();
         </label>
         <div class="checkbox">
           <?php echo $this->formCheckbox( 'featured', $tour->featured,
-                                          array(), array( '1', '0' ) ); ?>
+	array(), array( '1', '0' ) ); ?>
         </div>
       </div>
       <?php endif; ?>

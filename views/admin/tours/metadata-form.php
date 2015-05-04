@@ -30,37 +30,37 @@
  	  <p class="explanation"><?php echo __('The name of the person(s) or organization responsible for the content of the tour.');?></p>
  	</div>
    </div>
-     
+
      <div class="field">
          <div class="two columns alpha">
              <?php echo $this->formLabel('image',__('Image'));?>
          </div>
         <div class="five columns omega inputs">
             <?php echo $this->formFile('image'); ?>
-            
+
              <p class="explanation">
 	             <?php echo __('A single image file used to represent the tour in mobile apps.');?>
-	         </p>           
-            
+	         </p>
+
             <?php
-            if($tour->hasImage()) {
-	            
-                echo '<div id="admin-tour-image">'.$tour->image().'</div>';
-                echo '<span class="file-helper">'.__('The tour image will only be overwritten if you select a new file.').'</span>';
-           
-            }
-            ?>
+if($tour->hasImage()) {
+
+	echo '<div id="admin-tour-image">'.$tour->image().'</div>';
+	echo '<span class="file-helper">'.__('The tour image will only be overwritten if you select a new file.').'</span>';
+
+}
+?>
         </div>
     </div>
 
    <div class="field">
  	<div class="two columns alpha">
  	  <?php echo $this->formLabel( 'description', __('Description') ); ?>
- 	  
+
  	</div>
  	<div class="five columns omega inputs">
  	  <?php echo $this->formTextarea( 'description', $tour->description,
- 		                              array( 'rows' => 8, 'cols' => '40' ) ); ?>
+	array( 'rows' => 8, 'cols' => '40' ) ); ?>
  		                              <p class="explanation"><?php echo __('The main text of the tour.');?></p>
  	</div>
    </div>

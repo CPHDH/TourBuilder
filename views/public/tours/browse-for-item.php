@@ -1,14 +1,14 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
-   $tourTitle = ': &quot;' . $tourTitle . '&quot; ';
+	$tourTitle = ': &quot;' . $tourTitle . '&quot; ';
 } else {
-   $tourTitle = '';
+	$tourTitle = '';
 }
 $tourTitle = 'Add Item To Tour #' . tour( 'id' ) . $tourTitle;
 
 head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
-   'bodyclass' => 'tours primary' ) );
+		'bodyclass' => 'tours primary' ) );
 ?>
 <table id="items" class="simple" cellspacing="0" cellpadding="0">
    <thead>
@@ -25,17 +25,17 @@ head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
          <td scope="row"><?php echo $item->id ?></td>
          <td scope="row">
             <a href="<?php
-               echo uri( array( 'module' => '', 'controller' => 'items',
-                  'action' => 'show', 'id' => $item->id ) );
-            ?>"><?php
-               echo $this->itemMetadata( $item, 'Dublin Core', 'Title' );
-            ?></a>
+echo uri( array( 'module' => '', 'controller' => 'items',
+		'action' => 'show', 'id' => $item->id ) );
+?>"><?php
+echo $this->itemMetadata( $item, 'Dublin Core', 'Title' );
+?></a>
          </td>
          <td scope="row">
             <a class="add" href="<?php
-            echo uri( array( 'action' => 'addItem',
-               'tour' => $tour->id, 'item' => $item->id ) );
-            ?>">Add</a>
+echo uri( array( 'action' => 'addItem',
+		'tour' => $tour->id, 'item' => $item->id ) );
+?>">Add</a>
          </td>
       </tr>
       <?php endforeach; ?>

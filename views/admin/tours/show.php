@@ -1,19 +1,19 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
-   $tourTitle = ': &quot;' . $tourTitle . '&quot; ';
+	$tourTitle = ': &quot;' . $tourTitle . '&quot; ';
 } else {
-   $tourTitle = '';
+	$tourTitle = '';
 }
 $tourTitle = 'Tour #' . tour( 'id' ) . $tourTitle;
 
 echo head( array( 'title' => $tourTitle,
-                  'bodyclass' => 'show','bodyid'=>'tour' ) );
+		'bodyclass' => 'show','bodyid'=>'tour' ) );
 echo flash();
 ?>
 
 <section class="seven columns alpha">
-	
+
   <?php if( metadata( 'tour', 'Title' ) ): ?>
   <div id="tour-title" class="element">
     <h2>Title</h2>
@@ -43,10 +43,10 @@ echo flash();
 
 
   <?php if($tour->hasImage()) {
-	    
-	    echo '<div id="tour-title" class="element"><h2>Image</h2><div id="admin-tour-image">'.$tour->image().'</div></div>';
-	
-	} ?>
+
+	echo '<div id="tour-title" class="element"><h2>Image</h2><div id="admin-tour-image">'.$tour->image().'</div></div>';
+
+} ?>
 
   <?php if( metadata( 'tour', 'Description' ) ): ?>
   <div id="tour-description" class="element">
@@ -59,15 +59,15 @@ echo flash();
 
 
   <?php
-    $items = $tour->getItems();
-    if( $tour->getItems() ): ?>
+$items = $tour->getItems();
+if( $tour->getItems() ): ?>
   <div id="tour-items" class="element">
     <h2>Items</h2>
     <div class="element-text">
       <ul>
         <?php foreach( $items as $item ):
-          set_current_record( 'item', $item, true );
-        ?>
+		set_current_record( 'item', $item, true );
+?>
         <li>
           <?php echo link_to_item(); ?>
         </li>
@@ -95,8 +95,8 @@ echo flash();
 
     <?php if( is_allowed( 'TourBuilder_Tours', 'delete' ) ): ?>
     <?php echo link_to_tour( __('Delete'),
-                            array( 'class' => 'big red button' ),
-                            'delete-confirm' ); ?>
+		array( 'class' => 'big red button' ),
+		'delete-confirm' ); ?>
     <?php endif; ?>
   </div>
 

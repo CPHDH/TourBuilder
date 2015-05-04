@@ -1,14 +1,14 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
-   $tourTitle = ': &quot;' . $tourTitle . '&quot; ';
+	$tourTitle = ': &quot;' . $tourTitle . '&quot; ';
 } else {
-   $tourTitle = '';
+	$tourTitle = '';
 }
 $tourTitle = 'Edit Tour #' . tour( 'id' ) . $tourTitle;
 
 echo head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
-                  'bodyclass' => 'edit','bodyid'=>'tour' ) );
+		'bodyclass' => 'edit','bodyid'=>'tour' ) );
 include 'form-tabs.php';
 echo flash();
 ?>
@@ -19,15 +19,15 @@ echo flash();
   <section class="three columns omega" id="tour-editor-control-panel">
 	<div id="save" class="panel">
 	  <?php echo $this->formSubmit( 'submit', __('Save Changes'),
-                                   array( 'id' => 'save-changes',
-                                          'class' => 'submit big green button' ) ); ?>
+	array( 'id' => 'save-changes',
+		'class' => 'submit big green button' ) ); ?>
       <a href="<?php echo html_escape( public_url( 'tours/show/' . $tour->id ) ); ?>"
          class="big blue button" target="_blank">
         <?php echo __('View Public Page'); ?>
       </a>
       <?php echo link_to_tour( __('Delete'),
-                               array( 'class' => 'delete-confirm big red button' ),
-                               'delete-confirm' ); ?>
+	array( 'class' => 'delete-confirm big red button' ),
+	'delete-confirm' ); ?>
     </div>
 
 
@@ -41,8 +41,8 @@ echo flash();
         </label>
         <div class="checkbox">
           <?php echo $this->formCheckbox(
-             'public', $tour->public,
-             array(), array( '1', '0' ) ); ?>
+	'public', $tour->public,
+	array(), array( '1', '0' ) ); ?>
         </div>
       </div>
       <?php endif; ?>
@@ -54,20 +54,20 @@ echo flash();
         </label>
         <div class="checkbox">
           <?php echo $this->formCheckbox(
-             'featured', $tour->featured,
-             array(), array( '1', '0' ) ); ?>
+	'featured', $tour->featured,
+	array(), array( '1', '0' ) ); ?>
         </div>
       </div>
       <?php endif; ?>
 
-        
+
     </div>
-        <?php 
-        if($tour->hasImage('square_thumbnails')) {
-            echo $tour->square_thumbnail(); 
-        }
-      
-      ?>
+        <?php
+if($tour->hasImage('square_thumbnails')) {
+	echo $tour->square_thumbnail();
+}
+
+?>
 
   </section>
 

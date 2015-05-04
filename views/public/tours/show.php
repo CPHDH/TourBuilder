@@ -1,15 +1,15 @@
 <?php echo head( array( 'title' => metadata( 'tour', 'Title' ),
-                        'bodyclass' => 'tour show' ) ); ?>
+		'bodyclass' => 'tour show' ) ); ?>
 
 <h1><?php echo metadata( 'tour', 'title' ); ?></h1>
 
 <?php $items = $tour->getItems();
-  if( $items ): ?>
+if( $items ): ?>
 <div id="items" class="element">
   <h3>Locations</h3>
   <?php foreach( $tour->getItems() as $tourItem ):
-    set_current_record( 'item', $tourItem );
-  ?>
+		set_current_record( 'item', $tourItem );
+?>
   <li>
     <?php echo link_to_item(); ?>
   </li>

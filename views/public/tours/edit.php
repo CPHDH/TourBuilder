@@ -1,14 +1,14 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
-   $tourTitle = ': &quot;' . $tourTitle . '&quot; ';
+	$tourTitle = ': &quot;' . $tourTitle . '&quot; ';
 } else {
-   $tourTitle = '';
+	$tourTitle = '';
 }
 $tourTitle = 'Edit Tour #' . tour( 'id' ) . $tourTitle;
 
 head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
-   'bodyclass' => 'tours primary' ) );
+		'bodyclass' => 'tours primary' ) );
 ?>
 
 <script type="text/javascript" charset="utf-8">
@@ -28,7 +28,7 @@ head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
       </div>
       <p id="delete_tour_link">
          <?php echo link_to_tour( 'Delete This Tour',
-            array( 'class' => 'delete delete-tour' ), 'delete' ); ?>
+	array( 'class' => 'delete delete-tour' ), 'delete' ); ?>
       </p>
    </form>
 </div>

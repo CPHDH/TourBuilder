@@ -1,9 +1,9 @@
 <?php
-   $tourItemCount = count( $tour->Items );
-   $addItemUrl = $this->url(
-      array( 'id'   => $tour->id,
-             'action' => 'browseForItem' ),
-      'tourAction' );
+$tourItemCount = count( $tour->Items );
+$addItemUrl = $this->url(
+	array( 'id'   => $tour->id,
+		'action' => 'browseForItem' ),
+	'tourAction' );
 ?>
 <p id="save-notice">
   <em><?php echo ('Note'); ?>:</em>
@@ -27,26 +27,26 @@
   <?php if( $tourItemCount ): ?>
       <?php $key = 0; ?>
       <?php foreach( $tour->Items as $tourItem ):
-            $alternator = (++ $key % 2 == 1) ? 'odd' : 'even';
-            $itemUri = record_url( $tourItem, 'show', true );
-            $itemHoist = $this->url( array( 'action' => 'hoistItem',
-                                            'id'     => $tour->id,
-                                            'item'   => $tourItem->id ),
-                                     'tourItemAction' );
-            $itemLower = $this->url( array( 'action' => 'lowerItem',
-                                            'id'     => $tour->id,
-                                            'item'   => $tourItem->id ),
-                                     'tourItemAction' );
-            $itemDelete = $this->url( array( 'action' => 'removeItem',
-                                             'id'     => $tour->id,
-                                             'item'   => $tourItem->id ),
-                                      'tourItemAction' );
-      ?>
+	$alternator = (++ $key % 2 == 1) ? 'odd' : 'even';
+$itemUri = record_url( $tourItem, 'show', true );
+$itemHoist = $this->url( array( 'action' => 'hoistItem',
+		'id'     => $tour->id,
+		'item'   => $tourItem->id ),
+	'tourItemAction' );
+$itemLower = $this->url( array( 'action' => 'lowerItem',
+		'id'     => $tour->id,
+		'item'   => $tourItem->id ),
+	'tourItemAction' );
+$itemDelete = $this->url( array( 'action' => 'removeItem',
+		'id'     => $tour->id,
+		'item'   => $tourItem->id ),
+	'tourItemAction' );
+?>
       <tr class="orderable items" id="table-row-<?php echo $tourItem->id; ?>" item-id="<?php echo $tourItem->id; ?>" hoist="<?php echo $itemHoist; ?>" lower="<?php echo $itemLower; ?>">
           <td scope="row">
               <img src="http://cdn.zendesk.com/images/documentation/agent_guide/views_icon.png">
           </td>
-          
+
         <td scope="row">
           <a href="<?php echo $itemUri ?>">
             <?php echo metadata( $tourItem, array( 'Dublin Core', 'Title' ) ); ?>
@@ -93,7 +93,7 @@
     var startIndex = 0;
 
     jQuery(document).ready(function ($) {
-        
+
         $.allTourItems = undefined;
         $.formCanSubmit = false;
 
@@ -112,8 +112,8 @@
             }
 
             var subURL = '<?php echo $this->url( array( 'action' => 'saveTourItems',
-                                            'id'     => $tour->id),
-                                            'tourAction' ); ?>';
+		'id'     => $tour->id),
+	'tourAction' ); ?>';
             var objsArray = [];
             $("tr.orderable").each(function( index ) {
                 objsArray.push($(this).attr("item-id"));
@@ -141,7 +141,7 @@
             $("#tour-items tbody tr:odd").css("background-color","#fff");
         };
         $.styleTRs();
-        
+
         var fixHelper = function(e, ui) {
             ui.children().each(function() {
                 $(this).width($(this).width());
@@ -163,29 +163,29 @@
         };
 
         $.bindSortable();
-        
+
         // Hide the cancel button by default
         $("#tourbuilder-cancelitem").hide();
-        
+
         // Function that displays the dot in an
         // incrementing fashion
         $.updateDot = function() {
             clearTimeout(timeoutObj);
             var _txt = $("input[name='statusText']").val() + '<br />';
-            
+
             for(i = 0; i < dotCount; i++) {
-                _txt = _txt + "&bull;";   
+                _txt = _txt + "&bull;";
             }
-            
+
             $("#status-area").html(_txt)
-            
+
             dotCount += 1;
             if(dotCount > dotMax)
                 dotCount = 1;
-            
+
             timeoutObj = setTimeout("jQuery.updateDot();", timeoutCount);
         }
-        
+
         // Function to set the status text above the dot
         $.setStatus = function(statusText) {
             $("input[name='statusText']").val(statusText);
@@ -194,22 +194,22 @@
             $("#tour-items").hide();
             $("#save-notice").hide();
             $("table#items").hide();
-            $("#status-area").html(statusText).show();   
-            
+            $("#status-area").html(statusText).show();
+
             dotCount = 1;
             timeoutObj = setTimeout("jQuery.updateDot();", timeoutCount);
-            
+
         };
-        
+
         $.hideStatus = function() {
             clearTimeout(timeoutObj);
-          $("#status-area").html("").hide();  
+          $("#status-area").html("").hide();
         };
-        
+
         $.setH2 = function(sText) {
-            $("h2#action-title").html(sText);   
+            $("h2#action-title").html(sText);
         }
-        
+
 
 
         // Config the add item link
@@ -255,7 +255,7 @@
                 // Add the thead to the table
                 newTable.appendChild(thead);
 
-                
+
 
                 var tbody = document.createElement("tbody");
                 newTable.appendChild(tbody);
@@ -273,10 +273,10 @@
                 if($.allTourItems[i].in_tour == 0) {
                     var tr = document.createElement("tr");
                     var td = document.createElement("td");
-                    
+
                     $(td).attr("scope","row").html($.allTourItems[i].id);
                     tr.appendChild(td);
-                    
+
                     td = document.createElement("td");
                     $(td).attr("scope","row").html($.allTourItems[i].name);
                     tr.appendChild(td);
@@ -292,7 +292,7 @@
             }
             $("#disable-placeholder").remove();
         });
-        
+
         // Config the cancel item link
         $('#cancel-item-link').click(function (evt) {
             evt.preventDefault();
@@ -307,11 +307,11 @@
             $("#add-item-link").show();
             $("#tourbuilder-cancelitem a").html("Cancel");
         });
-        
+
         $.cancelItemAdd = function () {
             $("#tour-items").hide();
             $("#tourbuilder-additem").html("");
-            $("#save-notice").show();  
+            $("#save-notice").show();
         };
 
         $.addItem = function(itemId) {
@@ -355,13 +355,13 @@
                 }
             }
         };
-        
+
         $.refreshItems = function() {
             $("h2#action-title").html("Items");
             $.setStatus("Refreshing tour items");
-            $("#tour-items-table-container").load($(location).attr('pathname') + " #tour-items", function () { 
-                $.hideStatus(); 
-                $("#tourbuilder-additem").show(); 
+            $("#tour-items-table-container").load($(location).attr('pathname') + " #tour-items", function () {
+                $.hideStatus();
+                $("#tourbuilder-additem").show();
                 $("#disable-placeholder").remove();
                 $.bindDownClicks();
                 $.bindHoistClicks();

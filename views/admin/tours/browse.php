@@ -1,10 +1,10 @@
 <?php
-  $pageTitle = __('Browse Tours') . ' ' . __('(%s total)', $total_results );
-  $editable = is_allowed( 'TourBuilder_Tours', 'edit' );
-  $addUrl = url( array( 'action' => 'add' ) );
+$pageTitle = __('Browse Tours') . ' ' . __('(%s total)', $total_results );
+$editable = is_allowed( 'TourBuilder_Tours', 'edit' );
+$addUrl = url( array( 'action' => 'add' ) );
 
-  echo head( array( 'title' => $pageTitle, 'bodyid'=>'tour','bodyclass' => 'tours browse' ) );
-  echo flash();
+echo head( array( 'title' => $pageTitle, 'bodyid'=>'tour','bodyclass' => 'tours browse' ) );
+echo flash();
 ?>
 
 <?php if( $total_results ): ?>
@@ -19,9 +19,9 @@
 
 <div id="primary">
    <?php
-   echo flash();
-   if( has_tours() ):
-      ?>
+echo flash();
+if( has_tours() ):
+?>
       <div class="pagination"><?php echo pagination_links(); ?></div>
       <?php if( has_tours_for_loop() ): ?>
          <table id="tours" class="simple" cellspacing="0" cellpadding="0">
@@ -36,24 +36,24 @@
             </thead>
             <tbody>
                <?php $key = 0;
-                     foreach( $tours as $tour ):
-                        $oddness = ((++$key % 2) == 1) ? 'odd' : 'even';
-                        $showUrl = url( array( 'action' => 'show',
-                                               'id' => $tour->id ), 'tourAction' );
-                        $editUrl = url( array( 'action' => 'edit',
-                                               'id' => $tour->id ), 'tourAction' );
-               ?>
+foreach( $tours as $tour ):
+	$oddness = ((++$key % 2) == 1) ? 'odd' : 'even';
+$showUrl = url( array( 'action' => 'show',
+		'id' => $tour->id ), 'tourAction' );
+$editUrl = url( array( 'action' => 'edit',
+		'id' => $tour->id ), 'tourAction' );
+?>
                <tr class="tours <?php echo $oddness; ?>">
                   <td scope="row"><?php echo $tour->id; ?></td>
                   <td scope="row">
                     <a href="<?php echo $showUrl; ?>">
                       <?php echo $tour->title; ?>
                     </a>
-                    
+
                     <?php if( $tour->hasImage() ){
-						echo '<i class="fa fa-camera"></i>';
-	                } ?>
-                    
+	echo '<i class="fa fa-camera"></i>';
+} ?>
+
                   </td>
                   <?php if( $editable ): ?>
                   <td>
@@ -82,9 +82,9 @@
     <?php endif; ?>
   <?php else: ?>
     <p><?php echo __('The query searched %s tours and returned no results.',
-                     total_records( 'Tour' ));
-             echo __('Would you like to %s?',
-                     link_to_tour_search( __('refine your search') ) ); ?></p>
+		total_records( 'Tour' ));
+echo __('Would you like to %s?',
+	link_to_tour_search( __('refine your search') ) ); ?></p>
   <?php endif; ?>
 
 <?php endif; ?>
