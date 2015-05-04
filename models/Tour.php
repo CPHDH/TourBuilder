@@ -240,8 +240,24 @@ class Tour extends Omeka_Record_AbstractRecord
 		}
 
 		if( empty( $this->slug ) ) {
-			if($t=$this->title){
-				$this->slug= urlencode( strtolower( preg_replace("/(?![.=$'€%-])\p{P}/u", "", $t) ) );
+			if($title=$this->title){
+
+			// replace non letter or digits by -
+			$title = preg_replace('~[^\\pL\d]+~u', '-', $title);
+			
+			// trim
+			$title = trim($title, '-');
+			
+			// transliterate
+			$title = iconv('utf-8', 'us-ascii//TRANSLIT', $title);
+			
+			// lowercase
+			$title = strtolower($title);
+			
+			// remove unwanted characters
+			$title = preg_replace('~[^-\w]+~', '', $title);				
+				
+				$this->slug= $title;
 			}else{
 				$this->addError( 'slug', 'Tour must be given a slug.' );
 			}
