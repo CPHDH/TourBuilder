@@ -49,7 +49,7 @@ class TourTable extends Omeka_Db_Table
 
 	public function getSelect()
 	{
-		$select = parent::getSelect();
+		$select = parent::getSelect()->order('tours.id');
 
 		$permissions = new Omeka_Db_Select_PublicPermissions( 'TourBuilder_Tours' );
 		$permissions->apply( $select, 'tours', null );
