@@ -26,3 +26,7 @@
 	display:none;
 	visibility: hidden;
 }
+.admin-tour-browse-meta{
+	margin: .25em 0;
+	color:#777;
+}
