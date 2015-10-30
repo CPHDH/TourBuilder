@@ -14,7 +14,9 @@ $addItemUrl = $this->url(
   <table id="tour-items" class="simple" cellspacing="0" cellpadding="0">
     <thead>
       <tr>
-          <th scope="col" width="20"></th>
+        <th scope="col" width="20"></th>
+        <th scope="col">
+        </th>
         <th scope="col">
           <?php echo __('Title'); ?>
         </th>
@@ -45,7 +47,11 @@ $itemDelete = $this->url( array( 'action' => 'removeItem',
           <td scope="row">
               <img src="<?php echo img('views_icon.png');?>">
           </td>
-
+        <td scope="row">
+          <a href="<?php echo $itemUri ?>">
+            <?php echo item_image('square_thumbnail', array('height'=>'80','width'=>'80'), $index = 0, $tourItem); ?>
+          </a>
+        </td>
         <td scope="row">
           <a href="<?php echo $itemUri ?>">
             <?php echo metadata( $tourItem, array( 'Dublin Core', 'Title' ) ); ?>
