@@ -64,17 +64,14 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 		$acl = $args['acl'];
 
 		// Create the ACL context
-		$resourceAcl = new Zend_Acl_Resource( 'TourBuilder_Tours' );
-		$acl->add( $resourceAcl );
+		$acl->addResource( 'TourBuilder_Tours' );
+		
+		// Allow anyone to look but not touch
+		$acl->allow( null, 'TourBuilder_Tours', array('browse', 'show') );
+		
+		// Allow contributor (and better) to do anything with tours
+		$acl->allow( 'contributor','TourBuilder_Tours');
 
-		// Allow administrative (and better) to do anything with tours
-		$acl->allow( array( 'super', 'admin' ),
-			'TourBuilder_Tours' );
-
-		// Allow everyone to view tours
-		$acl->allow( null, 'TourBuilder_Tours', 'show' );
-		$acl->allow( null, 'TourBuilder_Tours', 'browse' );
-		$acl->deny(  null, 'TourBuilder_Tours', 'show-unpublished' );
 	}
 
 	public function hookDefineRoutes( $args )
