@@ -54,7 +54,7 @@ echo flash();
   <div id="postscript_text" class="element">
     <h2>Postscript Text</h2>
     <div class="element-text">
-      <?php echo '<em>'.metadata( 'tour', 'postscript_text' ).'</em>'; ?>
+      <?php echo '<em>'.htmlspecialchars_decode(metadata( 'tour', 'postscript_text' )).'</em>'; ?>
     </div>
   </div>
   <?php endif; ?>
