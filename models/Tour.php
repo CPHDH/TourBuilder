@@ -24,44 +24,6 @@ class Tour extends Omeka_Record_AbstractRecord
 		return $this->getTable()->findItemsByTourId( $this->id );
 	}
 
-	public function getImage() {
-
-	}
-
-	public function afterSave($args) {
-
-	}
-
-	public function hasImage($path = 'original') {
-		return file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . 'tour_'.$this->id.'.jpg');
-	}
-
-	public function image($tag_wrap = true) {
-		$dir = 'original';
-		return $this->build_image_path($dir, $tag_wrap);
-	}
-
-	public function thumbnail($tag_wrap = true) {
-		$dir = 'thumbnails';
-		return $this->build_image_path($dir, $tag_wrap);
-	}
-
-	public function square_thumbnail($tag_wrap = true) {
-		$dir = 'square_thumbnails';
-		return $this->build_image_path($dir, $tag_wrap);
-	}
-
-	public function build_image_path($dir, $tag_wrap = true) {
-		if($this->hasImage($dir)) {
-			$return = '/files/'.$dir.'/tour_'.$this->id.'.jpg';
-			if($tag_wrap) {
-				$return = '<img src="'.$return.'">';
-			}
-			return $return;
-		}
-		return '';
-	}
-
 
 	public function removeAllItems( ) {
 		$db = get_db();
