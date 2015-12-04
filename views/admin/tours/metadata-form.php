@@ -27,11 +27,9 @@
  	</div>
  	<div class="five columns omega inputs">
  	  <?php echo $this->formText( 'credits', $tour->credits ); ?>
- 	  <p class="explanation"><?php echo __('The name of the person(s) or organization responsible for the content of the tour.');?></p>
+ 	  <p class="explanation"><?php echo __('OPTIONAL: The name of the person(s) or organization responsible for the content of the tour.');?></p>
  	</div>
    </div>
-
-
 
    <div class="field">
  	<div class="two columns alpha">
@@ -39,11 +37,31 @@
 
  	</div>
  	<div class="five columns omega inputs">
- 	  <?php echo $this->formTextarea( 'description', $tour->description,
-	array( 'rows' => 8, 'cols' => '40' ) ); ?>
- 		                              <p class="explanation"><?php echo __('The main text of the tour.');?></p>
+ 	  <?php echo $this->formTextarea( 'description', $tour->description,array( 'rows' => 12, 'cols' => '40' ) ); ?>
+ 		<p class="explanation"><?php echo __('The main text of the tour.');?></p>
  	</div>
    </div>
+
+   <div class="field">
+ 	<div class="two columns alpha">
+ 	  <?php echo $this->formLabel( 'postscript_text', __('Postscript Text') ); ?>
+ 	</div>
+ 	<div class="five columns omega inputs">
+ 	  <?php echo $this->formTextarea( 'postscript_text', $tour->postscript_text,array( 'rows' => 3, 'cols' => '40' )  ); ?>
+ 	  <p class="explanation"><?php echo __('OPTIONAL: Add postscript text to the end of the tour, for example, to thank a sponsor or add directional information.');?></p>
+ 	</div>
+   </div>
+
+   <div class="field">
+ 	<div class="two columns alpha">
+ 	  <?php echo $this->formLabel( 'tour_image', __('Tour Image') ); ?>
+ 	</div>
+ 	<div class="five columns omega inputs">
+ 	  <?php echo $this->formText( 'tour_image', $tour->tour_image ); ?>
+ 	  <p class="explanation"><?php echo __('OPTIONAL: Enter a valid file URL to use a custom image to represent this tour.');?></p>
+ 	</div>
+   </div>
+   
  </fieldset>
 
 </div>

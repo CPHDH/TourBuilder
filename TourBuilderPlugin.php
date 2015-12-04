@@ -19,6 +19,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 		'define_routes',
 		'admin_head',
 		'admin_dashboard',
+		'upgrade',
 	);
 
 	public function hookInstall()
@@ -31,6 +32,8 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             `title` varchar( 255 ) collate utf8_unicode_ci default NULL,
             `description` text collate utf8_unicode_ci NOT NULL,
             `credits` text collate utf8_unicode_ci,
+            `tour_image` text collate utf8_unicode_ci,
+            `postscript_text` text collate utf8_unicode_ci,
             `featured` tinyint( 1 ) default '0',
             `public` tinyint( 1 ) default '0',
             `slug` varchar( 30 ) collate utf8_unicode_ci default NULL,
@@ -59,6 +62,22 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 		$db->query( "DROP TABLE IF EXISTS `$db->Tour`" );
 	}
 
+    public function hookUpgrade($args)
+    {
+        $oldVersion = $args['old_version'];
+        $newVersion = $args['new_version'];
+        $db = $this->_db;
+        
+        if ($oldVersion < '1.4') {
+            
+            $sql = "ALTER TABLE `$db->Tour` ADD COLUMN `postscript_text` text collate utf8_unicode_ci default NULL";
+            $db->query($sql);
+            
+            $sql = "ALTER TABLE `$db->Tour` ADD COLUMN `tour_image` text collate utf8_unicode_ci default NULL";
+            $db->query($sql);            	        
+	    }
+	}
+	
 	public function hookDefineAcl( $args )
 	{
 		$acl = $args['acl'];

@@ -50,7 +50,24 @@ echo flash();
   </div>
   <?php endif; ?>
 
+  <?php if( metadata( 'tour', 'postscript_text' ) ): ?>
+  <div id="postscript_text" class="element">
+    <h2>Postscript Text</h2>
+    <div class="element-text">
+      <?php echo '<em>'.metadata( 'tour', 'postscript_text' ).'</em>'; ?>
+    </div>
+  </div>
+  <?php endif; ?>
 
+  <?php if( metadata( 'tour', 'tour_image' ) ): ?>
+  <div id="tour_image" class="element">
+    <h2>Tour Image</h2>
+    <div class="element-text">
+      <?php echo '<img src="'.metadata( 'tour', 'tour_image' ).'" style="max-width:100%;height:auto;">'; ?>
+    </div>
+  </div>
+  <?php endif; ?>  
+  
   <?php
 $items = $tour->getItems();
 if( $tour->getItems() ): ?>
