@@ -41,9 +41,6 @@ echo flash();
   </div>
   <?php endif; ?>
 
-
-  <?php //if($tour->hasImage()) { echo '<div id="tour-title" class="element"><h2>Image</h2><div id="admin-tour-image">'.$tour->image().'</div></div>'; } ?>
-
   <?php if( metadata( 'tour', 'Description' ) ): ?>
   <div id="tour-description" class="element">
     <h2>Description</h2>
