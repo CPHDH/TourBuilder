@@ -52,15 +52,17 @@
  	</div>
    </div>
 
-   <div class="field">
- 	<div class="two columns alpha">
- 	  <?php echo $this->formLabel( 'tour_image', __('Tour Image') ); ?>
- 	</div>
- 	<div class="five columns omega inputs">
- 	  <?php echo $this->formText( 'tour_image', $tour->tour_image ); ?>
- 	  <p class="explanation"><?php echo __('OPTIONAL: Enter a valid file URL to use a custom image to represent this tour.');?></p>
- 	</div>
-   </div>
+	<!--
+	<div class="field">
+		<div class="two columns alpha">
+		  <?php echo $this->formLabel( 'tour_image', __('Tour Image') ); ?>
+		</div>
+		<div class="five columns omega inputs">
+		  <?php echo $this->formText( 'tour_image', $tour->tour_image ); ?>
+		  <p class="explanation"><?php echo __('OPTIONAL: Enter a valid file URL to use a custom image to represent this tour.');?></p>
+		</div>
+	</div>
+	-->
    
  </fieldset>
 

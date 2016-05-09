@@ -60,12 +60,14 @@ echo flash();
   <?php endif; ?>
 
   <?php if( metadata( 'tour', 'tour_image' ) ): ?>
+<!--
   <div id="tour_image" class="element">
     <h2>Tour Image</h2>
     <div class="element-text">
       <?php echo '<img src="'.metadata( 'tour', 'tour_image' ).'" style="max-width:100%;height:auto;">'; ?>
     </div>
   </div>
+-->
   <?php endif; ?>  
   
   <?php
