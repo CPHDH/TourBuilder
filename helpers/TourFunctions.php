@@ -253,7 +253,7 @@ function tours_for_item($item_id=null,$heading=null){
 		->from(array('ti' => $prefix.'tour_items')) // SELECT * FROM omeka_tour_items as ti
 		->join(array('t' => $prefix.'tours'),    // INNER JOIN omeka_tours as t
 			'ti.tour_id = t.id')      // ON ti.tour_id = t.id
-		->where("item_id=$item_id");      // WHERE item_id=$item_id
+		->where("item_id=$item_id AND public=1");      // WHERE item_id=$item_id
 		$q = $select->query();
 		$results = $q->fetchAll();
 
