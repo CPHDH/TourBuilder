@@ -32,11 +32,9 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             `title` varchar( 255 ) collate utf8_unicode_ci default NULL,
             `description` text collate utf8_unicode_ci NOT NULL,
             `credits` text collate utf8_unicode_ci,
-            `tour_image` text collate utf8_unicode_ci,
             `postscript_text` text collate utf8_unicode_ci,
             `featured` tinyint( 1 ) default '0',
             `public` tinyint( 1 ) default '0',
-            `slug` varchar( 30 ) collate utf8_unicode_ci default NULL,
             PRiMARY KEY( `id` ),
             UNIQUE KEY `slug` ( `slug` )
          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ";
@@ -75,6 +73,15 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             
             $sql = "ALTER TABLE `$db->Tour` ADD COLUMN `tour_image` text collate utf8_unicode_ci default NULL";
             $db->query($sql);            	        
+	    }
+	    
+	    if ($oldVersion < '1.5') {
+            $sql = "ALTER TABLE `$db->Tour` DROP COLUMN `slug`";
+            $db->query($sql);  
+
+            $sql = "ALTER TABLE `$db->Tour` DROP COLUMN `tour_image`";
+            $db->query($sql);  
+            		    
 	    }
 	}
 	

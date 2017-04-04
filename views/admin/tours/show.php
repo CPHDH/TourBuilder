@@ -23,15 +23,6 @@ echo flash();
   </div>
   <?php endif; ?>
 
-  <?php if( $tour->slug ): ?>
-  <div id="tour-slug" class="element hidden">
-    <h2>Slug</h2>
-    <div class="element-text">
-      <?php echo tour( 'Slug' ); ?>
-    </div>
-  </div>
-  <?php endif; ?>
-
   <?php if( metadata( 'tour', 'Credits' ) ): ?>
   <div id="tour-credits" class="element">
     <h2>Credits</h2>
@@ -59,16 +50,6 @@ echo flash();
   </div>
   <?php endif; ?>
 
-  <?php if( metadata( 'tour', 'tour_image' ) ): ?>
-<!--
-  <div id="tour_image" class="element">
-    <h2>Tour Image</h2>
-    <div class="element-text">
-      <?php echo '<img src="'.metadata( 'tour', 'tour_image' ).'" style="max-width:100%;height:auto;">'; ?>
-    </div>
-  </div>
--->
-  <?php endif; ?>  
   
   <?php
 $items = $tour->getItems();

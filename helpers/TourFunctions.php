@@ -35,16 +35,9 @@ function tour( $fieldName, $options=array(), $tour=null )
 	case 'credits':
 		$text = $tour->credits;
 		break;
-	case 'slug':
-		$text = $tour->slug;
-		break;
 	case 'postscript_text':
 		$text = $tour->postscript_text;
 		break;
-	case 'tour_image':
-		$text = $tour->tour_image;
-		break;
-
 	default:
 		throw new Exception( "\"$fieldName\" does not exist for tours!" );
 		break;

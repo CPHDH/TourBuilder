@@ -11,15 +11,6 @@
  	</div>
    </div>
 
-   <div class="field hidden">
- 	<div class="two columns alpha">
- 	  <?php echo $this->formLabel( 'slug', __('Slug') ); ?>
- 	</div>
- 	<div class="five columns omega">
- 	  <?php echo $this->formText( 'slug', $tour->slug ); ?>
- 	  <p class="explanation"><?php echo __('A short string of alphanumeric characters (no punctuation) used to identify the tour.');?></p>
- 	</div>
-   </div>
 
    <div class="field">
  	<div class="two columns alpha">
@@ -52,17 +43,6 @@
  	</div>
    </div>
 
-	<!--
-	<div class="field">
-		<div class="two columns alpha">
-		  <?php echo $this->formLabel( 'tour_image', __('Tour Image') ); ?>
-		</div>
-		<div class="five columns omega inputs">
-		  <?php echo $this->formText( 'tour_image', $tour->tour_image ); ?>
-		  <p class="explanation"><?php echo __('OPTIONAL: Enter a valid file URL to use a custom image to represent this tour.');?></p>
-		</div>
-	</div>
-	-->
    
  </fieldset>
 

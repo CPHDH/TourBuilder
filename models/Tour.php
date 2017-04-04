@@ -13,9 +13,7 @@ class Tour extends Omeka_Record_AbstractRecord
 	public $credits;
 	public $featured = 0;
 	public $public = 0;
-	public $slug;
 	public $postscript_text;
-	public $tour_image;
 
 	protected $_related = array( 'Items' => 'getItems','Image' => 'getImage' );
 
@@ -166,39 +164,5 @@ class Tour extends Omeka_Record_AbstractRecord
 			$this->addError('title', 'The Title is already in use by another tour. Please choose another.');
 		}
 
-		if( strlen( $this->slug > 30 ) ) {
-			$this->addError( 'slug', 'Slug for a tour must be 30 characters or fewer.' );
-		}
-		
-		if( !empty($this->tour_image) && !is_array(getimagesize( $this->tour_image )) ){
-			$this->addError('tour_image','The text entered does not validate as an image URL.');
-		}
-
-		if( empty( $this->slug ) ) {
-			if($title=$this->title){
-
-			// replace non letter or digits by -
-			$title = preg_replace('~[^\\pL\d]+~u', '-', $title);
-			
-			// trim
-			$title = trim($title, '-');
-			
-			// transliterate
-			$title = iconv('utf-8', 'us-ascii//TRANSLIT', $title);
-			
-			// lowercase
-			$title = strtolower($title);
-			
-			// remove unwanted characters
-			$title = preg_replace('~[^-\w]+~', '', $title);				
-				
-				$this->slug= $title;
-			}else{
-				$this->addError( 'slug', 'Tour must be given a slug.' );
-			}
-		}
-		if (!$this->fieldIsUnique('slug')) {
-			$this->addError('slug', 'The slug is already in use by another tour. Please choose another.');
-		}
-	}
+	}	
 }
