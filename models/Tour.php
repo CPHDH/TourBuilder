@@ -17,6 +17,11 @@ class Tour extends Omeka_Record_AbstractRecord
 
 	protected $_related = array( 'Items' => 'getItems','Image' => 'getImage' );
 
+    public function _initializeMixins()
+    {
+        $this->_mixins[] = new Mixin_Search($this);
+    }
+
 	public function getItems()
 	{
 		return $this->getTable()->findItemsByTourId( $this->id );
@@ -164,5 +169,14 @@ class Tour extends Omeka_Record_AbstractRecord
 			$this->addError('title', 'The Title is already in use by another tour. Please choose another.');
 		}
 
-	}	
+	}
+    protected function afterSave($args)
+    {
+        if (!$this->public) {
+            $this->setSearchTextPrivate();
+        }
+        $this->setSearchTextTitle($this->title);
+        $this->addSearchText($this->title);
+        $this->addSearchText($this->description);
+    }		
 }
