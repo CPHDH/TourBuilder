@@ -10,7 +10,9 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 	protected $_filters = array(
 		'public_navigation_main',
 		'admin_dashboard_stats',
-		'admin_navigation_main' );
+		'admin_navigation_main',
+		'search_record_types',	
+		);
 
 	protected $_hooks = array(
 		'install',
@@ -82,6 +84,9 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             $sql = "ALTER TABLE `$db->Tour` DROP COLUMN `tour_image`";
             $db->query($sql);  
             		    
+	    }
+	    if($oldVersion < '1.6'){
+			Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('Job_SearchTextIndex');
 	    }
 	}
 	
@@ -164,14 +169,17 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 
 	}
 
-
-
-
-
 	public function hookAdminHead()
 	{
 		queue_css_file('tour');
 	}
+
+
+	public function filterSearchRecordTypes($recordTypes){
+	    $recordTypes['Tour'] = __('Tour');
+	    return $recordTypes;		
+	}
+
 
 	public function filterAdminNavigationMain( $nav )
 	{
