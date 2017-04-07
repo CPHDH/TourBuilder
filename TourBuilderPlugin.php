@@ -176,7 +176,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 
 
 	public function filterSearchRecordTypes($recordTypes){
-	    $recordTypes['TourBuilderTour'] = __('Tour');
+	    $recordTypes['Tour'] = __('Tour');
 	    return $recordTypes;		
 	}
 
