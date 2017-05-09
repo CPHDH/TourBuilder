@@ -37,8 +37,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             `postscript_text` text collate utf8_unicode_ci,
             `featured` tinyint( 1 ) default '0',
             `public` tinyint( 1 ) default '0',
-            PRiMARY KEY( `id` ),
-            UNIQUE KEY `slug` ( `slug` )
+            PRiMARY KEY( `id` )
          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ";
 
 		$tourItemQuery = "
