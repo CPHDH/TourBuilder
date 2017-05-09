@@ -71,9 +71,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
             
             $sql = "ALTER TABLE `$db->Tour` ADD COLUMN `postscript_text` text collate utf8_unicode_ci default NULL";
             $db->query($sql);
-            
-            $sql = "ALTER TABLE `$db->Tour` ADD COLUMN `tour_image` text collate utf8_unicode_ci default NULL";
-            $db->query($sql);            	        
+          	        
 	    }
 	    
 	    if ($oldVersion < '1.5') {
