@@ -99,9 +99,9 @@
 				jQuery('.remove').on('click',function(){
 					jQuery(this).parent().fadeOut(400,function(){
 						jQuery(this).remove();
+						// update list on remove
+						jQuery(document).trigger('tourItemsUpdated');						
 					});
-					// update list on remove
-					jQuery(document).trigger('tourItemsUpdated');
 				});
 		    })();
 		
