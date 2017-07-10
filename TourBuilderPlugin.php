@@ -180,7 +180,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 
 	public function hookAdminHead()
 	{
-		queue_css_file('tour');
+		queue_css_file('tour-1.7');
 	}
 
 
