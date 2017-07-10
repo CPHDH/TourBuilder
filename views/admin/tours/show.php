@@ -88,7 +88,7 @@ if( $tour->getItems() ): ?>
 
     <?php if( is_allowed( 'TourBuilder_Tours', 'delete' ) ): ?>
     <?php echo link_to_tour( __('Delete'),
-		array( 'class' => 'big red button' ),
+		array( 'class' => 'delete-confirm big red button' ),
 		'delete-confirm' ); ?>
     <?php endif; ?>
   </div>

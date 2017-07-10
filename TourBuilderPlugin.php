@@ -66,6 +66,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
         $oldVersion = $args['old_version'];
         $newVersion = $args['new_version'];
         $db = $this->_db;
+        $prefix=$db->prefix;
         
         if ($oldVersion < '1.4') {
             
@@ -84,6 +85,17 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 	    }
 	    if($oldVersion < '1.6'){
 			Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('Job_SearchTextIndex');
+	    }
+	    
+	    if($oldVersion < '1.7'){
+			// Get rid of orphan tour_items that weren't being deleted along with their respective tours in previous versions		
+			$sql = "DELETE ".$prefix."tour_items 
+			FROM ".$prefix."tour_items
+			LEFT JOIN ".$prefix."tours 
+			ON ".$prefix."tour_items.tour_id = ".$prefix."tours.id
+			WHERE ".$prefix."tours.id IS NULL";
+			
+			$db->query($sql);     
 	    }
 	}
 	
