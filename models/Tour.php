@@ -44,40 +44,6 @@ class Tour extends Omeka_Record_AbstractRecord
 		}
 	}
 
-	public function removeItem( $item_id )
-	{
-		if( !is_numeric( $item_id ) ) {
-			$item_id = $item_id->id;
-		}
-
-		# First get the tour-item object
-		$db = get_db();
-		$tiTable = $db->getTable( 'TourItem' );
-		$select = $tiTable->getSelect();
-		$select->where( 'tour_id = ?', array( $this->id ) )
-		->where( 'item_id = ?', array( $item_id ) );
-
-		# Get the tour item
-		$tourItem = $tiTable->fetchObject( $select );
-
-		# Renumber any ordinals greater than it.
-		$select = $tiTable->getSelect();
-		$select->where( 'tour_id = ?', array( $this->id ) )
-		->where( 'ordinal > ?', array( $tourItem->ordinal ) );
-
-		# Delete this linkage
-		$tourItem->delete();
-
-		# Reorder the remaining linkages
-		$renumbers = $tiTable->fetchObjects( $select );
-		foreach( $renumbers as $ti )
-		{
-			$ti->ordinal = $ti->ordinal - 1;
-			$ti->save();
-		}
-
-	}
-
 	public function addItem( $item_id, $ordinal = null )
 	{
 		if( !is_numeric( $item_id ) ) {
@@ -101,60 +67,6 @@ class Tour extends Omeka_Record_AbstractRecord
 		$tourItem->save();
 	}
 
-	public function saveItemOrder( $tour_id ) {
-
-	}
-
-	public function hoistItem( $tour_id, $item_id )
-	{
-		$this->swapItem( $tour_id, $item_id, true );
-	}
-
-	public function lowerItem( $tour_id, $item_id )
-	{
-		$this->swapItem( $tour_id, $item_id, false );
-	}
-
-	public function setItemOrdinal( $tour_id, $item_id, $ordinal ) {
-		$db = get_db();
-		$tiTable = $db->getTable( 'TourItem' );
-
-		// Get the target item
-		$select = $tiTable->getSelect()
-		->where( 'tour_id = ?', $tour_id )
-		->where( 'item_id = ?', $item_id );
-		$item = $tiTable->fetchObject( $select );
-		$item->ordinal = $ordinal;
-		$item->save();
-	}
-
-	public function swapItem( $tour_id, $item_id, $up )
-	{
-		$db = get_db();
-		$tiTable = $db->getTable( 'TourItem' );
-
-		// Get the target item
-		$select = $tiTable->getSelect()
-		->where( 'tour_id = ?', $tour_id )
-		->where( 'item_id = ?', $item_id );
-		$left = $tiTable->fetchObject( $select );
-		$ordinal = intval( $left->ordinal );
-
-		// Get the next item with which we are swapping
-		$select = $tiTable->getSelect()
-		->where( 'tour_id = ?', $tour_id )
-		->where( $up ? 'ordinal < ?' : 'ordinal > ?', $ordinal )
-		->limit( 1 );
-		$right = $tiTable->fetchObject( $select );
-
-		// Do the ordinal shuffle
-		$left->ordinal = intval( $right->ordinal );
-		$right->ordinal = $ordinal;
-
-		// Save both items
-		$left->save();
-		$right->save();
-	}
 
 	protected function _validate()
 	{
@@ -170,13 +82,33 @@ class Tour extends Omeka_Record_AbstractRecord
 		}
 
 	}
+
+	protected function beforeDelete($args){
+		$this->removeAllItems();
+	}
+	
     protected function afterSave($args)
-    {
+    {        
+        if(!$args['insert']){ 
+	        $this->removeAllItems();
+        }
+        
+		// Get item IDs from $_POST and save to tour items table
+		$post=$args['post'];
+		$item_ids=explode( ',', trim( $post['tour_item_ids'] ) );
+		$i=0;
+		foreach($item_ids as $item_id){
+			$item_id=intval($item_id);
+			$this->addItem( $item_id, $i);
+			$i++;
+		}
+		
+		// Add tour to search index
         if (!$this->public) {
             $this->setSearchTextPrivate();
         }
         $this->setSearchTextTitle($this->title);
         $this->addSearchText($this->title);
-        $this->addSearchText($this->description);
+        $this->addSearchText($this->description);        
     }		
 }

@@ -9,11 +9,11 @@ $tourTitle = 'Edit Tour #' . tour( 'id' ) . $tourTitle;
 
 echo head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav',
 		'bodyclass' => 'edit','bodyid'=>'tour' ) );
-include 'form-tabs.php';
 echo flash();
 ?>
 
 <form method="post" enctype="multipart/form-data" id="tour-form" action="">
+  
   <?php include "form.php" ?>
 
   <section class="three columns omega" id="tour-editor-control-panel">

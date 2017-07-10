@@ -1,48 +1,168 @@
-<?php echo js_tag( 'vendor/tiny_mce/tiny_mce' ); ?>
-<?php echo js_tag( 'elements' ); ?>
-<?php echo js_tag( 'tabs' ); ?>
-<?php echo js_tag( 'items' ); ?>
-<script type="text/javascript" charset="utf-8">
-//<![CDATA[
-// TinyMCE hates document.ready.
-jQuery(window).load(function () {
-    Omeka.Tabs.initialize();
-
-    Omeka.Items.tagDelimiter = <?php echo js_escape(get_option('tag_delimiter')); ?>;
-    Omeka.Items.enableTagRemoval();
-    Omeka.Items.makeFileWindow();
-    Omeka.Items.enableSorting();
-    Omeka.Items.tagChoices('#tags', <?php echo js_escape(url(array('controller'=>'tags', 'action'=>'autocomplete'), 'default', array(), true)); ?>);
-
-    Omeka.wysiwyg({
-        mode: "none",
-        forced_root_block: ""
-    });
-
-    // Must run the element form scripts AFTER reseting textarea ids.
-    jQuery(document).trigger('omeka:elementformload');
-});
-
-jQuery(document).bind('omeka:elementformload', function (event) {
-    Omeka.Elements.enableWysiwyg(event.target);
-});
-//]]>
-</script>
+<?php echo js_tag('vendor/jquery-ui');?>
+<?php echo js_tag('jquery.ui.touch-punch.min');?>
 
 <section class="seven columns alpha" id="edit-form">
-  <?php echo flash(); ?>
 
   <div id="tour-metadata">
-    <?php foreach( $tabs as $tabName => $tabContent ): ?>
-    <?php if( !empty( $tabContent ) ): ?>
-    <div id="<?php echo text_to_id( html_escape( $tabName ) ); ?>-metadata">
-      <fieldset class="set">
-        <h2 id="action-title"><?php echo html_escape( __($tabName) ); ?></h2>
-        <?php echo $tabContent; ?>
-      </fieldset>
-    </div>
-    <?php endif; ?>
-    <?php endforeach; ?>
+	<div class="seven columns alpha" id="form-data">
+	
+		<fieldset>
+			<div class="field">
+				<div class="two columns alpha">
+				  <?php echo $this->formLabel( 'title', __('Title') ); ?>
+				</div>
+				<div class="five columns omega">
+				  <?php echo $this->formText( 'title', $tour->title ); ?>
+				  <p class="explanation"><?php echo __('A title for the tour.');?></p>
+				</div>
+			</div>
+			
+			
+			<div class="field">
+				<div class="two columns alpha">
+				  <?php echo $this->formLabel( 'credits', __('Credits') ); ?>
+				</div>
+				<div class="five columns omega inputs">
+				  <?php echo $this->formText( 'credits', $tour->credits ); ?>
+				  <p class="explanation"><?php echo __('OPTIONAL: The name of the person(s) or organization responsible for the content of the tour.');?></p>
+				</div>
+			</div>
+			
+			<div class="field">
+				<div class="two columns alpha">
+				  <?php echo $this->formLabel( 'description', __('Description') ); ?>
+			
+				</div>
+				<div class="five columns omega inputs">
+				  <?php echo $this->formTextarea( 'description', $tour->description,array( 'rows' => 12, 'cols' => '40' ) ); ?>
+					<p class="explanation"><?php echo __('The main text of the tour.');?></p>
+				</div>
+			</div>
+			
+			<div class="field">
+				<div class="two columns alpha">
+				  <?php echo $this->formLabel( 'postscript_text', __('Postscript Text') ); ?>
+				</div>
+				<div class="five columns omega inputs">
+				  <?php echo $this->formTextarea( 'postscript_text', $tour->postscript_text,array( 'rows' => 3, 'cols' => '40' )  ); ?>
+				  <p class="explanation"><?php echo __('OPTIONAL: Add postscript text to the end of the tour, for example, to thank a sponsor or add directional information.');?></p>
+				</div>
+			</div>
+		   
+		</fieldset>
+		
+		<fieldset id="tour-items-picker">
+			
+			<div class="field">
+				<div class="tour_item_ids hidden">
+				  <?php echo $this->formText( 'tour_item_ids', null ); ?>
+				</div>
+			</div>			
+			
+			<h2>Tour Items</h2>
+			<p>Search for items by title to add to tour.</p>
+			<div class="input-container">
+				<input type="search" id="tour-item-search" placeholder="Search by title..."/>
+			</div>
+			<ul id="sortable">
+				<?php if($tour->id){
+					$tourItems = $tour->getItems();
+					foreach($tourItems as $ti){
+						$html  = '<li data-id="'.$ti->id.'" class="ui-state-default">';
+						$html .= '<span><img src="'.img('views_icon.png').'" class="drag-icon">'.metadata($ti,array('Dublin Core','Title')).'</span>';
+						$html .= '<span class="remove">Remove</span></li>';
+						echo $html;
+					}
+				} ?>
+			</ul>		
+		</fieldset>
+	
+	</div>
   </div>
 
 </section>
+
+<script>
+	var allItems=<?php echo availableItemsJSON();?>;
+	
+	jQuery( function() {
+		
+		jQuery.formCanSubmit = false;
+		
+		var tourItems=_itemsInTour();
+		jQuery('#tour_item_ids').val(tourItems);
+		
+		// UI BUTTONS
+		(function () {
+		    var _UIButtons;
+		    (_UIButtons = function (){ 
+				jQuery('.remove').on('click',function(){
+					jQuery(this).parent().fadeOut(400,function(){
+						jQuery(this).remove();
+					});
+					// update list on remove
+					jQuery(document).trigger('tourItemsUpdated');
+				});
+		    })();
+		
+		    //When list is updated, re-evaluate the list
+			jQuery(document).on('tourItemsUpdated',function(e){
+				_UIButtons();
+				tourItems=_itemsInTour();
+				jQuery('#tour_item_ids').val(tourItems);
+			});	
+		})();		
+
+		function _itemsInTour(){
+			var inTour = new Array();
+			jQuery('#sortable li').each(function(){
+				inTour.push(parseInt(jQuery(this).attr('data-id')));
+			});	
+			return inTour;		
+		}
+
+		// SORTABLE
+		jQuery( "#sortable" ).sortable({
+	    	placeholder: "ui-state-highlight",
+	    	stop: function(event,ui){ 
+		    	// update list on drag-end
+	    		jQuery(document).trigger('tourItemsUpdated');
+	    	}
+		});
+		
+		jQuery( "#sortable" ).disableSelection();
+		
+		
+		// AUTOCOMPLETE
+		function addItem( label, id ) {
+			var icon = '<?php echo img('views_icon.png');?>';
+			if(jQuery.inArray(id, _itemsInTour(),0) >= 0){
+				alert('The item "' +label+ '" has already been added to the tour.');
+			}else{
+				jQuery( '<li data-id="' + id + '" class="ui-state-highlight">' ).html( '<span><img src="' +icon+ '" class="drag-icon">' + label + '</span> <span class="remove">Remove</span>' ).prependTo( "#sortable" );
+				jQuery( "#sortable" ).scrollTop( 0 );
+				// update list on add
+				jQuery(document).trigger('tourItemsUpdated');
+			}
+		}
+		
+		jQuery( "#tour-item-search" ).autocomplete({
+		  minLength: 2,
+		  source: allItems,
+		  select: function( event, ui ) {
+		    addItem( ui.item.label,ui.item.id);
+		    // update list on select
+		    jQuery(document).trigger('tourItemsUpdated');
+		    // clear the form
+		    jQuery( "#tour-item-search" ).val('');
+		    return false;
+		  },
+		})
+		.autocomplete( "instance" )._renderItem = function( ul, item ) {
+		  return jQuery( "<li>" )
+		    .append( "<div>" + item.label + "</div>" )
+		    .appendTo( ul );
+		};
+				
+	});
+</script>

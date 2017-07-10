@@ -3,6 +3,24 @@
 /*
  * Helper functions
  */
+function availableItemsJSON() {
+		$db = get_db();
+		$prefix=$db->prefix;
+		$itemTable = $db->getTable( 'Item' );
+		if($tour = get_current_tour()){
+			$items = $itemTable->fetchObjects(
+				"SELECT i.*, (SELECT count(*) FROM ".$prefix."tour_items ti WHERE ti.item_id = i.id AND ti.tour_id = ?) AS `in_tour`
+				FROM ".$prefix."items i ORDER BY i.modified DESC",
+				array( $tour->id ) );
+		}else{
+			$items = $itemTable->fetchObjects( "SELECT i.* FROM ".$prefix."items i ORDER BY i.modified DESC");
+		}
+		foreach($items as $key => $arr) {
+			$items[$key]['label'] = metadata( $arr, array( 'Dublin Core', 'Title' ) );
+		}
+	
+		return json_encode($items);
+}
 
 function has_tours()
 {
@@ -244,9 +262,9 @@ function tours_for_item($item_id=null,$heading=null){
 		$prefix=$db->prefix;
 		$select = $db->select()
 		->from(array('ti' => $prefix.'tour_items')) // SELECT * FROM omeka_tour_items as ti
-		->join(array('t' => $prefix.'tours'),    // INNER JOIN omeka_tours as t
-			'ti.tour_id = t.id')      // ON ti.tour_id = t.id
-		->where("item_id=$item_id AND public=1");      // WHERE item_id=$item_id
+		->join(array('t' => $prefix.'tours'),    	// INNER JOIN omeka_tours as t
+			'ti.tour_id = t.id')      				// ON ti.tour_id = t.id
+		->where("item_id=$item_id AND public=1");   // WHERE item_id=$item_id
 		$q = $select->query();
 		$results = $q->fetchAll();
 
