@@ -35,6 +35,7 @@
 }
 #tour-items-picker{
 	min-height: 600px;		
+	min-height: 90vh;
 }
 #tour-item-search{
     padding: 10px;

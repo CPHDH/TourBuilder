@@ -87,6 +87,11 @@
 	var allItems=<?php echo availableItemsJSON();?>;
 	var svg_icon='<?php echo $svg_icon;?>';
 	
+	jQuery('#tour-item-search').on('focus', function() {
+		// give user some vertical space for autosuggest dropdown
+	    jQuery("html, body").animate({ scrollTop: jQuery('#tour-items-picker').position().top }, 'slow');
+	});
+	
 	jQuery( function() {
 		
 		jQuery.formCanSubmit = false;
