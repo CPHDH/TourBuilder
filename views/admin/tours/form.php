@@ -67,9 +67,10 @@
 			<ul id="sortable">
 				<?php if($tour->id){
 					$tourItems = $tour->getItems();
+					$svg_icon=file_get_contents(img('drag_icon.svg'));
 					foreach($tourItems as $ti){
 						$html  = '<li data-id="'.$ti->id.'" class="ui-state-default">';
-						$html .= '<span><img src="'.img('views_icon.png').'" class="drag-icon">'.metadata($ti,array('Dublin Core','Title')).'</span>';
+						$html .= '<span>'.$svg_icon.metadata($ti,array('Dublin Core','Title')).'</span>';
 						$html .= '<span class="remove">Remove</span></li>';
 						echo $html;
 					}
@@ -84,6 +85,7 @@
 
 <script>
 	var allItems=<?php echo availableItemsJSON();?>;
+	var svg_icon='<?php echo $svg_icon;?>';
 	
 	jQuery( function() {
 		
@@ -135,11 +137,10 @@
 		
 		// AUTOCOMPLETE
 		function addItem( label, id ) {
-			var icon = '<?php echo img('views_icon.png');?>';
 			if(jQuery.inArray(id, _itemsInTour(),0) >= 0){
 				alert('The item "' +label+ '" has already been added to the tour.');
 			}else{
-				jQuery( '<li data-id="' + id + '" class="ui-state-highlight">' ).html( '<span><img src="' +icon+ '" class="drag-icon">' + label + '</span> <span class="remove">Remove</span>' ).prependTo( "#sortable" );
+				jQuery( '<li data-id="' + id + '" class="ui-state-highlight">' ).html( '<span>'+svg_icon+ label + '</span> <span class="remove">Remove</span>' ).prependTo( "#sortable" );
 				jQuery( "#sortable" ).scrollTop( 0 );
 				// update list on add
 				jQuery(document).trigger('tourItemsUpdated');

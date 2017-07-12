@@ -61,7 +61,17 @@
 #sortable li span:first-child {flex-grow: 1;}		
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; color:#fff;background: linear-gradient(to bottom, #A4C637, #75940A);text-shadow: -1px -1px 1px rgba(0,0,0,.5);}
 
-img.drag-icon{
+svg#drag{
 	margin-right: 1em;
-	vertical-align: text-bottom;
+	vertical-align: middle;
+}
+
+.ui-state-highlight svg#drag{
+	fill-opacity:.55;
+}
+.ui-state-highlight svg#drag #top path{
+	fill:#fff;
+}
+.ui-state-highlight svg#drag #shadow path{
+	fill:#75940A;
 }
