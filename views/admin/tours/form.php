@@ -62,7 +62,7 @@
 			<h2>Tour Items</h2>
 			<p>Search for items by title to add to tour.</p>
 			<div class="input-container">
-				<input type="search" id="tour-item-search" placeholder="Search by title..."/>
+				<input type="search" id="tour-item-search" placeholder="Search by title..." onkeydown="if (event.keyCode == 13) return false"/>
 			</div>
 			<ul id="sortable">
 				<?php if($tour->id){
