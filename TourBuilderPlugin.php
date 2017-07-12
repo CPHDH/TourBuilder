@@ -180,7 +180,13 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 
 	public function hookAdminHead()
 	{
-		queue_css_file('tour-1.7');
+	    $request = Zend_Controller_Front::getInstance()->getRequest();
+	    $module = $request->getModuleName();
+	    $controller = $request->getControllerName();
+	
+	    if ($module == 'tour-builder' && $controller == 'tours') {
+	        queue_css_file('tour-1.7');
+	    }		
 	}
 
 
