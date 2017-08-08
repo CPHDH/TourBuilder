@@ -89,18 +89,23 @@ class Tour extends Omeka_Record_AbstractRecord
 	
     protected function afterSave($args)
     {        
-        if(!$args['insert']){ 
+	    $post=$args['post'];
+        if($post && !$args['insert']){ 
 	        $this->removeAllItems();
         }
         
 		// Get item IDs from $_POST and save to tour items table
-		$post=$args['post'];
-		$item_ids=explode( ',', trim( $post['tour_item_ids'] ) );
+		$tour_item_ids=trim( $post['tour_item_ids'] );
+		$item_ids=explode( ',', $tour_item_ids );
 		$i=0;
+		
+			
 		foreach($item_ids as $item_id){
 			$item_id=intval($item_id);
-			$this->addItem( $item_id, $i);
-			$i++;
+			if($item_id){
+				$this->addItem( $item_id, $i);
+				$i++;
+			}
 		}
 		
 		// Add tour to search index
