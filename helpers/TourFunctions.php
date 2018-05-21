@@ -193,8 +193,8 @@ function tour_nav( $html=null, $label='Tour' )
 
 	if ( (isset($_GET['tour'])) && (isset($_GET['index'])) )
 	{
-		$index = $_GET[ 'index' ];
-		$tour_id = $_GET['tour'];
+		$index = htmlspecialchars($_GET[ 'index' ]);
+		$tour_id = htmlspecialchars($_GET['tour']);
 		$tour = get_record_by_id( 'tour', $tour_id );
 
 		$prevIndex = $index -1;
