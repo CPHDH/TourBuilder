@@ -74,7 +74,7 @@ class Tour extends Omeka_Record_AbstractRecord
 			$this->addError( 'title', 'Tour must be given a title.' );
 		}
 
-		if( strlen( $this->title > 255 ) ) {
+		if( strlen( $this->title ) > 255 ) {
 			$this->addError( 'title', 'Title for a tour must be 255 characters or fewer.' );
 		}
 		if (!$this->fieldIsUnique('title')) {
