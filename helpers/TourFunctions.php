@@ -114,9 +114,7 @@ function total_tours()
 
 function nls2p($str) {
 	$str = str_replace('<p></p>', '', '<p>'
-		. preg_replace('#([
-]\s*?[
-]){2,}#', '</p><p>', $str)
+		. preg_replace('#([]\s*?[]){2,}#', '</p><p>', $str)
 		. '</p>');
 	return $str;
 }

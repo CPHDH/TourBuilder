@@ -16,35 +16,32 @@ echo flash();
 
 <?php if( $total_results ): ?>
 
-<div class="table-actions">
+<div class="tour-actions">
   <?php if( is_allowed( 'TourBuilder_Tours', 'add' ) ): ?>
-  <a class="add button small green" href="<?php echo $addUrl; ?>">
+    <a class="add button small green" href="<?php echo $addUrl; ?>">
     <?php echo __('Add a Tour'); ?>
-  </a>
+    </a>
   <?php endif; ?>
 </div>
 
 <div id="primary">
-		<?php
-		echo flash();
-		if( has_tours() ):
-		?>
-		<div class="pagination"><?php echo pagination_links(); ?></div>
+<?php echo flash();
+		if( has_tours() ):?>
 		<?php if( has_tours_for_loop() ): ?>
-		 <table id="tours" class="simple" cellspacing="0" cellpadding="0">
-		    <thead>
-		       <tr>
-		          <th scope="col">ID</th>
-		          <th scope="col">Title</th>
-		          <?php if( $editable ): ?>
-		          <th scope="col">Edit?</th>
-		          <?php endif; ?>
-		       </tr>
-		    </thead>
-		    <tbody>
+      <table id="tours" class="simple" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <?php if( $editable ): ?>
+            <th scope="col">Actions</th>
+            <?php endif; ?>
+          </tr>
+        </thead>
+      <tbody>
                
-               <?php $key = 0;
-
+        <?php 
+        $key = 0;
 				foreach( $tours as $tour ):
 					$oddness = ((++$key % 2) == 1) ? 'odd' : 'even';
 					$showUrl = url( array( 'action' => 'show','id' => $tour->id ), 'tourAction' );
@@ -92,10 +89,10 @@ echo flash();
     </a>
     <?php endif; ?>
   <?php else: ?>
-    <p><?php echo __('The query searched %s tours and returned no results.',
-		total_records( 'Tour' ));
-echo __('Would you like to %s?',
-	link_to_tour_search( __('refine your search') ) ); ?></p>
+    <p>
+      <?php echo __('The query searched %s tours and returned no results.',total_records( 'Tour' ));
+      echo __('Would you like to %s?', link_to_tour_search( __('refine your search') ) ); ?>
+    </p>
   <?php endif; ?>
 
 <?php endif; ?>

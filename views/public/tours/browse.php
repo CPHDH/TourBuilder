@@ -11,12 +11,8 @@ echo head( array('maptype'=>'none', 'title' => __('Browse Tours'), 'bodyid'=>'to
 		
 <h1><?php echo $title;?></h1>
 
-<nav class="items-nav navigation secondary-nav">
-    <ul class="navigation">
-	    <li class="active">
-	        <a href="<?php echo WEB_ROOT;?>/tours/browse">Browse All</a>
-	    </li>
-	</ul>
+<nav class="secondary-nav" id="tag-browse"> 
+	<?php echo public_nav_tours(); ?>
 </nav>
 
 <?php echo pagination_links(); ?>

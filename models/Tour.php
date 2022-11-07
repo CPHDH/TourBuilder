@@ -74,18 +74,17 @@ class Tour extends Omeka_Record_AbstractRecord
 		if( empty( $this->title ) ) {
 			$this->addError( 'title', 'Tour must be given a title.' );
 		}
-
 		if( strlen( $this->title ) > 255 ) {
 			$this->addError( 'title', 'Title for a tour must be 255 characters or fewer.' );
 		}
 		if (!$this->fieldIsUnique('title')) {
 			$this->addError('title', 'The Title is already in use by another tour. Please choose another.');
 		}
-
 	}
 
 	protected function beforeDelete(){
 		$this->removeAllItems();
+		$this->deleteTaggings();
 	}
 	
     protected function afterSave($args)
@@ -102,8 +101,6 @@ class Tour extends Omeka_Record_AbstractRecord
 		$tour_item_ids=trim( $post['tour_item_ids'] );
 		$item_ids=explode( ',', $tour_item_ids );
 		$i=0;
-		
-			
 		foreach($item_ids as $item_id){
 			$item_id=intval($item_id);
 			if($item_id){
@@ -113,11 +110,11 @@ class Tour extends Omeka_Record_AbstractRecord
 		}
 		
 		// Add tour to search index
-        if (!$this->public) {
-            $this->setSearchTextPrivate();
-        }
-        $this->setSearchTextTitle($this->title);
-        $this->addSearchText($this->title);
-        $this->addSearchText($this->description);        
+		if (!$this->public) {
+			$this->setSearchTextPrivate();
+		}
+		$this->setSearchTextTitle($this->title);
+		$this->addSearchText($this->title);
+		$this->addSearchText($this->description);        
     }		
 }
