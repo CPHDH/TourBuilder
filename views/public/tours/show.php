@@ -32,10 +32,6 @@ echo head( array( 'maptype'=>'tour','title' => ''.__('Tour').' | '.$tourTitle, '
 			
 			<!-- Tour Map -->
 			<?php 
-			include_once 'includes/tour-map.php'; 
-			?>
-			
-	        <?php 
 	        $i=1;
 	        foreach( $tour->getItems() as $tourItem ): 
 	        	if($tourItem->public || current_user()){
