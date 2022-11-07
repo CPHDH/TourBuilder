@@ -107,7 +107,7 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 		$acl->addResource( 'TourBuilder_Tours' );
 		
 		// Allow anyone to look but not touch
-		$acl->allow( null, 'TourBuilder_Tours', array('browse', 'show') );
+		$acl->allow( null, 'TourBuilder_Tours', array('browse', 'show', 'tags') );
 		
 		// Allow contributor (and better) to do anything with tours
 		$acl->allow( 'contributor','TourBuilder_Tours');

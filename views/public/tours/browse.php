@@ -1,9 +1,15 @@
 <?php
+if(isset($_GET['tags'])){
+	$title=__('Tours tagged "%s"',htmlspecialchars($_GET['tags'])).__(' (%s total)', total_tours());
+}else{
+	$title=__('Browse Tours (%s total)', total_tours());
+}
+
 echo head( array('maptype'=>'none', 'title' => __('Browse Tours'), 'bodyid'=>'tours',
    'bodyclass' => 'browse' ) );
 ?>
 		
-<h1><?php echo __('Browse Tours (%s total)', total_tours());?></h1>
+<h1><?php echo $title;?></h1>
 
 <nav class="items-nav navigation secondary-nav">
     <ul class="navigation">

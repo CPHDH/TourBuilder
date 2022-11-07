@@ -15,12 +15,13 @@ class Tour extends Omeka_Record_AbstractRecord
 	public $public = 0;
 	public $postscript_text;
 
-	protected $_related = array( 'Items' => 'getItems','Image' => 'getImage' );
+	protected $_related = array( 'Items' => 'getItems','Image' => 'getImage', 'Tags'=> 'getTags' );
 
-    public function _initializeMixins()
-    {
-        $this->_mixins[] = new Mixin_Search($this);
-    }
+	public function _initializeMixins()
+	{
+		$this->_mixins[] = new Mixin_Search($this);
+		$this->_mixins[] = new Mixin_Tag($this);
+	}
 
 	public function getItems()
 	{
@@ -93,7 +94,10 @@ class Tour extends Omeka_Record_AbstractRecord
         if($post && !$args['insert']){ 
 	        $this->removeAllItems();
         }
-        
+		if($post){
+			$this->applyTagString($post['tags']);
+		}
+
 		// Get item IDs from $_POST and save to tour items table
 		$tour_item_ids=trim( $post['tour_item_ids'] );
 		$item_ids=explode( ',', $tour_item_ids );

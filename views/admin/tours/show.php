@@ -49,6 +49,15 @@ echo flash();
     </div>
   </div>
   <?php endif; ?>
+  
+  <?php if($tour->Tags):?>
+    <div id="tour_tags" class="element">
+      <h2>Tags</h2>
+      <div class="element-text">
+        <?php echo tag_string($tour, 'tours'); ; ?>
+      </div>
+    </div>
+  <?php endif; ?>
 
   
   <?php

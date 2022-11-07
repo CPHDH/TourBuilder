@@ -125,16 +125,15 @@ function public_nav_tours( array $navArray = null, $maxDepth = 0 )
 {
 	if( !$navArray )
 	{
-		$navArray = array();
-
-		$navArray[] = array(
+		$navArray = array(
+			array(
 			'label' => __('All'),
-			'uri' => url('tours/browse') );
-
-		/* TODO: Tour Tags */
-
+			'uri' => url('tours/browse') ),
+			array(
+			'label' => __('Tags'),
+			'uri' => url('tours/tags') )
+		);
 	}
-
 	return nav( $navArray );
 }
 

@@ -1,5 +1,12 @@
 <?php
-$pageTitle = __('Browse Tours') . ' ' . __('(%s total)', $total_results );
+if (isset($_GET['featured']) && $_GET['featured'] == 1) {
+  $pageTitle = __('Featured Tours (%s total)', $total_results);
+}elseif(isset($_GET['tags']) ){
+  $pageTitle = __('Tours tagged "%s"', htmlspecialchars($_GET['tags'])) . ' ' . __('(%s total)', $total_results );
+}else{
+  $pageTitle = __('All Tours') . ' ' . __('(%s total)', $total_results );
+}
+
 $editable = is_allowed( 'TourBuilder_Tours', 'edit' );
 $addUrl = url( array( 'action' => 'add' ) );
 
@@ -43,31 +50,35 @@ echo flash();
 					$showUrl = url( array( 'action' => 'show','id' => $tour->id ), 'tourAction' );
 					$editUrl = url( array( 'action' => 'edit','id' => $tour->id ), 'tourAction' );
 				?>
-               
-               <tr class="tours <?php echo $oddness; ?>">
-                  <td scope="row"><?php echo $tour->id; ?></td>
-                  <td scope="row" <?php echo ($tour->featured) ? 'class="featured"' : null?>>
-                    <a href="<?php echo $showUrl; ?>">
-                      <?php echo $tour->title; ?>
-                    </a>
-                    <?php echo '<div class="admin-tour-browse-meta"><strong>Locations</strong>: '.count($tour->Items).( metadata( $tour, 'Credits' ) ? ' &middot; <strong>Credits</strong>: '.metadata( $tour, 'Credits' ).'' : null ).'<br><strong>Public</strong>: '.( (metadata( $tour, 'Public' ) == 1) ? 'Yes' : 'No' ).' &middot; <strong>Featured</strong>: '.( (metadata( $tour, 'Featured' ) == 1) ? 'Yes' : 'No' ).'<div>';?>
-
-                    <?php // if( $tour->hasImage() ){ echo '<i class="fa fa-camera"></i>';} ?>
-
-                  </td>
-                  <?php if( $editable ): ?>
-                  <td>
-                    <a class="edit" href="<?php echo $editUrl; ?>">
-                      <?php echo __('Edit'); ?>
-                    </a>
-                  </td>
-                  <?php endif; ?>
-               </tr>
-               <?php endforeach; ?>
-            </tbody>
-         </table>
-      <?php endif; ?>
-   <?php endif; ?>
+         <tr class="tours <?php echo $oddness; ?>">
+            <td scope="row"><?php echo $tour->id; ?></td>
+            <td scope="row" <?php echo ($tour->featured) ? 'class="featured"' : null?>>
+              <a href="<?php echo $showUrl; ?>">
+                <?php echo $tour->title; ?>
+              </a>
+              <div class="admin-tour-browse-meta">
+                <strong>Locations</strong>: <?php echo count($tour->Items);?> &middot; 
+                <strong>Credits</strong>: <?php echo metadata( $tour, 'Credits' );?>
+                <br>
+                <strong>Public</strong>: <?php echo metadata( $tour, 'Public' ) == 1 ? 'Yes' : 'No' ;?> &middot; 
+                <strong>Featured</strong>: <?php echo metadata( $tour, 'Featured' ) == 1 ? 'Yes' : 'No';?>
+                <br>
+                <strong>Tags</strong>: <?php echo ($tags = tag_string($tour, 'tours')) ? $tags : 'None'; ?>
+              <div>
+            </td>
+            <?php if( $editable ): ?>
+              <td>
+                <a class="edit" href="<?php echo $editUrl; ?>">
+                  <?php echo __('Edit'); ?>
+                </a>
+              </td>
+            <?php endif; ?>
+         </tr>
+         <?php endforeach; ?>
+      </tbody>
+   </table>
+  <?php endif; ?>
+<?php endif; ?>
 </div>
 
 <?php else: ?>
