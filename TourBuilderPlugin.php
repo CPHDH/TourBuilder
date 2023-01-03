@@ -125,9 +125,11 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 	{
 		if( is_allowed( 'TourBuilder_Tours', 'browse' ) )
 		{
-			$stats[] = array( link_to( 'tours', array(),
-					total_records( 'Tours' ) ),
-				__('tours') );
+			if(version_compare(OMEKA_VERSION,'3.1') >= 0){
+				$stats['tours'] = array(total_records( 'Tours' ), __('tours') );
+			}else{
+				$stats[] = array( link_to( 'tours', array(),total_records( 'Tours' ) ),__('tours') );
+			}
 		}
 		return $stats;
 	}
