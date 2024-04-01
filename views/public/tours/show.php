@@ -4,9 +4,6 @@ $tourTitle = (tour( 'title' )) ? strip_formatting( tour( 'title' ) ) : '[Untitle
 echo head( array( 'maptype'=>'tour','title' => ''.__('Tour').' | '.$tourTitle, 'bodyid'=>'tours',
    'bodyclass' => 'show', 'tour'=>$tour ) );
 ?>
-<style>
-	.item-result img{}
-</style>
 <article id="primary" class="tour" role="main">
 
 		<div id="tour-header">
