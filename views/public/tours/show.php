@@ -4,7 +4,9 @@ $tourTitle = (tour( 'title' )) ? strip_formatting( tour( 'title' ) ) : '[Untitle
 echo head( array( 'maptype'=>'tour','title' => ''.__('Tour').' | '.$tourTitle, 'bodyid'=>'tours',
    'bodyclass' => 'show', 'tour'=>$tour ) );
 ?>
-
+<style>
+	.item-result img{}
+</style>
 <article id="primary" class="tour" role="main">
 
 		<div id="tour-header">
@@ -36,31 +38,37 @@ echo head( array( 'maptype'=>'tour','title' => ''.__('Tour').' | '.$tourTitle, '
 				if($tourItem->public || current_user()){
 					set_current_record( 'item', $tourItem );
 					$itemID=$tourItem->id;
+					$more='<a href="/items/show/'.$tourItem->id.'">'.__('Learn more').'</a>';
 					$hasImage=metadata($tourItem,'has thumbnail');
+					$subtitle=metadata($tourItem,array('Item Type Metadata','Subtitle'));
+					$description=snippet(metadata($tourItem,array('Item Type Metadata','Story')),0,300,'&hellip; '.$more);
+					$custom = $tour->getTourItem($tourItem->id);
+					if(!empty($custom->text)){
+						$description = $custom->text.' '.$more;
+					}
+					if(!empty($custom->subtitle)){
+						$subtitle = $custom->subtitle;
+					}
 					$item_image=null;
 					if ($hasImage){
 						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
 						$item_image = array_pop($result);
 					}
 					?>
-					<div class="item-result <?php echo $hasImage ? 'has-image' : null;?>"  style="clear:both;width: 100%;margin-bottom: 1em;max-width: 400px;">
+					<div class="item-result <?php echo $hasImage ? 'has-image' : null;?>" >
 						<h3><a class="permalink" href="
 							<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
-								<?php echo '<span class="number">'.$i.'</span>';?> 
+								<?php echo '<span class="number">'.$i.'.</span>';?> 
 								<?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
-				        </a></h3>
-		
+								<?php echo $subtitle ? '<span class="sep">:</span> <span class="subtitle">'.$subtitle.'</span>' : null;?></a></h3>
+						
 						<?php
 						echo isset($item_image) ? '<a href="'. url('/') .
-						'items/show/'.$itemID.'?tour='.tour( 'id' ).'&index='.($i-1).'"><div class="item-image" 
-						style="background-image:url('.$item_image.');background-color:#ccc;
-						height:200px;width:100%;background-size:cover;clear:left;"></div></a>' : null; 
+						'items/show/'.$itemID.'?tour='.tour( 'id' ).'&index='.($i-1).'"><img src="'.$item_image.'" loading="lazy"/></a>' : null; 
 						?>
 
 						<div class="item-description">
-							<?php echo '<p>'.
-							 snippet(metadata($tourItem,array('Dublin Core','Description')),0,250).
-							 '</p>'; ?>
+							<?php echo '<p>'.$description.'</p>'; ?>
 					    </div>
 					</div>
 					<?php 
