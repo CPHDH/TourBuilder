@@ -46,6 +46,8 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 		`tour_id` INT( 10 ) UNSIGNED NOT NULL,
 		`ordinal` INT NOT NULL,
 		`item_id` INT( 10 ) UNSIGNED NOT NULL,
+		`subtitle` text collate utf8_unicode_ci,
+		`text` text collate utf8_unicode_ci,
 		PRIMARY KEY( `id` ),
 		KEY `tour` ( `tour_id` )
 		) ENGINE=InnoDB ";
@@ -89,6 +91,11 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 			WHERE ".$prefix."tours.id IS NULL";
 			$db->query($sql);
 		}
+		if($oldVersion < '1.9.3'){
+			$sql = "ALTER TABLE `$db->TourItem` 
+			ADD COLUMN `subtitle` text collate utf8_unicode_ci,
+			ADD COLUMN `text` text collate utf8_unicode_ci";
+			$db->query($sql);
 		}
 	}
 	
