@@ -27,7 +27,15 @@ class Tour extends Omeka_Record_AbstractRecord
 	{
 		return $this->getTable()->findItemsByTourId( $this->id );
 	}
-
+	
+	public function getTourItem($item_id)
+	{
+		$db = get_db();
+		$tiTable = $db->getTable( 'TourItem' );
+		$select = $tiTable->getSelect();
+		$select->where( 'tour_id='.$this->id.' AND item_id='.$item_id);
+		return $tiTable->fetchObject( $select );
+	}
 
 	public function removeAllItems( ) {
 		$db = get_db();
@@ -44,7 +52,7 @@ class Tour extends Omeka_Record_AbstractRecord
 		}
 	}
 
-	public function addItem( $item_id, $ordinal = null )
+	public function addItem( $item_id, $ordinal = null, $item_subtitle = null, $item_text = null )
 	{
 		if( !is_numeric( $item_id ) ) {
 			$item_id = $item_id->id;
@@ -59,11 +67,17 @@ class Tour extends Omeka_Record_AbstractRecord
 			$ordinal = $tiTable->fetchOne( $select );
 		}
 
+		# clean up text content
+		$item_subtitle = trim(strip_tags($item_subtitle));
+		$item_text = trim(strip_tags($item_text));
+
 		# Create, assign, and save the new tour item connection
 		$tourItem = new TourItem;
 		$tourItem->tour_id = $this->id;
 		$tourItem->item_id = $item_id;
 		$tourItem->ordinal = $ordinal;
+		$tourItem->subtitle = $item_subtitle;
+		$tourItem->text = $item_text;
 		$tourItem->save();
 	}
 
@@ -102,8 +116,10 @@ class Tour extends Omeka_Record_AbstractRecord
 		$i=0;
 		foreach($item_ids as $item_id){
 			$item_id=intval($item_id);
+			$item_subtitle = $post['ti_sub_'.$item_id];
+			$item_text = $post['ti_text_'.$item_id];
 			if($item_id){
-				$this->addItem( $item_id, $i);
+				$this->addItem( $item_id, $i, $item_subtitle, $item_text);
 				$i++;
 			}
 		}
