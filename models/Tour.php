@@ -38,8 +38,7 @@ class Tour extends Omeka_Record_AbstractRecord
 		# Get the tour item
 		$tourItems = $tiTable->fetchObjects( $select );
 
-		# Iterate through all the tour items
-		# and remove them
+		# Iterate through all the tour items and remove them
 		for($i = 0; $i < count($tourItems); $i++) {
 			$tourItems[$i]->delete();
 		}
@@ -86,13 +85,13 @@ class Tour extends Omeka_Record_AbstractRecord
 		$this->removeAllItems();
 		$this->deleteTaggings();
 	}
-	
-    protected function afterSave($args)
-    {        
-	    $post=$args['post'];
-        if($post && !$args['insert']){ 
-	        $this->removeAllItems();
-        }
+
+	protected function afterSave($args)
+	{
+		$post=$args['post'];
+		if($post && !$args['insert']){
+			$this->removeAllItems();
+		}
 		if($post){
 			$this->applyTagString($post['tags']);
 		}
@@ -108,13 +107,13 @@ class Tour extends Omeka_Record_AbstractRecord
 				$i++;
 			}
 		}
-		
+
 		// Add tour to search index
 		if (!$this->public) {
 			$this->setSearchTextPrivate();
 		}
 		$this->setSearchTextTitle($this->title);
 		$this->addSearchText($this->title);
-		$this->addSearchText($this->description);        
-    }		
+		$this->addSearchText($this->description);
+	}
 }
