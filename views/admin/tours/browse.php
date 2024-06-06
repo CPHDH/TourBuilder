@@ -9,7 +9,9 @@ if (isset($_GET['featured']) && $_GET['featured'] == 1) {
 
 $editable = is_allowed( 'TourBuilder_Tours', 'edit' );
 $addUrl = url( array( 'action' => 'add' ) );
-
+if(has_tours()){
+  $tours = active_sort_tours($tours);
+}
 echo head( array( 'title' => $pageTitle, 'bodyid'=>'tour','bodyclass' => 'tours browse' ) );
 echo flash();
 ?>
@@ -31,8 +33,11 @@ echo flash();
       <table id="tours" class="simple" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Title</th>
+            <?php
+            $browseHeadings[__('ID')] = 'id';
+            $browseHeadings[__('Title')] = 'title';
+            echo browse_sort_links($browseHeadings, array('link_tag' => 'th scope="col"', 'list_tag' => ''));
+            ?>
             <?php if( $editable ): ?>
             <th scope="col">Actions</th>
             <?php endif; ?>

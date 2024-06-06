@@ -301,3 +301,41 @@ function cta_tour_for_item($item_id=null,$intlLabel='Tour'){
 		return $html;
 	}
 }
+
+// Sorting helpers
+function sortByTitle($a, $b){
+	return $a['title'] <=> $b['title']; // title asc
+}
+function sortByTitleReverse($a, $b){
+	return $b['title'] <=> $a['title']; // title desc
+}
+function sortById($a, $b){
+	return $a['id'] <=> $b['id']; // id asc
+}
+function sortByIdReverse($a, $b){
+	return $b['id'] <=> $a['id']; // id desc
+}
+function active_sort_tours($tours){
+	$sortParam = Omeka_Db_Table::SORT_PARAM;
+	$sortDirParam = Omeka_Db_Table::SORT_DIR_PARAM;
+	$req = Zend_Controller_Front::getInstance()->getRequest();
+	$currentSort = $req->getParam($sortParam); // title, id
+	$currentDir = $req->getParam($sortDirParam); // a, d
+	$sort=array($currentSort,$currentDir);
+	switch($sort){
+		case array('title','a'):
+		usort($tours, 'sortByTitle');
+		break;
+		case array('id','a'):
+		usort($tours, 'sortById');
+		break;
+		case array('title','d'):
+		usort($tours, 'sortByTitleReverse');
+		break;
+		case array('id','d'):
+		usort($tours, 'sortByIdReverse');
+		break;
+	}
+	return $tours;
+}
+
