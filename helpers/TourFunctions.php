@@ -304,36 +304,67 @@ function cta_tour_for_item($item_id=null,$intlLabel='Tour'){
 
 // Sorting helpers
 function sortByTitle($a, $b){
-	return $a['title'] <=> $b['title']; // title asc
+	return $a['title'] <=> $b['title']; // title ASC
 }
 function sortByTitleReverse($a, $b){
-	return $b['title'] <=> $a['title']; // title desc
+	return $b['title'] <=> $a['title']; // title DESC
 }
 function sortById($a, $b){
-	return $a['id'] <=> $b['id']; // id asc
+	return $a['id'] <=> $b['id']; // id ASC
 }
 function sortByIdReverse($a, $b){
-	return $b['id'] <=> $a['id']; // id desc
+	return $b['id'] <=> $a['id']; // id DESC
 }
-function active_sort_tours($tours){
-	$sortParam = Omeka_Db_Table::SORT_PARAM;
-	$sortDirParam = Omeka_Db_Table::SORT_DIR_PARAM;
-	$req = Zend_Controller_Front::getInstance()->getRequest();
-	$currentSort = $req->getParam($sortParam); // title, id
-	$currentDir = $req->getParam($sortDirParam); // a, d
-	$sort=array($currentSort,$currentDir);
+function sortByOrdinal($a, $b){
+	// 0/default value will always follow ASC custom values: 1,2,3,0,0
+	if ($a['ordinal'] == $b['ordinal']) return 0;
+	if ($a['ordinal'] == 0) return 1;
+	if ($b['ordinal'] == 0) return -1;
+	return $a['ordinal'] > $b['ordinal'] ? 1 : -1;
+}
+function sortByOrdinalReverse($a, $b){
+	// 0/default value will always precede DESC custom values: 0,0,3,2,1
+	if ($a['ordinal'] == $b['ordinal']) return 0;
+	if ($b['ordinal'] == 0) return 1;
+	if ($a['ordinal'] == 0) return -1;
+	return $b['ordinal'] > $a['ordinal'] ? 1 : -1;
+}
+function active_sort_tours($tours,$sort=array()){
+	if(count($sort) !== 2){
+		$sortParam = Omeka_Db_Table::SORT_PARAM;
+		$sortDirParam = Omeka_Db_Table::SORT_DIR_PARAM;
+		$req = Zend_Controller_Front::getInstance()->getRequest();
+		$currentSort = $req->getParam($sortParam); // title, id, ordinal
+		$currentDir = $req->getParam($sortDirParam); // a, d
+		$sort=array($currentSort,$currentDir);
+	}
 	switch($sort){
 		case array('title','a'):
 		usort($tours, 'sortByTitle');
 		break;
+		case array('title',null):
+		usort($tours, 'sortByTitle');
+		break;
 		case array('id','a'):
 		usort($tours, 'sortById');
+		break;
+		case array('id',null):
+		usort($tours, 'sortById');
+		break;
+		case array('ordinal','a'):
+		usort($tours, 'sortByOrdinal');
+		break;
+		case array('ordinal',null):
+		usort($tours, 'sortByOrdinal');
 		break;
 		case array('title','d'):
 		usort($tours, 'sortByTitleReverse');
 		break;
 		case array('id','d'):
 		usort($tours, 'sortByIdReverse');
+		break;
+		case array('ordinal','d'):
+		usort($tours, 'sortByOrdinalReverse');
 		break;
 	}
 	return $tours;

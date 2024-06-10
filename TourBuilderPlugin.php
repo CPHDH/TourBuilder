@@ -37,7 +37,8 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 		`postscript_text` text collate utf8_unicode_ci,
 		`featured` tinyint( 1 ) default '0',
 		`public` tinyint( 1 ) default '0',
-		PRiMARY KEY( `id` )
+		`ordinal` INT NOT NULL default '0',
+		PRIMARY KEY( `id` )
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ";
 
 		$tourItemQuery = "
@@ -95,6 +96,11 @@ class TourBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 			$sql = "ALTER TABLE `$db->TourItem` 
 			ADD COLUMN `subtitle` text collate utf8_unicode_ci,
 			ADD COLUMN `text` text collate utf8_unicode_ci";
+			$db->query($sql);
+		}
+		if($oldVersion < '2.0'){
+			$sql = "ALTER TABLE `$db->Tour` 
+			ADD COLUMN `ordinal` INT NOT NULL default '0'";
 			$db->query($sql);
 		}
 	}

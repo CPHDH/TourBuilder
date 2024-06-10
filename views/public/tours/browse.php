@@ -23,6 +23,8 @@ if( has_tours() ){
 if( has_tours_for_loop() ){
 	$i=1;
 	$tourimg=0;
+	$active_sort = isset($_GET['sort_field']) ? array() : array('ordinal','a');
+	$tours = active_sort_tours($tours,$active_sort);
 	foreach( $tours as $tour ){ 
 		set_current_record( 'tour', $tour );
 		$tourdesc = strip_tags( htmlspecialchars_decode(tour( 'description' )) );

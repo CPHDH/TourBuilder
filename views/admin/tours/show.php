@@ -100,6 +100,16 @@ if( $tour->getItems() ): ?>
     <?php endif; ?>
   </div>
 
+<div class="ordinal panel">
+    <p>
+      <span class="label">
+        <?php echo __('Custom Order'); ?>:
+      </span>
+      <?php echo $tour->ordinal ? $tour->ordinal : __('None'); ?>
+    </p>
+  </div>
+
+
   <div class="public-featured panel">
     <p>
       <span class="label">

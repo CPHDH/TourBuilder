@@ -34,13 +34,11 @@ echo flash();
         <thead>
           <tr>
             <?php
-            $browseHeadings[__('ID')] = 'id';
             $browseHeadings[__('Title')] = 'title';
+            $browseHeadings[__('ID')] = 'id';
+            $browseHeadings[__('Custom Order')] = 'ordinal';
             echo browse_sort_links($browseHeadings, array('link_tag' => 'th scope="col"', 'list_tag' => ''));
             ?>
-            <?php if( $editable ): ?>
-            <th scope="col">Actions</th>
-            <?php endif; ?>
           </tr>
         </thead>
       <tbody>
@@ -52,32 +50,50 @@ echo flash();
         $editUrl = url( array( 'action' => 'edit','id' => $tour->id ), 'tourAction' );
         ?>
         <tr class="tours <?php echo $oddness; ?>">
-          <td scope="row"><?php echo $tour->id; ?></td>
           <td scope="row" <?php echo ($tour->featured) ? 'class="featured"' : null?>>
-            <a href="<?php echo $showUrl; ?>">
-            <?php echo $tour->title; ?>
+            <span class="title"><a href="<?php echo $showUrl; ?>">
+              <?php echo $tour->title; ?>
             </a>
-            <div class="admin-tour-browse-meta">
-              <strong>Locations</strong>: <?php echo count($tour->Items);?> &middot; 
-              <strong>Credits</strong>: <?php echo metadata( $tour, 'Credits' );?>
-              <br>
-              <strong>Public</strong>: <?php echo metadata( $tour, 'Public' ) == 1 ? 'Yes' : 'No' ;?> &middot; 
-              <strong>Featured</strong>: <?php echo metadata( $tour, 'Featured' ) == 1 ? 'Yes' : 'No';?>
-              <br>
-              <strong>Tags</strong>: <?php echo ($tags = tag_string($tour, 'tours')) ? $tags : 'None'; ?>
+            <?php if(metadata( $tour, 'Featured' ) == 1):?>
+            <div class="featured-icon">
+                <span class="featured" aria-hidden="true" title="<?php echo __('Featured'); ?>"></span>
+                <span class="sr-only icon-label"><?php echo __('Featured'); ?></span>
+            </div>
+            <?php endif;?>
+            <?php if(metadata( $tour, 'Public' ) !== 1): ?>
+                <span class="private"><?php echo __('(Private)'); ?></span>
+            <?php endif; ?>
+            </span>
+            <div class="action-links group">
+              <a href="javascript:void(0)" class="details-link"><?php echo __('Details');?></a> 
+              <?php if($editable):?>
+                <span class="middot">&middot;</span>
+                <a href="<?php echo $editUrl;?>" class="edit"><?php echo __('Edit')?></a>
+              <?php endif;?>
+              <div class="details admin-tour-browse-meta hidden">
+                <div><strong><?php echo __('Credits');?></strong>:&nbsp;<?php echo metadata( $tour, 'Credits' ) ? metadata( $tour, 'Credits' ) : __('None');?></div>&nbsp;&middot;&nbsp;
+                <div><strong><?php echo __('Locations');?></strong>: <?php echo count($tour->Items);?></div>&nbsp;&middot;&nbsp;
+                <div><strong><?php echo __('Tags');?></strong>:&nbsp;<?php echo ($tags = tag_string($tour, 'tours')) ? $tags : __('None'); ?></div>
+              </div>
             </div>
           </td>
-          <?php if( $editable ): ?>
-          <td>
-            <a class="edit" href="<?php echo $editUrl; ?>">
-            <?php echo __('Edit'); ?>
-            </a>
-          </td>
-          <?php endif; ?>
+          <td scope="row"><?php echo $tour->id; ?></td>
+          <td scope="row"><?php echo $tour->ordinal ? $tour->ordinal : __('None'); ?></td>
         </tr>
       <?php endforeach; ?>
       </tbody>
    </table>
+
+   <script>
+    let btns = document.querySelectorAll('a.details-link');
+    btns.forEach((b)=>{
+      b.addEventListener('click',(a)=>{
+        let details = a.target.parentElement.lastElementChild;
+        details.classList.toggle('hidden')
+      });
+    });
+   </script>
+
   <?php endif; ?>
 <?php endif; ?>
 </div>
