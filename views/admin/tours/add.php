@@ -1,7 +1,8 @@
 <?php
 echo head( array( 'title' => 'Add Tour', 
   'content_class' => 'vertical-nav',
-  'bodyclass' => 'tours primary add-tour-form' 
+  'bodyid'=>'tour',
+  'bodyclass' => 'tours primary add-tour-form add' 
 ));
 echo flash();
 ?>
