@@ -303,26 +303,26 @@ function cta_tour_for_item($item_id=null,$intlLabel='Tour'){
 }
 
 // Sorting helpers
-function sortByTitle($a, $b){
+function tb_sortByTitle($a, $b){
 	return $a['title'] <=> $b['title']; // title ASC
 }
-function sortByTitleReverse($a, $b){
+function tb_sortByTitleReverse($a, $b){
 	return $b['title'] <=> $a['title']; // title DESC
 }
-function sortById($a, $b){
+function tb_sortById($a, $b){
 	return $a['id'] <=> $b['id']; // id ASC
 }
-function sortByIdReverse($a, $b){
+function tb_sortByIdReverse($a, $b){
 	return $b['id'] <=> $a['id']; // id DESC
 }
-function sortByOrdinal($a, $b){
+function tb_sortByOrdinal($a, $b){
 	// 0/default value will always follow ASC custom values: 1,2,3,0,0
 	if ($a['ordinal'] == $b['ordinal']) return 0;
 	if ($a['ordinal'] == 0) return 1;
 	if ($b['ordinal'] == 0) return -1;
 	return $a['ordinal'] > $b['ordinal'] ? 1 : -1;
 }
-function sortByOrdinalReverse($a, $b){
+function tb_sortByOrdinalReverse($a, $b){
 	// 0/default value will always precede DESC custom values: 0,0,3,2,1
 	if ($a['ordinal'] == $b['ordinal']) return 0;
 	if ($b['ordinal'] == 0) return 1;
@@ -340,33 +340,32 @@ function active_sort_tours($tours,$sort=array()){
 	}
 	switch($sort){
 		case array('title','a'):
-		usort($tours, 'sortByTitle');
+		usort($tours, 'tb_sortByTitle');
 		break;
 		case array('title',null):
-		usort($tours, 'sortByTitle');
+		usort($tours, 'tb_sortByTitle');
 		break;
 		case array('id','a'):
-		usort($tours, 'sortById');
+		usort($tours, 'tb_sortById');
 		break;
 		case array('id',null):
-		usort($tours, 'sortById');
+		usort($tours, 'tb_sortById');
 		break;
 		case array('ordinal','a'):
-		usort($tours, 'sortByOrdinal');
+		usort($tours, 'tb_sortByOrdinal');
 		break;
 		case array('ordinal',null):
-		usort($tours, 'sortByOrdinal');
+		usort($tours, 'tb_sortByOrdinal');
 		break;
 		case array('title','d'):
-		usort($tours, 'sortByTitleReverse');
+		usort($tours, 'tb_sortByTitleReverse');
 		break;
 		case array('id','d'):
-		usort($tours, 'sortByIdReverse');
+		usort($tours, 'tb_sortByIdReverse');
 		break;
 		case array('ordinal','d'):
-		usort($tours, 'sortByOrdinalReverse');
+		usort($tours, 'tb_sortByOrdinalReverse');
 		break;
 	}
 	return $tours;
 }
-
