@@ -1,13 +1,13 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
-	$tourTitle = ': &quot;' . $tourTitle . '&quot; ';
+  $tourTitle = ': &quot;' . $tourTitle . '&quot; ';
 } else {
-	$tourTitle = '';
+  $tourTitle = '';
 }
 $tourTitle = 'Edit Tour #' . tour( 'id' ) . $tourTitle;
 
-echo head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav', 'bodyclass' => 'edit','bodyid'=>'tour' ) );
+echo head( array( 'title' => $tourTitle, 'content_class' => 'vertical-nav', 'bodyclass' => 'tours edit','bodyid'=>'tour' ) );
 echo flash();
 ?>
 

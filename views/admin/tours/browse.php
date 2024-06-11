@@ -50,7 +50,7 @@ echo flash();
         $editUrl = url( array( 'action' => 'edit','id' => $tour->id ), 'tourAction' );
         ?>
         <tr class="tours <?php echo $oddness; ?>">
-          <td scope="row" <?php echo ($tour->featured) ? 'class="featured"' : null?>>
+          <td scope="row" <?php echo ($tour->featured) ? 'class="featured"' : null?> >
             <span class="title"><a href="<?php echo $showUrl; ?>">
               <?php echo $tour->title; ?>
             </a>
